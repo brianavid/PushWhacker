@@ -28,6 +28,20 @@ namespace PushWhacker
             Scales = new Dictionary<string, int[]>();
             Scales["Major"] = new int[] { 2, 2, 1, 2, 2, 2, 1 };
             Scales["Minor"] = new int[] { 2, 1, 2, 2, 1, 2, 2 };
+            Scales["Ionian"] = new int[] { 2, 2, 1, 2, 2, 2, 1 };
+            Scales["Dorian"] = new int[] { 2, 1, 2, 2, 2, 1, 2 };
+            Scales["Phrygian "] = new int[] { 1, 2, 2, 2, 1, 2, 2 };
+            Scales["Lydian "] = new int[] { 2, 2, 2, 1, 2, 2, 1 };
+            Scales["Mixolydian "] = new int[] { 2, 2, 1, 2, 2, 1, 2 };
+            Scales["Aeolian"] = new int[] { 2, 1, 2, 2, 1, 2, 2 };
+            Scales["Locrian"] = new int[] { 1, 2, 2, 1, 2, 2, 2 };
+            Scales["Major Pentatonic"] = new int[] { 2, 2, 3, 2, 3 };
+            Scales["Minor Pentatonic"] = new int[] { 3, 2, 2, 3, 2 };
+            Scales["Whole Tone"] = new int[] { 2, 2, 2, 2, 2, 2 };
+            Scales["Octatonic WH"] = new int[] { 2, 1, 2, 1, 2, 1, 2, 1 };
+            Scales["Octatonic HW"] = new int[] { 1, 2, 1, 2, 1, 2, 1, 2 };
+            Scales["Hungarian (Gypsy) Minor"] = new int[] { 2, 1, 3, 1, 1, 3, 1 };
+            Scales["Dbl Harm (Gypsy) Major "] = new int[] { 1, 3, 1, 2, 1, 3, 1 };
 
             ccValues = new Dictionary<int, int>();
             ccValues[14] = 0;

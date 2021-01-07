@@ -21,6 +21,11 @@ namespace PushWhacker
                 comboBoxOutput.Items.Add(MidiOut.DeviceInfo(device).ProductName);
             }
 
+            foreach (var layout in ConfigValues.Layouts.Choices)
+            {
+                comboBoxLayout.Items.Add(layout);
+            }
+
             foreach (var scale in MidiProcessor.Scales.Keys)
             {
                 comboBoxScale.Items.Add(scale);

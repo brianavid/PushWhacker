@@ -1,14 +1,23 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PushWhacker
 {
     public class ConfigValues
     {
+        public class Layouts
+        {
+            public const string InKey = "In Key";
+            public const string Chromatic = "Chromatic";
+            public const string Linear = "Linear";
+            public const string Scaler = "Scaler";
+            public const string Drums = "Drums";
+            public const string Strummer = "Strummer";
+
+            public static string[] Choices = new string[] { InKey, Chromatic, Linear, Scaler, Drums, Strummer };
+        }
+
         public string Output { get; set; }
         public string Layout { get; set; }
         public string Channel { get; set; }

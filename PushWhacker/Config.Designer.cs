@@ -154,13 +154,6 @@ namespace PushWhacker
             // 
             this.comboBoxLayout.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxLayout.FormattingEnabled = true;
-            this.comboBoxLayout.Items.AddRange(new object[] {
-            "In Key",
-            "Chromatic",
-            "Linear",
-            "Scaler",
-            "Drums",
-            "Strummer"});
             this.comboBoxLayout.Location = new System.Drawing.Point(54, 10);
             this.comboBoxLayout.Name = "comboBoxLayout";
             this.comboBoxLayout.Size = new System.Drawing.Size(204, 21);

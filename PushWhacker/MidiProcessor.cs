@@ -59,34 +59,41 @@ namespace PushWhacker
 
         public bool StartProcessing()
         {
-            for (int device = 0; device < MidiIn.NumberOfDevices; device++)
+            try
             {
-                if (MidiIn.DeviceInfo(device).ProductName == SourceMidi)
+                for (int device = 0; device < MidiIn.NumberOfDevices; device++)
                 {
-                    midiIn = new MidiIn(device);
-                }
-            }
-
-            for (int device = 0; device < MidiOut.NumberOfDevices; device++)
-            {
-                if (MidiOut.DeviceInfo(device).ProductName == SourceMidi)
-                {
-                    midiLights = new MidiOut(device);
-                }
-            }
-
-            if (!string.IsNullOrEmpty(configValues.Output))
-            {
-                for (int device = 0; device < MidiOut.NumberOfDevices; device++)
-                {
-                    if (MidiOut.DeviceInfo(device).ProductName == configValues.Output)
+                    if (MidiIn.DeviceInfo(device).ProductName == SourceMidi)
                     {
-                        midiOut = new MidiOut(device);
+                        midiIn = new MidiIn(device);
                     }
                 }
-            }
 
-            if (midiIn == null || midiLights == null)
+                for (int device = 0; device < MidiOut.NumberOfDevices; device++)
+                {
+                    if (MidiOut.DeviceInfo(device).ProductName == SourceMidi)
+                    {
+                        midiLights = new MidiOut(device);
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(configValues.Output))
+                {
+                    for (int device = 0; device < MidiOut.NumberOfDevices; device++)
+                    {
+                        if (MidiOut.DeviceInfo(device).ProductName == configValues.Output)
+                        {
+                            midiOut = new MidiOut(device);
+                        }
+                    }
+                }
+
+                if (midiIn == null || midiLights == null)
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
             {
                 return false;
             }
@@ -139,30 +146,52 @@ namespace PushWhacker
 
         static void SetScaleNotesAndLights()
         {
-            var intervals = Scales[configValues.Scale];
-            int nearestToC4 = -1;
-            scaleNoteMapping = new int[64];
             switch (configValues.Layout)
             {
-                case "In Key":
-                case "Scaler":
-                    {
-                        int startingNote = configValues.Keys[configValues.Key] + (12 * configValues.OctaveNumber);
-                        int targetNote = startingNote;
-                        int rowStartNote = startingNote;
-                        int rowStartPos = 0;
-                        for (int i = 0; i < 64; i++)
-                        {
-                            int row = i / 8;
-                            int col = i % 8;
-                            int pos = (rowStartPos + col) % intervals.Length;
-                            int sourceNote = 36 + i;
-                            bool isOctaveNote = (targetNote - startingNote) % 12 == 0;
-                            bool isC4 = targetNote == nearestToC4 || nearestToC4 <0 && targetNote >= 60;
+                case ConfigValues.Layouts.InKey:
+                    SetScaleNotesAndLightsInKey(3);
+                    break;
 
-                            if (isC4) nearestToC4 = targetNote;
+                case ConfigValues.Layouts.Scaler:
+                    SetScaleNotesAndLightsInKey(7);
+                    break;
 
-                            scaleNoteMapping[i] = targetNote;
+                case ConfigValues.Layouts.Chromatic:
+                    SetScaleNotesAndLightsChromatic(5);
+                    break;
+                case ConfigValues.Layouts.Linear:
+                    SetScaleNotesAndLightsChromatic(8);
+                    break;
+            }
+
+            var ledOct = new ControlChangeEvent(0, 1, (MidiController)54, 127);
+            midiLights.Send(ledOct.GetAsShortMessage());
+
+            ledOct = new ControlChangeEvent(0, 1, (MidiController)55, 127);
+            midiLights.Send(ledOct.GetAsShortMessage());
+        }
+
+        static void SetScaleNotesAndLightsInKey(int cycleWidth)
+        {
+            var intervals = Scales[configValues.Scale];
+            int nearestToC4 = -1;
+            int startingNote = configValues.Keys[configValues.Key] + (12 * configValues.OctaveNumber);
+            int targetNote = startingNote;
+            int rowStartNote = startingNote;
+            int rowStartPos = 0;
+
+            scaleNoteMapping = new int[64];
+            for (int i = 0; i < 64; i++)
+            {
+                int col = i % 8;
+                int pos = (rowStartPos + col) % intervals.Length;
+                int sourceNote = 36 + i;
+                bool isOctaveNote = (targetNote - startingNote) % 12 == 0;
+                bool isC4 = targetNote == nearestToC4 || nearestToC4 < 0 && targetNote >= 60;
+
+                if (isC4) nearestToC4 = targetNote;
+
+                scaleNoteMapping[i] = targetNote;
 
 #if false
                             if (configValues.Debug)
@@ -173,55 +202,56 @@ namespace PushWhacker
                             }
 
 #endif
-                            targetNote += intervals[pos];
-                            if (col == 7)
-                            {
-                                int width = configValues.Layout == "Scaler" ? 7 : 3;
-                                targetNote = rowStartNote;
-                                for (int j = 0; j < width; j++)
-                                {
-                                    pos = (rowStartPos + j) % intervals.Length;
-                                    targetNote += intervals[pos];
-                                }
-                                rowStartNote = targetNote;
-                                rowStartPos = (rowStartPos + width) % intervals.Length;
-                            }
-
-                            var ledNote = new NoteOnEvent(0, 1, sourceNote, isC4 ? 126 : isOctaveNote ? 125 : 122, 0);
-                            midiLights.Send(ledNote.GetAsShortMessage());
-                        }
-                        break;
-                    }
-
-                case "Chromatic":
-                case "Linear":
+                targetNote += intervals[pos];
+                if (col == 7)
+                {
+                    targetNote = rowStartNote;
+                    for (int j = 0; j < cycleWidth; j++)
                     {
-                        var isInScale = new bool[12];
-                        int chromaticNote = 0;
-                        for (var i = 0; i < intervals.Length; i++)
-                        {
-                            isInScale[chromaticNote++] = true;
-                            for (var j = 1; j < intervals[i]; j++)
-                            {
-                                isInScale[chromaticNote++] = false;
-                            }
-                        }
+                        pos = (rowStartPos + j) % intervals.Length;
+                        targetNote += intervals[pos];
+                    }
+                    rowStartNote = targetNote;
+                    rowStartPos = (rowStartPos + cycleWidth) % intervals.Length;
+                }
 
-                        int startingNote = configValues.Keys[configValues.Key] + (12 * configValues.OctaveNumber);
-                        int targetNote = startingNote;
-                        int rowStartNote = startingNote;
-                        for (int i = 0; i < 64; i++)
-                        {
-                            int row = i / 8;
-                            int col = i % 8;
-                            int sourceNote = 36 + i;
-                            bool isOctaveNote = (targetNote - startingNote) % 12 == 0;
-                            bool isScaleNote = isInScale[(targetNote - startingNote) % 12];
-                            bool isC4 = targetNote == nearestToC4 || nearestToC4 < 0 && targetNote >= 60;
+                var ledNote = new NoteOnEvent(0, 1, sourceNote, isC4 ? 126 : isOctaveNote ? 125 : 122, 0);
+                midiLights.Send(ledNote.GetAsShortMessage());
+            }
+        }
 
-                            if (isC4) nearestToC4 = targetNote;
+        static void SetScaleNotesAndLightsChromatic(int cycleWidth)
+        {
+            var intervals = Scales[configValues.Scale];
+            int nearestToC4 = -1;
+            var isInScale = new bool[12];
+            int chromaticNote = 0;
 
-                            scaleNoteMapping[i] = targetNote;
+            for (var i = 0; i < intervals.Length; i++)
+            {
+                isInScale[chromaticNote++] = true;
+                for (var j = 1; j < intervals[i]; j++)
+                {
+                    isInScale[chromaticNote++] = false;
+                }
+            }
+
+            int startingNote = configValues.Keys[configValues.Key] + (12 * configValues.OctaveNumber);
+            int targetNote = startingNote;
+            int rowStartNote = startingNote;
+
+            scaleNoteMapping = new int[64];
+            for (int i = 0; i < 64; i++)
+            {
+                int col = i % 8;
+                int sourceNote = 36 + i;
+                bool isOctaveNote = (targetNote - startingNote) % 12 == 0;
+                bool isScaleNote = isInScale[(targetNote - startingNote) % 12];
+                bool isC4 = targetNote == nearestToC4 || nearestToC4 < 0 && targetNote >= 60;
+
+                if (isC4) nearestToC4 = targetNote;
+
+                scaleNoteMapping[i] = targetNote;
 
 #if false
                             if (configValues.Debug)
@@ -232,26 +262,18 @@ namespace PushWhacker
                             }
 
 #endif
-                            targetNote += 1;
-                            if (configValues.Layout == "Chromatic" && col == 7)
-                            {
-                                targetNote = rowStartNote + 5;
-                                rowStartNote = targetNote;
-                            }
+                targetNote += 1;
+                if (cycleWidth < 8 && col == 7)
+                {
+                    targetNote = rowStartNote + cycleWidth;
+                    rowStartNote = targetNote;
+                }
 
-                            var ledNote = new NoteOnEvent(0, 1, sourceNote, isC4 ? 126 : isOctaveNote ? 125 : isScaleNote ? 122 : 123, 0);
-                            midiLights.Send(ledNote.GetAsShortMessage());
-                        }
-                        break;
-                    }
+                var ledNote = new NoteOnEvent(0, 1, sourceNote, isC4 ? 126 : isOctaveNote ? 125 : isScaleNote ? 122 : 123, 0);
+                midiLights.Send(ledNote.GetAsShortMessage());
             }
-
-            var ledOct = new ControlChangeEvent(0, 1, (MidiController)54, 127);
-            midiLights.Send(ledOct.GetAsShortMessage());
-
-            ledOct = new ControlChangeEvent(0, 1, (MidiController)55, 127);
-            midiLights.Send(ledOct.GetAsShortMessage());
         }
+
 
         void ClearLights()
         {

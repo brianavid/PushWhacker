@@ -162,6 +162,10 @@ namespace PushWhacker
                 case ConfigValues.Layouts.Linear:
                     SetScaleNotesAndLightsChromatic(8);
                     break;
+
+                case ConfigValues.Layouts.Strummer:
+                    SetScaleNotesAndLightsStrummer();
+                    break;
             }
 
             var ledOct = new ControlChangeEvent(0, 1, (MidiController)54, 127);
@@ -185,7 +189,7 @@ namespace PushWhacker
             {
                 int col = i % 8;
                 int pos = (rowStartPos + col) % intervals.Length;
-                int sourceNote = 36 + i;
+                int sourceNote = Push.FirstPad + i;
                 bool isOctaveNote = (targetNote - startingNote) % 12 == 0;
                 bool isC4 = targetNote == nearestToC4 || nearestToC4 < 0 && targetNote >= 60;
 
@@ -215,8 +219,7 @@ namespace PushWhacker
                     rowStartPos = (rowStartPos + cycleWidth) % intervals.Length;
                 }
 
-                var ledNote = new NoteOnEvent(0, 1, sourceNote, isC4 ? 126 : isOctaveNote ? 125 : 122, 0);
-                midiLights.Send(ledNote.GetAsShortMessage());
+                SetPadLED(sourceNote, isC4 ? Push.Colours.Green : isOctaveNote ? Push.Colours.Blue : Push.Colours.White);
             }
         }
 
@@ -244,7 +247,7 @@ namespace PushWhacker
             for (int i = 0; i < 64; i++)
             {
                 int col = i % 8;
-                int sourceNote = 36 + i;
+                int sourceNote = Push.FirstPad + i;
                 bool isOctaveNote = (targetNote - startingNote) % 12 == 0;
                 bool isScaleNote = isInScale[(targetNote - startingNote) % 12];
                 bool isC4 = targetNote == nearestToC4 || nearestToC4 < 0 && targetNote >= 60;
@@ -269,19 +272,85 @@ namespace PushWhacker
                     rowStartNote = targetNote;
                 }
 
-                var ledNote = new NoteOnEvent(0, 1, sourceNote, isC4 ? 126 : isOctaveNote ? 125 : isScaleNote ? 122 : 123, 0);
-                midiLights.Send(ledNote.GetAsShortMessage());
+                SetPadLED(sourceNote, isC4 ? Push.Colours.Green : isOctaveNote ? Push.Colours.Blue : isScaleNote ? Push.Colours.White : Push.Colours.DarkGrey);
             }
         }
 
+        static void DefineSpecificButton(int row, int col, int note, int colour)
+        {
+            int i = row * 8 + col;
+            int sourceNote = Push.FirstPad + i;
+            scaleNoteMapping[i] = note;
+            SetPadLED(sourceNote, colour);
+        }
 
-        void ClearLights()
+        static void SetScaleNotesAndLightsStrummer()
+        {
+            scaleNoteMapping = new int[64];
+            DefineSpecificButton(0, 4, 62, Push.Colours.Green);
+            DefineSpecificButton(0, 5, 64, Push.Colours.Green);
+            DefineSpecificButton(0, 6, 65, Push.Colours.Green);
+            DefineSpecificButton(1, 5, 67, Push.Colours.Green);
+            DefineSpecificButton(1, 6, 69, Push.Colours.Green);
+            DefineSpecificButton(1, 7, 71, Push.Colours.Green);
+            DefineSpecificButton(2, 5, 67, Push.Colours.Green);
+            DefineSpecificButton(2, 6, 69, Push.Colours.Green);
+            DefineSpecificButton(2, 7, 71, Push.Colours.Green);
+            DefineSpecificButton(3, 4, 72, Push.Colours.Blue);
+            DefineSpecificButton(3, 5, 74, Push.Colours.Blue);
+            DefineSpecificButton(3, 6, 76, Push.Colours.Blue);
+            DefineSpecificButton(3, 7, 77, Push.Colours.Blue);
+            DefineSpecificButton(4, 4, 78, Push.Colours.Blue);
+            DefineSpecificButton(4, 5, 79, Push.Colours.Blue);
+            DefineSpecificButton(4, 6, 81, Push.Colours.Blue);
+            DefineSpecificButton(4, 7, 83, Push.Colours.Blue);
+            DefineSpecificButton(5, 4, 60, Push.Colours.Yellow);
+            DefineSpecificButton(5, 5, 61, Push.Colours.Yellow);
+            DefineSpecificButton(5, 6, 63, Push.Colours.Yellow);
+            DefineSpecificButton(5, 7, 66, Push.Colours.Yellow);
+            DefineSpecificButton(6, 4, 68, Push.Colours.Yellow);
+            DefineSpecificButton(6, 5, 70, Push.Colours.Yellow);
+            DefineSpecificButton(6, 6, 73, Push.Colours.Yellow);
+            DefineSpecificButton(6, 7, 75, Push.Colours.Yellow);
+            DefineSpecificButton(0, 0, 36, Push.Colours.White);
+            DefineSpecificButton(0, 1, 37, Push.Colours.White);
+            DefineSpecificButton(0, 2, 38, Push.Colours.White);
+            DefineSpecificButton(0, 3, 39, Push.Colours.White);
+            DefineSpecificButton(1, 0, 40, Push.Colours.White);
+            DefineSpecificButton(1, 1, 41, Push.Colours.White);
+            DefineSpecificButton(1, 2, 42, Push.Colours.White);
+            DefineSpecificButton(1, 3, 43, Push.Colours.White);
+            DefineSpecificButton(2, 0, 44, Push.Colours.White);
+            DefineSpecificButton(2, 1, 45, Push.Colours.White);
+            DefineSpecificButton(2, 2, 46, Push.Colours.White);
+            DefineSpecificButton(2, 3, 47, Push.Colours.White);
+            DefineSpecificButton(3, 0, 48, Push.Colours.White);
+            DefineSpecificButton(3, 1, 49, Push.Colours.White);
+            DefineSpecificButton(3, 2, 50, Push.Colours.White);
+            DefineSpecificButton(3, 3, 51, Push.Colours.White);
+            DefineSpecificButton(4, 0, 52, Push.Colours.White);
+            DefineSpecificButton(4, 1, 53, Push.Colours.White);
+            DefineSpecificButton(4, 2, 54, Push.Colours.White);
+            DefineSpecificButton(4, 3, 55, Push.Colours.White);
+            DefineSpecificButton(5, 0, 56, Push.Colours.White);
+            DefineSpecificButton(5, 1, 57, Push.Colours.White);
+            DefineSpecificButton(5, 2, 58, Push.Colours.White);
+            DefineSpecificButton(5, 3, 59, Push.Colours.White);
+        }
+
+        static void SetPadLED(int sourceNote, int colour)
+        {
+            var ledNote = new NoteOnEvent(0, 1, sourceNote, colour, 0);
+            midiLights.Send(ledNote.GetAsShortMessage());
+        }
+
+
+        static void ClearLights()
         {
             for (int i = 0; i < 64; i++)
             {
-                int sourceNote = 36 + i;
-                var ledNote = new NoteOnEvent(0, 1, sourceNote, 0, 0);
-                midiLights.Send(ledNote.GetAsShortMessage());
+                int sourceNote = Push.FirstPad + i;
+                SetPadLED(sourceNote, Push.Colours.Black);
             }
         }
 
@@ -326,11 +395,11 @@ namespace PushWhacker
 
                 switch ((byte)ccEvent.Controller)
                 {
-                    case 69:
+                    case Push.Buttons.FootSwitch:
                         footSwitchPressed = (ccEvent.ControllerValue < 64);
                         return;
 
-                    case 54:
+                    case Push.Buttons.OctaveDown:
                         if (ccEvent.ControllerValue > 64)
                         {
                             configValues.Octave = (Math.Max(configValues.OctaveNumber, 1) - 1).ToString();
@@ -338,7 +407,7 @@ namespace PushWhacker
                         }
                         return;
 
-                    case 55:
+                    case Push.Buttons.OctaveUp:
                         if (ccEvent.ControllerValue > 64)
                         {
                             configValues.Octave = (Math.Min(configValues.OctaveNumber, 7) + 1).ToString();
@@ -346,7 +415,7 @@ namespace PushWhacker
                         }
                         return;
 
-                    case 79:
+                    case Push.Buttons.BrightnessCC:
                         SetLedBrightness(ccEvent.ControllerValue);
                         return;
                 }
@@ -357,14 +426,14 @@ namespace PushWhacker
                 var noteOnEvent = e.MidiEvent as NoteEvent;
                 var padNoteNumber = noteOnEvent.NoteNumber;
 
-                if (padNoteNumber < 36 || padNoteNumber >= 100)
+                if (padNoteNumber < Push.FirstPad || padNoteNumber > Push.LastPad)
                 {
                     return;
                 }
 
                 if (e.MidiEvent.CommandCode == MidiCommandCode.NoteOn)
                 {
-                    noteOnEvent.NoteNumber = scaleNoteMapping[noteOnEvent.NoteNumber - 36];
+                    noteOnEvent.NoteNumber = scaleNoteMapping[noteOnEvent.NoteNumber - Push.FirstPad];
 
                     if (configValues.SemitonePedal && footSwitchPressed)
                     {

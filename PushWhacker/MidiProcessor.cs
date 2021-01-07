@@ -431,9 +431,13 @@ namespace PushWhacker
                     return;
                 }
 
-                if (e.MidiEvent.CommandCode == MidiCommandCode.NoteOn)
+                if (e.MidiEvent.CommandCode == MidiCommandCode.NoteOn || !notesOn.ContainsKey(padNoteNumber))
                 {
                     noteOnEvent.NoteNumber = scaleNoteMapping[noteOnEvent.NoteNumber - Push.FirstPad];
+                    if (noteOnEvent.NoteNumber == 0)
+                    {
+                        return;
+                    }
 
                     if (configValues.SemitonePedal && footSwitchPressed)
                     {

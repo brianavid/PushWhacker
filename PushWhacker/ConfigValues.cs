@@ -18,6 +18,7 @@ namespace PushWhacker
         public int OctaveNumber { get { return Int32.Parse(Octave); } }
         public bool Log { get; set; }
         public bool Debug { get; set; }
+        public bool SemitonePedal { get; set; }
 
         public Dictionary<string, int> Keys { get; }
 
@@ -43,29 +44,15 @@ namespace PushWhacker
             try { 
                 using (RegistryKey regKey = Registry.CurrentUser.OpenSubKey("Software", true).CreateSubKey("PushWhacker"))
                 {
-                    var output = regKey.GetValue("Output") as string;
-                    if (!String.IsNullOrEmpty(output)) Output = output;
-
-                    var layout = regKey.GetValue("Layout") as string;
-                    if (!String.IsNullOrEmpty(layout)) Layout = layout;
-
-                    var channel = regKey.GetValue("Channel") as string;
-                    if (!String.IsNullOrEmpty(channel)) Channel = channel;
-
-                    var scale = regKey.GetValue("Scale") as string;
-                    if (!String.IsNullOrEmpty(scale)) Scale = scale;
-
-                    var key = regKey.GetValue("Key") as string;
-                    if (!String.IsNullOrEmpty(key)) Key = key;
-
-                    var octave = regKey.GetValue("Octave") as string;
-                    Octave = !String.IsNullOrEmpty(octave) ? octave : "3";
-
-                    var log = regKey.GetValue("Log") as string;
-                    Log = !String.IsNullOrEmpty(log);
-
-                    var debug = regKey.GetValue("Debug") as string;
-                    Debug = !String.IsNullOrEmpty(debug);
+                    Output = (string)regKey.GetValue("Output");
+                    Layout = (string)regKey.GetValue("Layout");
+                    Channel = (string)regKey.GetValue("Channel");
+                    Scale = (string)regKey.GetValue("Scale");
+                    Key = (string)regKey.GetValue("Key");
+                    Octave = (string)regKey.GetValue("Octave");
+                    Log = (int)regKey.GetValue("Log", 0) != 0;
+                    Debug = (int)regKey.GetValue("Debug", 0) != 0;
+                    SemitonePedal = (int)regKey.GetValue("SemitonePedal", 0) != 0;
                 }
             }
             catch (Exception ex)
@@ -83,8 +70,9 @@ namespace PushWhacker
                 regKey.SetValue("Scale", Scale);
                 regKey.SetValue("Key", Key);
                 regKey.SetValue("Octave", Octave);
-                regKey.SetValue("Log", Log ? "Yes" : "");
-                regKey.SetValue("Debug", Debug ? "Yes" : "");
+                regKey.SetValue("Log", Log ? 1 : 0);
+                regKey.SetValue("Debug", Debug ? 1 : 0);
+                regKey.SetValue("SemitonePedal", SemitonePedal ? 1 : 0);
             }
         }
     }

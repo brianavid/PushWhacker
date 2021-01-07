@@ -18,7 +18,7 @@ namespace PushWhacker
         static bool footSwitchPressed = false;
         static int[] scaleNoteMapping;
         static Dictionary<int, int> ccValues;
-        static HashSet<int> notesOn = new HashSet<int>();
+        static Dictionary<int, int> notesOn = new Dictionary<int, int>();
 
         public static Dictionary<string, int[]> Scales { get; private set; }
 
@@ -54,7 +54,7 @@ namespace PushWhacker
             ccValues[76] = 0;
             ccValues[77] = 0;
             ccValues[78] = 0;
-            ccValues[79] = 0;
+            ccValues[79] = 64;
         }
 
         public bool StartProcessing()
@@ -92,6 +92,7 @@ namespace PushWhacker
             }
 
             SetScaleNotesAndLights();
+            SetLedBrightness(ccValues[79]);
 
             if (midiOut != null)
             {
@@ -281,7 +282,7 @@ namespace PushWhacker
 
         static void midiIn_MessageReceived(object sender, MidiInMessageEventArgs e)
         {
-            if (e.MidiEvent != null && e.MidiEvent.CommandCode == MidiCommandCode.AutoSensing)
+            if (e.MidiEvent == null || e.MidiEvent.CommandCode == MidiCommandCode.AutoSensing)
             {
                 return;
             }
@@ -289,22 +290,7 @@ namespace PushWhacker
             if (e.MidiEvent.CommandCode == MidiCommandCode.ControlChange)
             {
                 var ccEvent = e.MidiEvent as ControlChangeEvent;
-                if ((byte)ccEvent.Controller == 69)
-                {
-                    footSwitchPressed = (ccEvent.ControllerValue < 64);
-                    foreach (var noteNumber in notesOn)
-                    {
-                        var offMessage = new NoteEvent(0, e.MidiEvent.Channel, MidiCommandCode.NoteOff, noteNumber, 0);
-                        midiOut.Send(offMessage.GetAsShortMessage());
-                    }
-                    notesOn.Clear();
-                    return;
-                }
-            }
 
-            if (e.MidiEvent.CommandCode == MidiCommandCode.ControlChange)
-            {
-                var ccEvent = e.MidiEvent as ControlChangeEvent;
                 if (ccValues.ContainsKey((byte)ccEvent.Controller))
                 {
                     int delta = ccEvent.ControllerValue >= 64 ? ccEvent.ControllerValue - 128 : ccEvent.ControllerValue;
@@ -316,68 +302,59 @@ namespace PushWhacker
                     ccValues[(byte)ccEvent.Controller] = ccValue;
                 }
 
-                if ((byte)ccEvent.Controller == 54)
+                switch ((byte)ccEvent.Controller)
                 {
-                    if (ccEvent.ControllerValue > 64)
-                    {
-                        configValues.Octave = (Math.Max(configValues.OctaveNumber, 1) - 1).ToString();
-                        SetScaleNotesAndLights();
-                    }
-                    return;
-                }
+                    case 69:
+                        footSwitchPressed = (ccEvent.ControllerValue < 64);
+                        return;
 
-                if ((byte)ccEvent.Controller == 55)
-                {
-                    if (ccEvent.ControllerValue > 64)
-                    {
-                        configValues.Octave = (Math.Min(configValues.OctaveNumber, 7) + 1).ToString();
-                        SetScaleNotesAndLights();
-                    }
-                    return;
-                }
+                    case 54:
+                        if (ccEvent.ControllerValue > 64)
+                        {
+                            configValues.Octave = (Math.Max(configValues.OctaveNumber, 1) - 1).ToString();
+                            SetScaleNotesAndLights();
+                        }
+                        return;
 
-                if ((byte)ccEvent.Controller == 79)
-                {
-                    //  Use the rh controller to set the LED brightness
-                    var buffer = new byte[]
-                                     {
-                                     0xF0, // MIDI excl start
-                                     0x00, // Manu ID
-                                     0x21, // 
-                                     0x1D, // 
-                                     0x01, // DevID
-                                     0x01, // Prod Model ID
-                                     0x06, // Command ID - set LED brightness
-                                     (byte)ccEvent.ControllerValue,
-                                     0xF7, // MIDI excl end
-                                     };
-                    midiLights.SendBuffer(buffer);
-                    return;
+                    case 55:
+                        if (ccEvent.ControllerValue > 64)
+                        {
+                            configValues.Octave = (Math.Min(configValues.OctaveNumber, 7) + 1).ToString();
+                            SetScaleNotesAndLights();
+                        }
+                        return;
+
+                    case 79:
+                        SetLedBrightness(ccEvent.ControllerValue);
+                        return;
                 }
             }
 
             if (e.MidiEvent.CommandCode == MidiCommandCode.NoteOn || e.MidiEvent.CommandCode == MidiCommandCode.NoteOff)
             {
                 var noteOnEvent = e.MidiEvent as NoteEvent;
-                if (noteOnEvent.NoteNumber < 36 || noteOnEvent.NoteNumber >= 100)
+                var padNoteNumber = noteOnEvent.NoteNumber;
+
+                if (padNoteNumber < 36 || padNoteNumber >= 100)
                 {
                     return;
                 }
 
-                noteOnEvent.NoteNumber = scaleNoteMapping[noteOnEvent.NoteNumber - 36];
-
-                if (footSwitchPressed)
-                {
-                    noteOnEvent.NoteNumber += 1;
-                }
-
                 if (e.MidiEvent.CommandCode == MidiCommandCode.NoteOn)
                 {
-                    notesOn.Add(noteOnEvent.NoteNumber);
+                    noteOnEvent.NoteNumber = scaleNoteMapping[noteOnEvent.NoteNumber - 36];
+
+                    if (configValues.SemitonePedal && footSwitchPressed)
+                    {
+                        noteOnEvent.NoteNumber += 1;
+                    }
+
+                    notesOn[padNoteNumber] = noteOnEvent.NoteNumber;
                 }
                 else
                 {
-                    notesOn.Remove(noteOnEvent.NoteNumber);
+                    noteOnEvent.NoteNumber = notesOn[padNoteNumber];
+                    notesOn.Remove(padNoteNumber);
                 }
             }
 
@@ -394,6 +371,24 @@ namespace PushWhacker
             }
 
             midiOut.Send(e.MidiEvent.GetAsShortMessage());
+        }
+
+        private static void SetLedBrightness(int brightness)
+        {
+            //  Use the rh controller to set the LED brightness
+            var buffer = new byte[]
+                             {
+                                     0xF0, // MIDI excl start
+                                     0x00, // Manu ID
+                                     0x21, // 
+                                     0x1D, // 
+                                     0x01, // DevID
+                                     0x01, // Prod Model ID
+                                     0x06, // Command ID - set LED brightness
+                                     (byte)brightness,
+                                     0xF7, // MIDI excl end
+                             };
+            midiLights.SendBuffer(buffer);
         }
 
         static string FormatTimeStamp(int timeStampMs)

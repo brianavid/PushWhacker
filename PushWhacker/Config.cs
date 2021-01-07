@@ -45,6 +45,7 @@ namespace PushWhacker
             comboBoxOctave.SelectedItem = !String.IsNullOrEmpty(values.Octave) ? values.Octave : "3";
             logCheckBox.Checked = configValues.Log;
             debugCheckBox.Checked = configValues.Debug;
+            checkBoxSemitonePedal.Checked = configValues.SemitonePedal;
         }
 
         private void StoreValues()
@@ -57,6 +58,7 @@ namespace PushWhacker
             configValues.Octave = comboBoxOctave.SelectedItem as string;
             configValues.Log = logCheckBox.Checked;
             configValues.Debug = debugCheckBox.Checked;
+            configValues.SemitonePedal = checkBoxSemitonePedal.Checked;
 
             configValues.Save();
 

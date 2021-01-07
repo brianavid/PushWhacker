@@ -33,14 +33,6 @@ namespace PushWhacker
             this.buttonApply = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.logCheckBox = new System.Windows.Forms.CheckBox();
-            this.debugCheckBox = new System.Windows.Forms.CheckBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.comboBoxOutput = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.comboBoxChannel = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.comboBoxOctave = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -48,6 +40,15 @@ namespace PushWhacker
             this.comboBoxLayout = new System.Windows.Forms.ComboBox();
             this.comboBoxKey = new System.Windows.Forms.ComboBox();
             this.comboBoxScale = new System.Windows.Forms.ComboBox();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.comboBoxOutput = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.comboBoxChannel = new System.Windows.Forms.ComboBox();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label5 = new System.Windows.Forms.Label();
+            this.logCheckBox = new System.Windows.Forms.CheckBox();
+            this.debugCheckBox = new System.Windows.Forms.CheckBox();
+            this.checkBoxSemitonePedal = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -88,6 +89,7 @@ namespace PushWhacker
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.checkBoxSemitonePedal);
             this.tabPage1.Controls.Add(this.label4);
             this.tabPage1.Controls.Add(this.comboBoxOctave);
             this.tabPage1.Controls.Add(this.label2);
@@ -102,104 +104,6 @@ namespace PushWhacker
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Layout";
             this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.comboBoxOutput);
-            this.tabPage2.Controls.Add(this.label1);
-            this.tabPage2.Controls.Add(this.comboBoxChannel);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(346, 115);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Midi";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.label5);
-            this.tabPage3.Controls.Add(this.logCheckBox);
-            this.tabPage3.Controls.Add(this.debugCheckBox);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(346, 115);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Advanced";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // logCheckBox
-            // 
-            this.logCheckBox.AutoSize = true;
-            this.logCheckBox.Location = new System.Drawing.Point(99, 16);
-            this.logCheckBox.Name = "logCheckBox";
-            this.logCheckBox.Size = new System.Drawing.Size(44, 17);
-            this.logCheckBox.TabIndex = 100;
-            this.logCheckBox.Text = "Log";
-            this.logCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // debugCheckBox
-            // 
-            this.debugCheckBox.AutoSize = true;
-            this.debugCheckBox.Location = new System.Drawing.Point(149, 16);
-            this.debugCheckBox.Name = "debugCheckBox";
-            this.debugCheckBox.Size = new System.Drawing.Size(58, 17);
-            this.debugCheckBox.TabIndex = 101;
-            this.debugCheckBox.Text = "Debug";
-            this.debugCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(7, 17);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(65, 13);
-            this.label5.TabIndex = 102;
-            this.label5.Text = "Diagnostics:";
-            // 
-            // comboBoxOutput
-            // 
-            this.comboBoxOutput.FormattingEnabled = true;
-            this.comboBoxOutput.Location = new System.Drawing.Point(72, 17);
-            this.comboBoxOutput.Name = "comboBoxOutput";
-            this.comboBoxOutput.Size = new System.Drawing.Size(204, 21);
-            this.comboBoxOutput.TabIndex = 20;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 20);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(61, 13);
-            this.label1.TabIndex = 21;
-            this.label1.Text = "Output Midi";
-            // 
-            // comboBoxChannel
-            // 
-            this.comboBoxChannel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxChannel.FormattingEnabled = true;
-            this.comboBoxChannel.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16"});
-            this.comboBoxChannel.Location = new System.Drawing.Point(287, 16);
-            this.comboBoxChannel.Name = "comboBoxChannel";
-            this.comboBoxChannel.Size = new System.Drawing.Size(49, 21);
-            this.comboBoxChannel.TabIndex = 22;
             // 
             // label4
             // 
@@ -266,7 +170,7 @@ namespace PushWhacker
             // 
             this.comboBoxKey.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxKey.FormattingEnabled = true;
-            this.comboBoxKey.Location = new System.Drawing.Point(52, 46);
+            this.comboBoxKey.Location = new System.Drawing.Point(54, 46);
             this.comboBoxKey.MaxDropDownItems = 12;
             this.comboBoxKey.Name = "comboBoxKey";
             this.comboBoxKey.Size = new System.Drawing.Size(44, 21);
@@ -280,6 +184,114 @@ namespace PushWhacker
             this.comboBoxScale.Name = "comboBoxScale";
             this.comboBoxScale.Size = new System.Drawing.Size(151, 21);
             this.comboBoxScale.TabIndex = 24;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.comboBoxOutput);
+            this.tabPage2.Controls.Add(this.label1);
+            this.tabPage2.Controls.Add(this.comboBoxChannel);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(346, 115);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Midi";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // comboBoxOutput
+            // 
+            this.comboBoxOutput.FormattingEnabled = true;
+            this.comboBoxOutput.Location = new System.Drawing.Point(72, 17);
+            this.comboBoxOutput.Name = "comboBoxOutput";
+            this.comboBoxOutput.Size = new System.Drawing.Size(204, 21);
+            this.comboBoxOutput.TabIndex = 20;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 20);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(61, 13);
+            this.label1.TabIndex = 21;
+            this.label1.Text = "Output Midi";
+            // 
+            // comboBoxChannel
+            // 
+            this.comboBoxChannel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxChannel.FormattingEnabled = true;
+            this.comboBoxChannel.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16"});
+            this.comboBoxChannel.Location = new System.Drawing.Point(287, 16);
+            this.comboBoxChannel.Name = "comboBoxChannel";
+            this.comboBoxChannel.Size = new System.Drawing.Size(49, 21);
+            this.comboBoxChannel.TabIndex = 22;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.label5);
+            this.tabPage3.Controls.Add(this.logCheckBox);
+            this.tabPage3.Controls.Add(this.debugCheckBox);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(346, 115);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Advanced";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(7, 17);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(65, 13);
+            this.label5.TabIndex = 102;
+            this.label5.Text = "Diagnostics:";
+            // 
+            // logCheckBox
+            // 
+            this.logCheckBox.AutoSize = true;
+            this.logCheckBox.Location = new System.Drawing.Point(99, 16);
+            this.logCheckBox.Name = "logCheckBox";
+            this.logCheckBox.Size = new System.Drawing.Size(44, 17);
+            this.logCheckBox.TabIndex = 100;
+            this.logCheckBox.Text = "Log";
+            this.logCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // debugCheckBox
+            // 
+            this.debugCheckBox.AutoSize = true;
+            this.debugCheckBox.Location = new System.Drawing.Point(149, 16);
+            this.debugCheckBox.Name = "debugCheckBox";
+            this.debugCheckBox.Size = new System.Drawing.Size(58, 17);
+            this.debugCheckBox.TabIndex = 101;
+            this.debugCheckBox.Text = "Debug";
+            this.debugCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxSemitonePedal
+            // 
+            this.checkBoxSemitonePedal.AutoSize = true;
+            this.checkBoxSemitonePedal.Location = new System.Drawing.Point(54, 82);
+            this.checkBoxSemitonePedal.Name = "checkBoxSemitonePedal";
+            this.checkBoxSemitonePedal.Size = new System.Drawing.Size(159, 17);
+            this.checkBoxSemitonePedal.TabIndex = 27;
+            this.checkBoxSemitonePedal.Text = "Foot Switch Raise Semitone";
+            this.checkBoxSemitonePedal.UseVisualStyleBackColor = true;
             // 
             // Config
             // 
@@ -326,5 +338,6 @@ namespace PushWhacker
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox logCheckBox;
         private System.Windows.Forms.CheckBox debugCheckBox;
+        private System.Windows.Forms.CheckBox checkBoxSemitonePedal;
     }
 }

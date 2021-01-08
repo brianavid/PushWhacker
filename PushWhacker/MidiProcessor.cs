@@ -173,6 +173,9 @@ namespace PushWhacker
             SetButtonLED(Push.Buttons.PageLeft, Push.Colours.On);
             SetButtonLED(Push.Buttons.PageRight, Push.Colours.On);
 
+            SetButtonLED(Push.Buttons.ScaleMajor, configValues.Scale == "Major" ? Push.Colours.On : Push.Colours.Dim);
+            SetButtonLED(Push.Buttons.ScaleMinor, configValues.Scale == "Minor" ? Push.Colours.On : Push.Colours.Dim);
+
             SetButtonLED(Push.Buttons.LayoutInKey, configValues.Layout == ConfigValues.Layouts.InKey ? Push.Colours.Red : Push.Colours.White);
             SetButtonLED(Push.Buttons.LayoutChromatic, configValues.Layout == ConfigValues.Layouts.Chromatic ? Push.Colours.Red : Push.Colours.White);
             SetButtonLED(Push.Buttons.LayoutScaler, configValues.Layout == ConfigValues.Layouts.Scaler ? Push.Colours.Red : Push.Colours.White);
@@ -437,8 +440,8 @@ namespace PushWhacker
                             if (keyIndex > 0)
                             {
                                 configValues.Key = configValues.Keys.Keys.ToArray()[keyIndex - 1];
-                                DisplayKeyOnPads();
                                 configValues.Save();
+                                DisplayKeyOnPads();
                             }
                         }
                         else
@@ -490,6 +493,28 @@ namespace PushWhacker
                                     break;
                             }
                             configValues.Save();
+                            SetScaleNotesAndLights();
+                        }
+                        return;
+
+                    case Push.Buttons.ScaleMajor:
+                    case Push.Buttons.ScaleMinor:
+                        if (ccEvent.ControllerValue > 64)
+                        {
+                            switch ((byte)ccEvent.Controller)
+                            {
+                                case Push.Buttons.ScaleMajor:
+                                    configValues.Scale = "Major";
+                                    break;
+                                case Push.Buttons.ScaleMinor:
+                                    configValues.Scale = "Minor";
+                                    break;
+                            }
+                            configValues.Save();
+                            DisplayKeyOnPads();
+                        }
+                        else
+                        { 
                             SetScaleNotesAndLights();
                         }
                         return;

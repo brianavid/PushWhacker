@@ -22,6 +22,9 @@ namespace PushWhacker
             public const int LayoutScaler = 41;
             public const int LayoutStrummer = 40;
             public const int LayoutDrums = 39;
+
+            public const int ScaleMajor = 49;
+            public const int ScaleMinor = 48;
         }
 
         public class Colours
@@ -36,6 +39,7 @@ namespace PushWhacker
             public const int Yellow = 29;
 
             public const int On = 127;
+            public const int Dim = 16;
         }
 
         public const int FirstPad = 36;

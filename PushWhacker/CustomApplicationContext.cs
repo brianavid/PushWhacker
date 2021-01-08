@@ -17,9 +17,9 @@ namespace PushWhacker
         /// </summary>
         public CustomApplicationContext(ConfigValues values, MidiProcessor processor)
         {
-            InitializeContext();
             configValues = values;
             midiProcessor = processor;
+            InitializeContext();
         }
 
         # region generic code framework
@@ -52,6 +52,7 @@ namespace PushWhacker
             contextMenu.MenuItems.AddRange(new MenuItem[] { configContextMenuItem, exitContextMenuItem });
 
             notifyIcon.ContextMenu = contextMenu;
+
         }
 
         /// <summary>

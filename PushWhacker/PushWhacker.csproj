@@ -68,6 +68,7 @@
     </Compile>
     <Compile Include="ConfigValues.cs" />
     <Compile Include="CustomApplicationContext.cs" />
+    <Compile Include="LetterDisplay.cs" />
     <Compile Include="MidiProcessor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

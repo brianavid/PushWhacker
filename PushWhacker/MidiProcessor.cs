@@ -168,11 +168,17 @@ namespace PushWhacker
                     break;
             }
 
-            var ledOct = new ControlChangeEvent(0, 1, (MidiController)54, 127);
-            midiLights.Send(ledOct.GetAsShortMessage());
+            SetButtonLED(Push.Buttons.OctaveDown, Push.Colours.On);
+            SetButtonLED(Push.Buttons.OctaveUp, Push.Colours.On);
+            SetButtonLED(Push.Buttons.PageLeft, Push.Colours.On);
+            SetButtonLED(Push.Buttons.PageRight, Push.Colours.On);
 
-            ledOct = new ControlChangeEvent(0, 1, (MidiController)55, 127);
-            midiLights.Send(ledOct.GetAsShortMessage());
+            SetButtonLED(Push.Buttons.LayoutInKey, configValues.Layout == ConfigValues.Layouts.InKey ? Push.Colours.Red : Push.Colours.White);
+            SetButtonLED(Push.Buttons.LayoutChromatic, configValues.Layout == ConfigValues.Layouts.Chromatic ? Push.Colours.Red : Push.Colours.White);
+            SetButtonLED(Push.Buttons.LayoutScaler, configValues.Layout == ConfigValues.Layouts.Scaler ? Push.Colours.Red : Push.Colours.White);
+            SetButtonLED(Push.Buttons.LayoutStrummer, configValues.Layout == ConfigValues.Layouts.Strummer ? Push.Colours.Red : Push.Colours.White);
+            SetButtonLED(Push.Buttons.LayoutDrums, configValues.Layout == ConfigValues.Layouts.Drums ? Push.Colours.Red : Push.Colours.White);
+
         }
 
         static void SetScaleNotesAndLightsInKey(int cycleWidth)
@@ -286,6 +292,7 @@ namespace PushWhacker
 
         static void SetScaleNotesAndLightsStrummer()
         {
+            ClearLights();
             scaleNoteMapping = new int[64];
             DefineSpecificButton(0, 4, 62, Push.Colours.Green);
             DefineSpecificButton(0, 5, 64, Push.Colours.Green);
@@ -342,6 +349,12 @@ namespace PushWhacker
         {
             var ledNote = new NoteOnEvent(0, 1, sourceNote, colour, 0);
             midiLights.Send(ledNote.GetAsShortMessage());
+        }
+
+        static void SetButtonLED(int button, int colour)
+        {
+            var ledButton = new ControlChangeEvent(0, 1, (MidiController)button, colour);
+            midiLights.Send(ledButton.GetAsShortMessage());
         }
 
 
@@ -403,6 +416,7 @@ namespace PushWhacker
                         if (ccEvent.ControllerValue > 64)
                         {
                             configValues.Octave = (Math.Max(configValues.OctaveNumber, 1) - 1).ToString();
+                            configValues.Save();
                             SetScaleNotesAndLights();
                         }
                         return;
@@ -411,6 +425,71 @@ namespace PushWhacker
                         if (ccEvent.ControllerValue > 64)
                         {
                             configValues.Octave = (Math.Min(configValues.OctaveNumber, 7) + 1).ToString();
+                            configValues.Save();
+                            SetScaleNotesAndLights();
+                        }
+                        return;
+
+                    case Push.Buttons.PageLeft:
+                        if (ccEvent.ControllerValue > 64)
+                        {
+                            int keyIndex = configValues.Keys[configValues.Key];
+                            if (keyIndex > 0)
+                            {
+                                configValues.Key = configValues.Keys.Keys.ToArray()[keyIndex - 1];
+                                DisplayKeyOnPads();
+                                configValues.Save();
+                            }
+                        }
+                        else
+                        {
+                            SetScaleNotesAndLights();
+                        }
+                        return;
+
+                    case Push.Buttons.PageRight:
+                        if (ccEvent.ControllerValue > 64)
+                        {
+                            int keyIndex = configValues.Keys[configValues.Key];
+                            if (keyIndex < 11)
+                            {
+                                configValues.Key = configValues.Keys.Keys.ToArray()[keyIndex + 1];
+                                configValues.Save();
+                                DisplayKeyOnPads();
+                            }
+                        }
+                        else
+                        {
+                            SetScaleNotesAndLights();
+                        }
+                        return;
+
+                    case Push.Buttons.LayoutInKey:
+                    case Push.Buttons.LayoutChromatic:
+                    case Push.Buttons.LayoutScaler:
+                    case Push.Buttons.LayoutStrummer:
+                    case Push.Buttons.LayoutDrums:
+                        if (ccEvent.ControllerValue > 64)
+                        {
+                            switch ((byte)ccEvent.Controller)
+                            {
+                                case Push.Buttons.LayoutInKey:
+                                    configValues.Layout = ConfigValues.Layouts.InKey;
+                                    break;
+                                case Push.Buttons.LayoutChromatic:
+                                    configValues.Layout = ConfigValues.Layouts.Chromatic;
+                                    break;
+                                case Push.Buttons.LayoutScaler:
+                                    configValues.Layout = ConfigValues.Layouts.Scaler;
+                                    break;
+                                case Push.Buttons.LayoutStrummer:
+                                    configValues.Layout = ConfigValues.Layouts.Strummer;
+                                    break;
+                                case Push.Buttons.LayoutDrums:
+                                    configValues.Layout = ConfigValues.Layouts.Drums;
+                                    break;
+                            }
+                            configValues.Save();
                             SetScaleNotesAndLights();
                         }
                         return;
@@ -466,6 +545,15 @@ namespace PushWhacker
             }
 
             midiOut.Send(e.MidiEvent.GetAsShortMessage());
+        }
+
+        static void DisplayKeyOnPads()
+        {
+            for (int i = 0; i < 64; i++)
+            {
+                int sourceNote = Push.FirstPad + i;
+                SetPadLED(sourceNote, LetterDisplay.IsBit(configValues.Key, i) ? Push.Colours.White : Push.Colours.Black);
+            }
         }
 
         private static void SetLedBrightness(int brightness)

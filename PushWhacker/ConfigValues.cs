@@ -15,7 +15,7 @@ namespace PushWhacker
             public const string Drums = "Drums";
             public const string Strummer = "Strummer";
 
-            public static string[] Choices = new string[] { InKey, Chromatic, Linear, Scaler, Drums, Strummer };
+            public static string[] Choices = new string[] { InKey, Chromatic, Scaler, Drums, Strummer };
         }
 
         public string Output { get; set; }

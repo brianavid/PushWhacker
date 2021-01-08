@@ -12,8 +12,16 @@ namespace PushWhacker
         {
             public const int OctaveUp = 55;
             public const int OctaveDown = 54;
+            public const int PageLeft = 62;
+            public const int PageRight = 63;
             public const int BrightnessCC = 79;
             public const int FootSwitch = 69;
+
+            public const int LayoutInKey = 43;
+            public const int LayoutChromatic = 42;
+            public const int LayoutScaler = 41;
+            public const int LayoutStrummer = 40;
+            public const int LayoutDrums = 39;
         }
 
         public class Colours
@@ -26,6 +34,8 @@ namespace PushWhacker
             public const int Blue = 125;
             public const int Green = 126;
             public const int Yellow = 29;
+
+            public const int On = 127;
         }
 
         public const int FirstPad = 36;

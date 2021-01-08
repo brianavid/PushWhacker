@@ -166,6 +166,10 @@ namespace PushWhacker
                 case ConfigValues.Layouts.Strummer:
                     SetScaleNotesAndLightsStrummer();
                     break;
+
+                case ConfigValues.Layouts.Drums:
+                    SetScaleNotesAndLightsDrum();
+                    break;
             }
 
             SetButtonLED(Push.Buttons.OctaveDown, Push.Colours.On);
@@ -348,6 +352,27 @@ namespace PushWhacker
             DefineSpecificButton(5, 3, 59, Push.Colours.White);
         }
 
+        static void SetScaleNotesAndLightsDrum()
+        {
+            var note = 36;
+            var groupColours = new int[] { Push.Colours.White, Push.Colours.Blue, Push.Colours.Green, Push.Colours.Yellow };
+
+            scaleNoteMapping = new int[64];
+            for (var group = 0; group < 4; group++)
+            {
+                var colour = groupColours[group];
+                for (var row = 0; row < 4; row++)
+                {
+                    for (var col = 0; col < 4; col++)
+                    {
+                        DefineSpecificButton((group % 2) * 4 + row, (group / 2) * 4 + col,  note++, colour);
+                    }
+                }
+            }
+        }
+
+
+
         static void SetPadLED(int sourceNote, int colour)
         {
             var ledNote = new NoteOnEvent(0, 1, sourceNote, colour, 0);
@@ -367,6 +392,10 @@ namespace PushWhacker
             {
                 int sourceNote = Push.FirstPad + i;
                 SetPadLED(sourceNote, Push.Colours.Black);
+            }
+            for (int i = 0; i < 128; i++)
+            {
+                SetButtonLED(i, Push.Colours.Off);
             }
         }
 

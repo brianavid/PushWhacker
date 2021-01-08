@@ -40,6 +40,7 @@ namespace PushWhacker
 
             public const int On = 127;
             public const int Dim = 16;
+            public const int Off = 0;
         }
 
         public const int FirstPad = 36;

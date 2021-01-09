@@ -20,6 +20,23 @@ namespace PushWhacker
             public static string[] Choices = new string[] { InKey, Chromatic, InKeyPlusKS, ChromaticPlusKS, Scaler, Drums, Strummer };
         }
 
+        public class Pressures
+        {
+            public const string ChannelAftertouch = "Channel Aftertouch";
+            public const string PolyPressure = "Poly Pressure";
+            public const string BoostModulation = "Boost Modulation";
+
+            public static string[] Choices = new string[] { ChannelAftertouch, PolyPressure, BoostModulation };
+        }
+
+        public class TouchStripModes
+        {
+            public const string Modulation = "Modulation";
+            public const string PitchBend = "PitchBend";
+
+            public static string[] Choices = new string[] { Modulation, PitchBend };
+        }
+
         public string Output { get; set; }
         public string Layout { get; set; }
         public string Channel { get; set; }
@@ -29,6 +46,8 @@ namespace PushWhacker
         public int OctaveNumber { get { return Int32.Parse(Octave); } }
         public bool Debug { get; set; }
         public bool SemitonePedal { get; set; }
+        public string Pressure { get; set; }
+        public string TouchStripMode { get; set; }
 
         public Dictionary<string, int> Keys { get; }
 
@@ -54,14 +73,16 @@ namespace PushWhacker
             try { 
                 using (RegistryKey regKey = Registry.CurrentUser.OpenSubKey("Software", true).CreateSubKey("PushWhacker"))
                 {
-                    Output = (string)regKey.GetValue("Output");
-                    Layout = (string)regKey.GetValue("Layout");
-                    Channel = (string)regKey.GetValue("Channel");
-                    Scale = (string)regKey.GetValue("Scale");
-                    Key = (string)regKey.GetValue("Key");
-                    Octave = (string)regKey.GetValue("Octave");
+                    Output = (string)regKey.GetValue("Output", "");
+                    Layout = (string)regKey.GetValue("Layout", ConfigValues.Layouts.InKey);
+                    Channel = (string)regKey.GetValue("Channel", "1");
+                    Scale = (string)regKey.GetValue("Scale", "Major");
+                    Key = (string)regKey.GetValue("Key", "C");
+                    Octave = (string)regKey.GetValue("Octave", "3");
                     Debug = (int)regKey.GetValue("Debug", 0) != 0;
                     SemitonePedal = (int)regKey.GetValue("SemitonePedal", 0) != 0;
+                    Pressure = (string)regKey.GetValue("Pressure", ConfigValues.Pressures.ChannelAftertouch);
+                    TouchStripMode = (string)regKey.GetValue("TouchStripMode", TouchStripModes.Modulation);
                 }
             }
             catch (Exception ex)
@@ -81,6 +102,8 @@ namespace PushWhacker
                 regKey.SetValue("Octave", Octave);
                 regKey.SetValue("Debug", Debug ? 1 : 0);
                 regKey.SetValue("SemitonePedal", SemitonePedal ? 1 : 0);
+                regKey.SetValue("Pressure", Pressure);
+                regKey.SetValue("TouchStripMode", TouchStripMode);
             }
         }
     }

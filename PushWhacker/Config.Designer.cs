@@ -50,6 +50,10 @@ namespace PushWhacker
             this.debugCheckBox = new System.Windows.Forms.CheckBox();
             this.buttonColLo = new System.Windows.Forms.Button();
             this.buttonColHi = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.comboBoxPressure = new System.Windows.Forms.ComboBox();
+            this.comboBoxTouchStrip = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -59,7 +63,7 @@ namespace PushWhacker
             // okButton
             // 
             this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.okButton.Location = new System.Drawing.Point(318, 159);
+            this.okButton.Location = new System.Drawing.Point(300, 204);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(44, 23);
             this.okButton.TabIndex = 7;
@@ -69,7 +73,7 @@ namespace PushWhacker
             // 
             // buttonApply
             // 
-            this.buttonApply.Location = new System.Drawing.Point(232, 159);
+            this.buttonApply.Location = new System.Drawing.Point(226, 204);
             this.buttonApply.Name = "buttonApply";
             this.buttonApply.Size = new System.Drawing.Size(58, 23);
             this.buttonApply.TabIndex = 13;
@@ -85,11 +89,15 @@ namespace PushWhacker
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(354, 141);
+            this.tabControl1.Size = new System.Drawing.Size(354, 186);
             this.tabControl1.TabIndex = 14;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label7);
+            this.tabPage1.Controls.Add(this.comboBoxTouchStrip);
+            this.tabPage1.Controls.Add(this.comboBoxPressure);
+            this.tabPage1.Controls.Add(this.label6);
             this.tabPage1.Controls.Add(this.checkBoxSemitonePedal);
             this.tabPage1.Controls.Add(this.label4);
             this.tabPage1.Controls.Add(this.comboBoxOctave);
@@ -101,7 +109,7 @@ namespace PushWhacker
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(346, 115);
+            this.tabPage1.Size = new System.Drawing.Size(346, 160);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Layout";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -109,17 +117,17 @@ namespace PushWhacker
             // checkBoxSemitonePedal
             // 
             this.checkBoxSemitonePedal.AutoSize = true;
-            this.checkBoxSemitonePedal.Location = new System.Drawing.Point(54, 82);
+            this.checkBoxSemitonePedal.Location = new System.Drawing.Point(71, 74);
             this.checkBoxSemitonePedal.Name = "checkBoxSemitonePedal";
-            this.checkBoxSemitonePedal.Size = new System.Drawing.Size(159, 17);
+            this.checkBoxSemitonePedal.Size = new System.Drawing.Size(164, 17);
             this.checkBoxSemitonePedal.TabIndex = 27;
-            this.checkBoxSemitonePedal.Text = "Foot Switch Raise Semitone";
+            this.checkBoxSemitonePedal.Text = "Foot Switch Raises Semitone";
             this.checkBoxSemitonePedal.UseVisualStyleBackColor = true;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(264, 49);
+            this.label4.Location = new System.Drawing.Point(274, 49);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(24, 13);
             this.label4.TabIndex = 26;
@@ -138,7 +146,7 @@ namespace PushWhacker
             "6",
             "7",
             "8"});
-            this.comboBoxOctave.Location = new System.Drawing.Point(288, 45);
+            this.comboBoxOctave.Location = new System.Drawing.Point(298, 45);
             this.comboBoxOctave.Name = "comboBoxOctave";
             this.comboBoxOctave.Size = new System.Drawing.Size(30, 21);
             this.comboBoxOctave.TabIndex = 25;
@@ -146,7 +154,7 @@ namespace PushWhacker
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 13);
+            this.label2.Location = new System.Drawing.Point(26, 13);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(39, 13);
             this.label2.TabIndex = 21;
@@ -155,7 +163,7 @@ namespace PushWhacker
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 49);
+            this.label3.Location = new System.Drawing.Point(31, 48);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(34, 13);
             this.label3.TabIndex = 23;
@@ -165,7 +173,7 @@ namespace PushWhacker
             // 
             this.comboBoxLayout.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxLayout.FormattingEnabled = true;
-            this.comboBoxLayout.Location = new System.Drawing.Point(54, 10);
+            this.comboBoxLayout.Location = new System.Drawing.Point(71, 10);
             this.comboBoxLayout.Name = "comboBoxLayout";
             this.comboBoxLayout.Size = new System.Drawing.Size(204, 21);
             this.comboBoxLayout.TabIndex = 20;
@@ -174,7 +182,7 @@ namespace PushWhacker
             // 
             this.comboBoxKey.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxKey.FormattingEnabled = true;
-            this.comboBoxKey.Location = new System.Drawing.Point(54, 46);
+            this.comboBoxKey.Location = new System.Drawing.Point(71, 46);
             this.comboBoxKey.MaxDropDownItems = 12;
             this.comboBoxKey.Name = "comboBoxKey";
             this.comboBoxKey.Size = new System.Drawing.Size(44, 21);
@@ -184,7 +192,7 @@ namespace PushWhacker
             // 
             this.comboBoxScale.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxScale.FormattingEnabled = true;
-            this.comboBoxScale.Location = new System.Drawing.Point(107, 46);
+            this.comboBoxScale.Location = new System.Drawing.Point(124, 46);
             this.comboBoxScale.Name = "comboBoxScale";
             this.comboBoxScale.Size = new System.Drawing.Size(151, 21);
             this.comboBoxScale.TabIndex = 24;
@@ -197,7 +205,7 @@ namespace PushWhacker
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(346, 115);
+            this.tabPage2.Size = new System.Drawing.Size(346, 160);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Midi";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -254,7 +262,7 @@ namespace PushWhacker
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(346, 115);
+            this.tabPage3.Size = new System.Drawing.Size(346, 139);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Advanced";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -298,12 +306,48 @@ namespace PushWhacker
             this.buttonColHi.UseVisualStyleBackColor = true;
             this.buttonColHi.Click += new System.EventHandler(this.buttonColHi_Click);
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(17, 105);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(48, 13);
+            this.label6.TabIndex = 28;
+            this.label6.Text = "Pressure";
+            // 
+            // comboBoxPressure
+            // 
+            this.comboBoxPressure.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxPressure.FormattingEnabled = true;
+            this.comboBoxPressure.Location = new System.Drawing.Point(71, 97);
+            this.comboBoxPressure.Name = "comboBoxPressure";
+            this.comboBoxPressure.Size = new System.Drawing.Size(204, 21);
+            this.comboBoxPressure.TabIndex = 29;
+            // 
+            // comboBoxTouchStrip
+            // 
+            this.comboBoxTouchStrip.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTouchStrip.FormattingEnabled = true;
+            this.comboBoxTouchStrip.Location = new System.Drawing.Point(71, 124);
+            this.comboBoxTouchStrip.Name = "comboBoxTouchStrip";
+            this.comboBoxTouchStrip.Size = new System.Drawing.Size(204, 21);
+            this.comboBoxTouchStrip.TabIndex = 30;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(3, 132);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(62, 13);
+            this.label7.TabIndex = 31;
+            this.label7.Text = "Touch Strip";
+            // 
             // Config
             // 
             this.AcceptButton = this.okButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(370, 194);
+            this.ClientSize = new System.Drawing.Size(370, 240);
             this.Controls.Add(this.buttonApply);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.okButton);
@@ -345,5 +389,9 @@ namespace PushWhacker
         private System.Windows.Forms.CheckBox checkBoxSemitonePedal;
         private System.Windows.Forms.Button buttonColHi;
         private System.Windows.Forms.Button buttonColLo;
+        private System.Windows.Forms.ComboBox comboBoxPressure;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox comboBoxTouchStrip;
     }
 }

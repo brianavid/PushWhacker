@@ -14,6 +14,7 @@ namespace PushWhacker
         static MidiOut midiOut = null;
         static MidiOut midiLights = null;
         static bool footSwitchPressed = false;
+        static int lastModulationValue = 0;
         static int[] scaleNoteMapping;
         static Dictionary<int, int> ccValues;
         static Dictionary<int, int> notesOn = new Dictionary<int, int>();
@@ -189,13 +190,17 @@ namespace PushWhacker
             SetButtonLED(Push.Buttons.ScaleMajor, configValues.Scale == "Major" ? Push.Colours.On : Push.Colours.Dim);
             SetButtonLED(Push.Buttons.ScaleMinor, configValues.Scale == "Minor" ? Push.Colours.On : Push.Colours.Dim);
 
+            SetButtonLED(Push.Buttons.ToggleTouchStrip, Push.Colours.On);
+
             for (int i = 0; i < Push.Buttons.Layouts.Length; i++)
             {
                 int colour = i >= ConfigValues.Layouts.Choices.Length ? Push.Colours.Off :
                              configValues.Layout == ConfigValues.Layouts.Choices[i] ? Push.Colours.Red : Push.Colours.White;
                 SetButtonLED(Push.Buttons.Layouts[i], colour);
-
             }
+
+            SetPressureMode(configValues.Pressure == ConfigValues.Pressures.PolyPressure);
+            SetTouchStripMode(configValues.TouchStripMode == ConfigValues.TouchStripModes.PitchBend);
         }
 
         static void SetScaleNotesAndLightsInKey(int cycleWidth)
@@ -433,14 +438,15 @@ namespace PushWhacker
 
         static void midiIn_MessageReceived(object sender, MidiInMessageEventArgs e)
         {
-            if (e.MidiEvent == null || e.MidiEvent.CommandCode == MidiCommandCode.AutoSensing)
+            var midiEvent = e.MidiEvent;
+            if (midiEvent == null || midiEvent.CommandCode == MidiCommandCode.AutoSensing)
             {
                 return;
             }
 
-            if (e.MidiEvent.CommandCode == MidiCommandCode.ControlChange)
+            if (midiEvent.CommandCode == MidiCommandCode.ControlChange)
             {
-                var ccEvent = e.MidiEvent as ControlChangeEvent;
+                var ccEvent = midiEvent as ControlChangeEvent;
 
                 if (ccValues.ContainsKey((byte)ccEvent.Controller))
                 {
@@ -451,6 +457,12 @@ namespace PushWhacker
 
                     ccEvent.ControllerValue = ccValue;
                     ccValues[(byte)ccEvent.Controller] = ccValue;
+                }
+
+                if (ccEvent.Controller == MidiController.Modulation)
+                {
+                    lastModulationValue = ccEvent.ControllerValue;
+                    midiLights.Send(midiEvent.GetAsShortMessage());
                 }
 
                 switch ((byte)ccEvent.Controller)
@@ -533,6 +545,21 @@ namespace PushWhacker
                         }
                         return;
 
+                    case Push.Buttons.ToggleTouchStrip:
+                        if (ccEvent.ControllerValue > 64)
+                        {
+                            if (configValues.TouchStripMode == ConfigValues.TouchStripModes.Modulation)
+                            {
+                                configValues.TouchStripMode = ConfigValues.TouchStripModes.PitchBend;
+                            }
+                            else
+                            {
+                                configValues.TouchStripMode = ConfigValues.TouchStripModes.Modulation;
+                            }
+                            SetTouchStripMode(configValues.TouchStripMode == ConfigValues.TouchStripModes.PitchBend);
+                        }
+                        return;
+
                     case Push.Buttons.BrightnessCC:
                         SetLedBrightness(ccEvent.ControllerValue);
                         return;
@@ -551,9 +578,9 @@ namespace PushWhacker
                 }
             }
 
-            if (e.MidiEvent.CommandCode == MidiCommandCode.NoteOn || e.MidiEvent.CommandCode == MidiCommandCode.NoteOff)
+            if (midiEvent.CommandCode == MidiCommandCode.NoteOn || midiEvent.CommandCode == MidiCommandCode.NoteOff)
             {
-                var noteOnEvent = e.MidiEvent as NoteEvent;
+                var noteOnEvent = midiEvent as NoteEvent;
                 var padNoteNumber = noteOnEvent.NoteNumber;
 
                 if (padNoteNumber < Push.FirstPad || padNoteNumber > Push.LastPad)
@@ -561,7 +588,7 @@ namespace PushWhacker
                     return;
                 }
 
-                if (e.MidiEvent.CommandCode == MidiCommandCode.NoteOn || !notesOn.ContainsKey(padNoteNumber))
+                if (midiEvent.CommandCode == MidiCommandCode.NoteOn || !notesOn.ContainsKey(padNoteNumber))
                 {
                     noteOnEvent.NoteNumber = scaleNoteMapping[noteOnEvent.NoteNumber - Push.FirstPad];
                     if (noteOnEvent.NoteNumber == 0)
@@ -583,13 +610,22 @@ namespace PushWhacker
                 }
             }
 
+            if (midiEvent.CommandCode == MidiCommandCode.ChannelAfterTouch &&
+                configValues.Pressure == ConfigValues.Pressures.BoostModulation)
+            {
+                var afterTouchEvent = midiEvent as ChannelAfterTouchEvent;
+                int newModValue = lastModulationValue + ((127 - lastModulationValue) * afterTouchEvent.AfterTouchPressure) / 128;
+                midiEvent = new ControlChangeEvent(0, midiEvent.Channel, MidiController.Modulation, newModValue);
+                midiLights.Send(midiEvent.GetAsShortMessage());
+            }
+
             if (configValues.Debug)
             {
                 System.Diagnostics.Trace.WriteLine(String.Format("{0}  {1,-10} {2}",
-                    FormatTimeStamp(e.Timestamp), FormatMidiBytes(e.RawMessage), e.MidiEvent));
+                    FormatTimeStamp(e.Timestamp), FormatMidiBytes(e.RawMessage), midiEvent));
             }
 
-            midiOut.Send(e.MidiEvent.GetAsShortMessage());
+            midiOut.Send(midiEvent.GetAsShortMessage());
         }
 
         static void DisplayKeyOnPads()
@@ -604,19 +640,24 @@ namespace PushWhacker
         private static void SetLedBrightness(int brightness)
         {
             //  Use the rh controller to set the LED brightness
-            var buffer = new byte[]
-                             {
-                                     0xF0, // MIDI excl start
-                                     0x00, // Manu ID
-                                     0x21, // 
-                                     0x1D, // 
-                                     0x01, // DevID
-                                     0x01, // Prod Model ID
-                                     0x06, // Command ID - set LED brightness
-                                     (byte)brightness,
-                                     0xF7, // MIDI excl end
-                             };
-            midiLights.SendBuffer(buffer);
+            SendSysex(new byte[] { 0x06, (byte)brightness });
+        }
+
+        private static void SetPressureMode(bool isPoly)
+        {
+            SendSysex(new byte[] { 0x1E, isPoly ? (byte)1 : (byte)0 });
+        }
+
+          private static void SetTouchStripMode(bool isPitchBend)
+        {
+            SendSysex(new byte[] { 0x17, isPitchBend ? (byte)0x68 : (byte)0x05 });
+        }
+
+      private static void SendSysex(byte[] message)
+        {
+            midiLights.SendBuffer(new byte[] { 0xF0, 0x00, 0x21, 0x1D, 0x01, 0x01 });
+            midiLights.SendBuffer(message);
+            midiLights.SendBuffer(new byte[] { 0xF7 });
         }
 
         static string FormatTimeStamp(int timeStampMs)

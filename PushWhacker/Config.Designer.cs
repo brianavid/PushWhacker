@@ -48,6 +48,8 @@ namespace PushWhacker
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.label5 = new System.Windows.Forms.Label();
             this.debugCheckBox = new System.Windows.Forms.CheckBox();
+            this.buttonColLo = new System.Windows.Forms.Button();
+            this.buttonColHi = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -245,6 +247,8 @@ namespace PushWhacker
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.buttonColHi);
+            this.tabPage3.Controls.Add(this.buttonColLo);
             this.tabPage3.Controls.Add(this.label5);
             this.tabPage3.Controls.Add(this.debugCheckBox);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
@@ -273,6 +277,26 @@ namespace PushWhacker
             this.debugCheckBox.TabIndex = 101;
             this.debugCheckBox.Text = "Debug";
             this.debugCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // buttonColLo
+            // 
+            this.buttonColLo.Location = new System.Drawing.Point(22, 58);
+            this.buttonColLo.Name = "buttonColLo";
+            this.buttonColLo.Size = new System.Drawing.Size(75, 23);
+            this.buttonColLo.TabIndex = 103;
+            this.buttonColLo.Text = "Colours Low";
+            this.buttonColLo.UseVisualStyleBackColor = true;
+            this.buttonColLo.Click += new System.EventHandler(this.buttonColLo_Click);
+            // 
+            // buttonColHi
+            // 
+            this.buttonColHi.Location = new System.Drawing.Point(175, 57);
+            this.buttonColHi.Name = "buttonColHi";
+            this.buttonColHi.Size = new System.Drawing.Size(75, 23);
+            this.buttonColHi.TabIndex = 104;
+            this.buttonColHi.Text = "Colours High";
+            this.buttonColHi.UseVisualStyleBackColor = true;
+            this.buttonColHi.Click += new System.EventHandler(this.buttonColHi_Click);
             // 
             // Config
             // 
@@ -319,5 +343,7 @@ namespace PushWhacker
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox debugCheckBox;
         private System.Windows.Forms.CheckBox checkBoxSemitonePedal;
+        private System.Windows.Forms.Button buttonColHi;
+        private System.Windows.Forms.Button buttonColLo;
     }
 }

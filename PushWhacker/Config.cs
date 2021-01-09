@@ -80,5 +80,15 @@ namespace PushWhacker
         {
             StoreValues();
         }
+
+        private void buttonColLo_Click(object sender, EventArgs e)
+        {
+            MidiProcessor.DisplayColours(0);
+        }
+
+        private void buttonColHi_Click(object sender, EventArgs e)
+        {
+            MidiProcessor.DisplayColours(1);
+        }
     }
 }

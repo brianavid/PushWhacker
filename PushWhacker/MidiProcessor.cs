@@ -299,31 +299,31 @@ namespace PushWhacker
         {
             ClearLights();
             scaleNoteMapping = new int[64];
-            DefineSpecificButton(0, 4, 62, Push.Colours.Green);
-            DefineSpecificButton(0, 5, 64, Push.Colours.Green);
-            DefineSpecificButton(0, 6, 65, Push.Colours.Green);
-            DefineSpecificButton(1, 5, 67, Push.Colours.Green);
-            DefineSpecificButton(1, 6, 69, Push.Colours.Green);
-            DefineSpecificButton(1, 7, 71, Push.Colours.Green);
-            DefineSpecificButton(2, 5, 67, Push.Colours.Green);
-            DefineSpecificButton(2, 6, 69, Push.Colours.Green);
-            DefineSpecificButton(2, 7, 71, Push.Colours.Green);
-            DefineSpecificButton(3, 4, 72, Push.Colours.Blue);
-            DefineSpecificButton(3, 5, 74, Push.Colours.Blue);
-            DefineSpecificButton(3, 6, 76, Push.Colours.Blue);
-            DefineSpecificButton(3, 7, 77, Push.Colours.Blue);
-            DefineSpecificButton(4, 4, 78, Push.Colours.Blue);
-            DefineSpecificButton(4, 5, 79, Push.Colours.Blue);
-            DefineSpecificButton(4, 6, 81, Push.Colours.Blue);
-            DefineSpecificButton(4, 7, 83, Push.Colours.Blue);
-            DefineSpecificButton(5, 4, 60, Push.Colours.Yellow);
-            DefineSpecificButton(5, 5, 61, Push.Colours.Yellow);
-            DefineSpecificButton(5, 6, 63, Push.Colours.Yellow);
-            DefineSpecificButton(5, 7, 66, Push.Colours.Yellow);
-            DefineSpecificButton(6, 4, 68, Push.Colours.Yellow);
-            DefineSpecificButton(6, 5, 70, Push.Colours.Yellow);
-            DefineSpecificButton(6, 6, 73, Push.Colours.Yellow);
-            DefineSpecificButton(6, 7, 75, Push.Colours.Yellow);
+            DefineSpecificButton(0, 4, 62, Push.Colours.DullGreen);
+            DefineSpecificButton(0, 5, 64, Push.Colours.DullGreen);
+            DefineSpecificButton(0, 6, 65, Push.Colours.DullGreen);
+            DefineSpecificButton(1, 5, 67, Push.Colours.DullGreen);
+            DefineSpecificButton(1, 6, 69, Push.Colours.DullGreen);
+            DefineSpecificButton(1, 7, 71, Push.Colours.DullGreen);
+            DefineSpecificButton(2, 5, 67, Push.Colours.DullGreen);
+            DefineSpecificButton(2, 6, 69, Push.Colours.DullGreen);
+            DefineSpecificButton(2, 7, 71, Push.Colours.DullGreen);
+            DefineSpecificButton(3, 4, 72, Push.Colours.DullBlue);
+            DefineSpecificButton(3, 5, 74, Push.Colours.DullBlue);
+            DefineSpecificButton(3, 6, 76, Push.Colours.DullBlue);
+            DefineSpecificButton(3, 7, 77, Push.Colours.DullBlue);
+            DefineSpecificButton(4, 4, 78, Push.Colours.DullBlue);
+            DefineSpecificButton(4, 5, 79, Push.Colours.DullBlue);
+            DefineSpecificButton(4, 6, 81, Push.Colours.DullBlue);
+            DefineSpecificButton(4, 7, 83, Push.Colours.DullBlue);
+            DefineSpecificButton(5, 4, 60, Push.Colours.DullYellow);
+            DefineSpecificButton(5, 5, 61, Push.Colours.DullYellow);
+            DefineSpecificButton(5, 6, 63, Push.Colours.DullYellow);
+            DefineSpecificButton(5, 7, 66, Push.Colours.DullYellow);
+            DefineSpecificButton(6, 4, 68, Push.Colours.DullYellow);
+            DefineSpecificButton(6, 5, 70, Push.Colours.DullYellow);
+            DefineSpecificButton(6, 6, 73, Push.Colours.DullYellow);
+            DefineSpecificButton(6, 7, 75, Push.Colours.DullYellow);
             DefineSpecificButton(0, 0, 36, Push.Colours.White);
             DefineSpecificButton(0, 1, 37, Push.Colours.White);
             DefineSpecificButton(0, 2, 38, Push.Colours.White);
@@ -353,7 +353,7 @@ namespace PushWhacker
         static void SetScaleNotesAndLightsDrum()
         {
             var note = 36;
-            var groupColours = new int[] { Push.Colours.White, Push.Colours.Blue, Push.Colours.Green, Push.Colours.Yellow };
+            var groupColours = new int[] { Push.Colours.White, Push.Colours.DullBlue, Push.Colours.DullGreen, Push.Colours.DullYellow };
 
             scaleNoteMapping = new int[64];
             for (var group = 0; group < 4; group++)
@@ -628,6 +628,14 @@ namespace PushWhacker
                 rawMessage /= 256;
             }
             return f;
+        }
+
+        public static void DisplayColours(int bank)
+        {
+            for (int i = 0; i < 64; i++)
+            {
+                SetPadLED(Push.FirstPad + i, bank * 64 + i);
+            }
         }
     }
 }

@@ -178,12 +178,13 @@ namespace PushWhacker
             SetButtonLED(Push.Buttons.ScaleMajor, configValues.Scale == "Major" ? Push.Colours.On : Push.Colours.Dim);
             SetButtonLED(Push.Buttons.ScaleMinor, configValues.Scale == "Minor" ? Push.Colours.On : Push.Colours.Dim);
 
-            SetButtonLED(Push.Buttons.LayoutInKey, configValues.Layout == ConfigValues.Layouts.InKey ? Push.Colours.Red : Push.Colours.White);
-            SetButtonLED(Push.Buttons.LayoutChromatic, configValues.Layout == ConfigValues.Layouts.Chromatic ? Push.Colours.Red : Push.Colours.White);
-            SetButtonLED(Push.Buttons.LayoutScaler, configValues.Layout == ConfigValues.Layouts.Scaler ? Push.Colours.Red : Push.Colours.White);
-            SetButtonLED(Push.Buttons.LayoutStrummer, configValues.Layout == ConfigValues.Layouts.Strummer ? Push.Colours.Red : Push.Colours.White);
-            SetButtonLED(Push.Buttons.LayoutDrums, configValues.Layout == ConfigValues.Layouts.Drums ? Push.Colours.Red : Push.Colours.White);
+            for (int i = 0; i < Push.Buttons.Layouts.Length; i++)
+            {
+                int colour = i >= ConfigValues.Layouts.Choices.Length ? Push.Colours.Off :
+                             configValues.Layout == ConfigValues.Layouts.Choices[i] ? Push.Colours.Red : Push.Colours.White;
+                SetButtonLED(Push.Buttons.Layouts[i], colour);
 
+            }
         }
 
         static void SetScaleNotesAndLightsInKey(int cycleWidth)
@@ -488,36 +489,6 @@ namespace PushWhacker
                         }
                         return;
 
-                    case Push.Buttons.LayoutInKey:
-                    case Push.Buttons.LayoutChromatic:
-                    case Push.Buttons.LayoutScaler:
-                    case Push.Buttons.LayoutStrummer:
-                    case Push.Buttons.LayoutDrums:
-                        if (ccEvent.ControllerValue > 64)
-                        {
-                            switch ((byte)ccEvent.Controller)
-                            {
-                                case Push.Buttons.LayoutInKey:
-                                    configValues.Layout = ConfigValues.Layouts.InKey;
-                                    break;
-                                case Push.Buttons.LayoutChromatic:
-                                    configValues.Layout = ConfigValues.Layouts.Chromatic;
-                                    break;
-                                case Push.Buttons.LayoutScaler:
-                                    configValues.Layout = ConfigValues.Layouts.Scaler;
-                                    break;
-                                case Push.Buttons.LayoutStrummer:
-                                    configValues.Layout = ConfigValues.Layouts.Strummer;
-                                    break;
-                                case Push.Buttons.LayoutDrums:
-                                    configValues.Layout = ConfigValues.Layouts.Drums;
-                                    break;
-                            }
-                            configValues.Save();
-                            SetScaleNotesAndLights();
-                        }
-                        return;
-
                     case Push.Buttons.ScaleMajor:
                     case Push.Buttons.ScaleMinor:
                         if (ccEvent.ControllerValue > 64)
@@ -535,7 +506,7 @@ namespace PushWhacker
                             DisplayKeyOnPads();
                         }
                         else
-                        { 
+                        {
                             SetScaleNotesAndLights();
                         }
                         return;
@@ -543,6 +514,18 @@ namespace PushWhacker
                     case Push.Buttons.BrightnessCC:
                         SetLedBrightness(ccEvent.ControllerValue);
                         return;
+                }
+
+                if (Push.Buttons.Layouts.Contains((byte)ccEvent.Controller) && ccEvent.ControllerValue > 64)
+                {
+                    int index = Array.IndexOf(Push.Buttons.Layouts, (byte)ccEvent.Controller);
+                    if (index < ConfigValues.Layouts.Choices.Length)
+                    {
+                        configValues.Layout = ConfigValues.Layouts.Choices[index];
+                        configValues.Save();
+                        SetScaleNotesAndLights();
+                    }
+                    return;
                 }
             }
 

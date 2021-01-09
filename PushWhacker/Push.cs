@@ -17,11 +17,7 @@ namespace PushWhacker
             public const int BrightnessCC = 79;
             public const int FootSwitch = 69;
 
-            public const int LayoutInKey = 43;
-            public const int LayoutChromatic = 42;
-            public const int LayoutScaler = 41;
-            public const int LayoutStrummer = 40;
-            public const int LayoutDrums = 39;
+            public static  int[] Layouts = { 43, 42, 41, 40, 39, 38, 37, 36 };
 
             public const int ScaleMajor = 49;
             public const int ScaleMinor = 48;

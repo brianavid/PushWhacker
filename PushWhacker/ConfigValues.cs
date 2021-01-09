@@ -10,12 +10,14 @@ namespace PushWhacker
         {
             public const string InKey = "In Key";
             public const string Chromatic = "Chromatic";
+            public const string InKeyPlusKS = "In Key with KS";
+            public const string ChromaticPlusKS = "Chromatic with KS";
             public const string Linear = "Linear";
             public const string Scaler = "Scaler";
             public const string Drums = "Drums";
             public const string Strummer = "Strummer";
 
-            public static string[] Choices = new string[] { InKey, Chromatic, Scaler, Drums, Strummer };
+            public static string[] Choices = new string[] { InKey, Chromatic, InKeyPlusKS, ChromaticPlusKS, Scaler, Drums, Strummer };
         }
 
         public string Output { get; set; }

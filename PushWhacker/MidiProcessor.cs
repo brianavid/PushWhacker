@@ -150,6 +150,11 @@ namespace PushWhacker
                     SetScaleNotesAndLightsInKey(3);
                     break;
 
+                case ConfigValues.Layouts.InKeyPlusKS:
+                    SetScaleNotesAndLightsInKey(3);
+                    OverlayKeySwitchPads();
+                    break;
+
                 case ConfigValues.Layouts.Scaler:
                     SetScaleNotesAndLightsInKey(7);
                     break;
@@ -157,6 +162,12 @@ namespace PushWhacker
                 case ConfigValues.Layouts.Chromatic:
                     SetScaleNotesAndLightsChromatic(5);
                     break;
+
+                case ConfigValues.Layouts.ChromaticPlusKS:
+                    SetScaleNotesAndLightsChromatic(5);
+                    OverlayKeySwitchPads();
+                    break;
+
                 case ConfigValues.Layouts.Linear:
                     SetScaleNotesAndLightsChromatic(8);
                     break;
@@ -370,7 +381,18 @@ namespace PushWhacker
             }
         }
 
+        static void OverlayKeySwitchPads()
+        {
+            var note = 12;
+            for (var row = 0; row < 8; row++)
+            {
+                for (var col = 0; col < 3; col++)
+                {
+                    DefineSpecificButton(row, col, note++, Push.Colours.DullRed);
+                }
+            }
 
+        }
 
         static void SetPadLED(int sourceNote, int colour)
         {

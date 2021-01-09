@@ -37,6 +37,15 @@ namespace PushWhacker
             public static string[] Choices = new string[] { Modulation, PitchBend };
         }
 
+        public class PedalModes
+        {
+            public const string FootSwitch = "Foot Switch (Hold 2 CC 69)";
+            public const string RaiseSemitone = "Raise Semitone";
+            public const string FootController = "Foot Controller (CC4)";
+
+            public static string[] Choices = new string[] { FootSwitch, RaiseSemitone, FootController };
+        }
+
         public string Output { get; set; }
         public string Layout { get; set; }
         public string Channel { get; set; }
@@ -45,9 +54,9 @@ namespace PushWhacker
         public string Octave { get; set; }
         public int OctaveNumber { get { return Int32.Parse(Octave); } }
         public bool Debug { get; set; }
-        public bool SemitonePedal { get; set; }
         public string Pressure { get; set; }
         public string TouchStripMode { get; set; }
+        public string PedalMode { get; set; }
 
         public Dictionary<string, int> Keys { get; }
 
@@ -80,9 +89,9 @@ namespace PushWhacker
                     Key = (string)regKey.GetValue("Key", "C");
                     Octave = (string)regKey.GetValue("Octave", "3");
                     Debug = (int)regKey.GetValue("Debug", 0) != 0;
-                    SemitonePedal = (int)regKey.GetValue("SemitonePedal", 0) != 0;
                     Pressure = (string)regKey.GetValue("Pressure", ConfigValues.Pressures.ChannelAftertouch);
                     TouchStripMode = (string)regKey.GetValue("TouchStripMode", TouchStripModes.Modulation);
+                    PedalMode = (string)regKey.GetValue("PedalMode", PedalModes.FootSwitch);
                 }
             }
             catch (Exception ex)
@@ -101,9 +110,9 @@ namespace PushWhacker
                 regKey.SetValue("Key", Key);
                 regKey.SetValue("Octave", Octave);
                 regKey.SetValue("Debug", Debug ? 1 : 0);
-                regKey.SetValue("SemitonePedal", SemitonePedal ? 1 : 0);
                 regKey.SetValue("Pressure", Pressure);
                 regKey.SetValue("TouchStripMode", TouchStripMode);
+                regKey.SetValue("PedalMode", PedalMode);
             }
         }
     }

@@ -201,6 +201,7 @@ namespace PushWhacker
 
             SetPressureMode(configValues.Pressure == ConfigValues.Pressures.PolyPressure);
             SetTouchStripMode(configValues.TouchStripMode == ConfigValues.TouchStripModes.PitchBend);
+            SetPedalMode(configValues.PedalMode == ConfigValues.PedalModes.FootController);
         }
 
         static void SetScaleNotesAndLightsInKey(int cycleWidth)
@@ -468,8 +469,12 @@ namespace PushWhacker
                 switch ((byte)ccEvent.Controller)
                 {
                     case Push.Buttons.FootSwitch:
-                        footSwitchPressed = (ccEvent.ControllerValue < 64);
-                        return;
+                        if (configValues.PedalMode == ConfigValues.PedalModes.RaiseSemitone)
+                        {
+                            footSwitchPressed = (ccEvent.ControllerValue < 64);
+                            return;
+                        }
+                        else break;
 
                     case Push.Buttons.OctaveDown:
                         if (ccEvent.ControllerValue > 64)
@@ -596,7 +601,7 @@ namespace PushWhacker
                         return;
                     }
 
-                    if (configValues.SemitonePedal && footSwitchPressed)
+                    if (configValues.PedalMode == ConfigValues.PedalModes.RaiseSemitone && footSwitchPressed)
                     {
                         noteOnEvent.NoteNumber += 1;
                     }
@@ -648,12 +653,17 @@ namespace PushWhacker
             SendSysex(new byte[] { 0x1E, isPoly ? (byte)1 : (byte)0 });
         }
 
-          private static void SetTouchStripMode(bool isPitchBend)
+        private static void SetTouchStripMode(bool isPitchBend)
         {
             SendSysex(new byte[] { 0x17, isPitchBend ? (byte)0x68 : (byte)0x05 });
         }
 
-      private static void SendSysex(byte[] message)
+        private static void SetPedalMode(bool isContinuous)
+        {
+            SendSysex(new byte[] { 0x30, 0x03, isContinuous ? (byte)0x04 : (byte)0x45, 0x00, 0x00 });
+        }
+
+        private static void SendSysex(byte[] message)
         {
             midiLights.SendBuffer(new byte[] { 0xF0, 0x00, 0x21, 0x1D, 0x01, 0x01 });
             midiLights.SendBuffer(message);

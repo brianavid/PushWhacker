@@ -33,7 +33,6 @@ namespace PushWhacker
             this.buttonApply = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.checkBoxSemitonePedal = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.comboBoxOctave = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -54,6 +53,8 @@ namespace PushWhacker
             this.comboBoxPressure = new System.Windows.Forms.ComboBox();
             this.comboBoxTouchStrip = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.comboBoxPedal = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -63,7 +64,7 @@ namespace PushWhacker
             // okButton
             // 
             this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.okButton.Location = new System.Drawing.Point(300, 204);
+            this.okButton.Location = new System.Drawing.Point(300, 213);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(44, 23);
             this.okButton.TabIndex = 7;
@@ -73,7 +74,7 @@ namespace PushWhacker
             // 
             // buttonApply
             // 
-            this.buttonApply.Location = new System.Drawing.Point(226, 204);
+            this.buttonApply.Location = new System.Drawing.Point(236, 214);
             this.buttonApply.Name = "buttonApply";
             this.buttonApply.Size = new System.Drawing.Size(58, 23);
             this.buttonApply.TabIndex = 13;
@@ -89,16 +90,17 @@ namespace PushWhacker
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(354, 186);
+            this.tabControl1.Size = new System.Drawing.Size(354, 195);
             this.tabControl1.TabIndex = 14;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label8);
+            this.tabPage1.Controls.Add(this.comboBoxPedal);
             this.tabPage1.Controls.Add(this.label7);
             this.tabPage1.Controls.Add(this.comboBoxTouchStrip);
             this.tabPage1.Controls.Add(this.comboBoxPressure);
             this.tabPage1.Controls.Add(this.label6);
-            this.tabPage1.Controls.Add(this.checkBoxSemitonePedal);
             this.tabPage1.Controls.Add(this.label4);
             this.tabPage1.Controls.Add(this.comboBoxOctave);
             this.tabPage1.Controls.Add(this.label2);
@@ -109,20 +111,10 @@ namespace PushWhacker
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(346, 160);
+            this.tabPage1.Size = new System.Drawing.Size(346, 169);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Layout";
             this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxSemitonePedal
-            // 
-            this.checkBoxSemitonePedal.AutoSize = true;
-            this.checkBoxSemitonePedal.Location = new System.Drawing.Point(71, 74);
-            this.checkBoxSemitonePedal.Name = "checkBoxSemitonePedal";
-            this.checkBoxSemitonePedal.Size = new System.Drawing.Size(164, 17);
-            this.checkBoxSemitonePedal.TabIndex = 27;
-            this.checkBoxSemitonePedal.Text = "Foot Switch Raises Semitone";
-            this.checkBoxSemitonePedal.UseVisualStyleBackColor = true;
             // 
             // label4
             // 
@@ -309,7 +301,7 @@ namespace PushWhacker
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(17, 105);
+            this.label6.Location = new System.Drawing.Point(17, 81);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(48, 13);
             this.label6.TabIndex = 28;
@@ -319,7 +311,7 @@ namespace PushWhacker
             // 
             this.comboBoxPressure.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxPressure.FormattingEnabled = true;
-            this.comboBoxPressure.Location = new System.Drawing.Point(71, 97);
+            this.comboBoxPressure.Location = new System.Drawing.Point(71, 73);
             this.comboBoxPressure.Name = "comboBoxPressure";
             this.comboBoxPressure.Size = new System.Drawing.Size(204, 21);
             this.comboBoxPressure.TabIndex = 29;
@@ -328,7 +320,7 @@ namespace PushWhacker
             // 
             this.comboBoxTouchStrip.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxTouchStrip.FormattingEnabled = true;
-            this.comboBoxTouchStrip.Location = new System.Drawing.Point(71, 124);
+            this.comboBoxTouchStrip.Location = new System.Drawing.Point(71, 100);
             this.comboBoxTouchStrip.Name = "comboBoxTouchStrip";
             this.comboBoxTouchStrip.Size = new System.Drawing.Size(204, 21);
             this.comboBoxTouchStrip.TabIndex = 30;
@@ -336,18 +328,36 @@ namespace PushWhacker
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(3, 132);
+            this.label7.Location = new System.Drawing.Point(3, 108);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(62, 13);
             this.label7.TabIndex = 31;
             this.label7.Text = "Touch Strip";
+            // 
+            // comboBoxPedal
+            // 
+            this.comboBoxPedal.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxPedal.FormattingEnabled = true;
+            this.comboBoxPedal.Location = new System.Drawing.Point(71, 128);
+            this.comboBoxPedal.Name = "comboBoxPedal";
+            this.comboBoxPedal.Size = new System.Drawing.Size(204, 21);
+            this.comboBoxPedal.TabIndex = 32;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(29, 128);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(34, 13);
+            this.label8.TabIndex = 33;
+            this.label8.Text = "Pedal";
             // 
             // Config
             // 
             this.AcceptButton = this.okButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(370, 240);
+            this.ClientSize = new System.Drawing.Size(370, 249);
             this.Controls.Add(this.buttonApply);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.okButton);
@@ -386,12 +396,13 @@ namespace PushWhacker
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.CheckBox debugCheckBox;
-        private System.Windows.Forms.CheckBox checkBoxSemitonePedal;
         private System.Windows.Forms.Button buttonColHi;
         private System.Windows.Forms.Button buttonColLo;
         private System.Windows.Forms.ComboBox comboBoxPressure;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox comboBoxTouchStrip;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ComboBox comboBoxPedal;
     }
 }

@@ -36,6 +36,11 @@ namespace PushWhacker
                 comboBoxTouchStrip.Items.Add(touchStripMode);
             }
 
+            foreach (var pedalMode in ConfigValues.PedalModes.Choices)
+            {
+                comboBoxPedal.Items.Add(pedalMode);
+            }
+
             foreach (var scale in MidiProcessor.Scales.Keys)
             {
                 comboBoxScale.Items.Add(scale);
@@ -53,6 +58,7 @@ namespace PushWhacker
             comboBoxKey.SelectedIndex = 0;
             comboBoxPressure.SelectedIndex = 0;
             comboBoxTouchStrip.SelectedIndex = 0;
+            comboBoxPedal.SelectedIndex = 0;
 
             if (!String.IsNullOrEmpty(values.Output)) comboBoxOutput.SelectedItem = values.Output;
             if (!String.IsNullOrEmpty(values.Layout)) comboBoxLayout.SelectedItem = values.Layout;
@@ -61,9 +67,9 @@ namespace PushWhacker
             if (!String.IsNullOrEmpty(values.Key)) comboBoxKey.SelectedItem = values.Key;
             comboBoxOctave.SelectedItem = !String.IsNullOrEmpty(values.Octave) ? values.Octave : "3";
             debugCheckBox.Checked = configValues.Debug;
-            checkBoxSemitonePedal.Checked = configValues.SemitonePedal;
             comboBoxPressure.SelectedItem = values.Pressure;
             comboBoxTouchStrip.SelectedItem = values.TouchStripMode;
+            comboBoxPedal.SelectedItem = values.PedalMode;
         }
 
         private void StoreValues()
@@ -75,9 +81,9 @@ namespace PushWhacker
             configValues.Key = comboBoxKey.SelectedItem as string;
             configValues.Octave = comboBoxOctave.SelectedItem as string;
             configValues.Debug = debugCheckBox.Checked;
-            configValues.SemitonePedal = checkBoxSemitonePedal.Checked;
             configValues.Pressure = comboBoxPressure.SelectedItem as string;
             configValues.TouchStripMode = comboBoxTouchStrip.SelectedItem as string;
+            configValues.PedalMode = comboBoxPedal.SelectedItem as string;
 
             configValues.Save();
 

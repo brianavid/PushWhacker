@@ -25,7 +25,6 @@ namespace PushWhacker
         public string Key { get; set; }
         public string Octave { get; set; }
         public int OctaveNumber { get { return Int32.Parse(Octave); } }
-        public bool Log { get; set; }
         public bool Debug { get; set; }
         public bool SemitonePedal { get; set; }
 
@@ -59,7 +58,6 @@ namespace PushWhacker
                     Scale = (string)regKey.GetValue("Scale");
                     Key = (string)regKey.GetValue("Key");
                     Octave = (string)regKey.GetValue("Octave");
-                    Log = (int)regKey.GetValue("Log", 0) != 0;
                     Debug = (int)regKey.GetValue("Debug", 0) != 0;
                     SemitonePedal = (int)regKey.GetValue("SemitonePedal", 0) != 0;
                 }
@@ -79,7 +77,6 @@ namespace PushWhacker
                 regKey.SetValue("Scale", Scale);
                 regKey.SetValue("Key", Key);
                 regKey.SetValue("Octave", Octave);
-                regKey.SetValue("Log", Log ? 1 : 0);
                 regKey.SetValue("Debug", Debug ? 1 : 0);
                 regKey.SetValue("SemitonePedal", SemitonePedal ? 1 : 0);
             }

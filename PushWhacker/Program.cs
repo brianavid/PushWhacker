@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
 using NAudio.Midi;
-using NLog;
 
 namespace PushWhacker
 {

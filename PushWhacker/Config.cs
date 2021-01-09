@@ -48,7 +48,6 @@ namespace PushWhacker
             if (!String.IsNullOrEmpty(values.Scale)) comboBoxScale.SelectedItem = values.Scale;
             if (!String.IsNullOrEmpty(values.Key)) comboBoxKey.SelectedItem = values.Key;
             comboBoxOctave.SelectedItem = !String.IsNullOrEmpty(values.Octave) ? values.Octave : "3";
-            logCheckBox.Checked = configValues.Log;
             debugCheckBox.Checked = configValues.Debug;
             checkBoxSemitonePedal.Checked = configValues.SemitonePedal;
         }
@@ -61,7 +60,6 @@ namespace PushWhacker
             configValues.Scale = comboBoxScale.SelectedItem as string;
             configValues.Key = comboBoxKey.SelectedItem as string;
             configValues.Octave = comboBoxOctave.SelectedItem as string;
-            configValues.Log = logCheckBox.Checked;
             configValues.Debug = debugCheckBox.Checked;
             configValues.SemitonePedal = checkBoxSemitonePedal.Checked;
 

@@ -33,6 +33,7 @@ namespace PushWhacker
             this.buttonApply = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.checkBoxSemitonePedal = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.comboBoxOctave = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -46,9 +47,7 @@ namespace PushWhacker
             this.comboBoxChannel = new System.Windows.Forms.ComboBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.label5 = new System.Windows.Forms.Label();
-            this.logCheckBox = new System.Windows.Forms.CheckBox();
             this.debugCheckBox = new System.Windows.Forms.CheckBox();
-            this.checkBoxSemitonePedal = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -104,6 +103,16 @@ namespace PushWhacker
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Layout";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxSemitonePedal
+            // 
+            this.checkBoxSemitonePedal.AutoSize = true;
+            this.checkBoxSemitonePedal.Location = new System.Drawing.Point(54, 82);
+            this.checkBoxSemitonePedal.Name = "checkBoxSemitonePedal";
+            this.checkBoxSemitonePedal.Size = new System.Drawing.Size(159, 17);
+            this.checkBoxSemitonePedal.TabIndex = 27;
+            this.checkBoxSemitonePedal.Text = "Foot Switch Raise Semitone";
+            this.checkBoxSemitonePedal.UseVisualStyleBackColor = true;
             // 
             // label4
             // 
@@ -237,7 +246,6 @@ namespace PushWhacker
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.label5);
-            this.tabPage3.Controls.Add(this.logCheckBox);
             this.tabPage3.Controls.Add(this.debugCheckBox);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
@@ -256,35 +264,15 @@ namespace PushWhacker
             this.label5.TabIndex = 102;
             this.label5.Text = "Diagnostics:";
             // 
-            // logCheckBox
-            // 
-            this.logCheckBox.AutoSize = true;
-            this.logCheckBox.Location = new System.Drawing.Point(99, 16);
-            this.logCheckBox.Name = "logCheckBox";
-            this.logCheckBox.Size = new System.Drawing.Size(44, 17);
-            this.logCheckBox.TabIndex = 100;
-            this.logCheckBox.Text = "Log";
-            this.logCheckBox.UseVisualStyleBackColor = true;
-            // 
             // debugCheckBox
             // 
             this.debugCheckBox.AutoSize = true;
-            this.debugCheckBox.Location = new System.Drawing.Point(149, 16);
+            this.debugCheckBox.Location = new System.Drawing.Point(78, 17);
             this.debugCheckBox.Name = "debugCheckBox";
             this.debugCheckBox.Size = new System.Drawing.Size(58, 17);
             this.debugCheckBox.TabIndex = 101;
             this.debugCheckBox.Text = "Debug";
             this.debugCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxSemitonePedal
-            // 
-            this.checkBoxSemitonePedal.AutoSize = true;
-            this.checkBoxSemitonePedal.Location = new System.Drawing.Point(54, 82);
-            this.checkBoxSemitonePedal.Name = "checkBoxSemitonePedal";
-            this.checkBoxSemitonePedal.Size = new System.Drawing.Size(159, 17);
-            this.checkBoxSemitonePedal.TabIndex = 27;
-            this.checkBoxSemitonePedal.Text = "Foot Switch Raise Semitone";
-            this.checkBoxSemitonePedal.UseVisualStyleBackColor = true;
             // 
             // Config
             // 
@@ -329,7 +317,6 @@ namespace PushWhacker
         private System.Windows.Forms.ComboBox comboBoxChannel;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.CheckBox logCheckBox;
         private System.Windows.Forms.CheckBox debugCheckBox;
         private System.Windows.Forms.CheckBox checkBoxSemitonePedal;
     }

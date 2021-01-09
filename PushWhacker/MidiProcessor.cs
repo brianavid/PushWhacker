@@ -1,5 +1,4 @@
 ﻿using NAudio.Midi;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +7,6 @@ namespace PushWhacker
 {
     public class MidiProcessor
     {
-        static Logger logger = LogManager.GetLogger("PushWhacker");
         static ConfigValues configValues;
         const string SourceMidi = "Ableton Push 2";
 
@@ -402,12 +400,6 @@ namespace PushWhacker
 
         static void midiIn_ErrorReceived(object sender, MidiInMessageEventArgs e)
         {
-            if (configValues.Log)
-            {
-                logger.Error(String.Format("{0}  {1,-10} {2}",
-                    FormatTimeStamp(e.Timestamp), FormatMidiBytes(e.RawMessage), e.MidiEvent));
-            }
-
             if (configValues.Debug)
             {
                 System.Diagnostics.Trace.WriteLine(String.Format("ERROR {0}  {1,-10} {2}",
@@ -584,12 +576,6 @@ namespace PushWhacker
                     noteOnEvent.NoteNumber = notesOn[padNoteNumber];
                     notesOn.Remove(padNoteNumber);
                 }
-            }
-
-            if (configValues.Log)
-            {
-                logger.Info(String.Format("{0}  {1,-10} {2}",
-                    FormatTimeStamp(e.Timestamp), FormatMidiBytes(e.RawMessage), e.MidiEvent));
             }
 
             if (configValues.Debug)

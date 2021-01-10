@@ -477,11 +477,10 @@ namespace PushWhacker
 
         static void midiIn_ErrorReceived(object sender, MidiInMessageEventArgs e)
         {
-            if (configValues.Debug)
-            {
-                System.Diagnostics.Trace.WriteLine(String.Format("ERROR {0}  {1,-10} {2}",
-                    FormatTimeStamp(e.Timestamp), FormatMidiBytes(e.RawMessage), e.MidiEvent));
-            }
+#if DEBUG
+            System.Diagnostics.Trace.WriteLine(String.Format("ERROR {0}  {1,-10} {2}",
+                FormatTimeStamp(e.Timestamp), FormatMidiBytes(e.RawMessage), e.MidiEvent));
+#endif
         }
 
 
@@ -716,11 +715,10 @@ namespace PushWhacker
                 midiLights.Send(midiEvent.GetAsShortMessage());
             }
 
-            if (configValues.Debug)
-            {
-                System.Diagnostics.Trace.WriteLine(String.Format("{0}  {1,-10} {2}",
-                    FormatTimeStamp(e.Timestamp), FormatMidiBytes(e.RawMessage), midiEvent));
-            }
+#if DEBUG
+            System.Diagnostics.Trace.WriteLine(String.Format("{0}  {1,-10} {2}",
+                FormatTimeStamp(e.Timestamp), FormatMidiBytes(e.RawMessage), midiEvent));
+#endif
 
             midiOut.Send(midiEvent.GetAsShortMessage());
         }

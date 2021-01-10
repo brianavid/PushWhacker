@@ -66,7 +66,6 @@ namespace PushWhacker
             if (!String.IsNullOrEmpty(values.Scale)) comboBoxScale.SelectedItem = values.Scale;
             if (!String.IsNullOrEmpty(values.Key)) comboBoxKey.SelectedItem = values.Key;
             comboBoxOctave.SelectedItem = !String.IsNullOrEmpty(values.Octave) ? values.Octave : "3";
-            debugCheckBox.Checked = configValues.Debug;
             comboBoxPressure.SelectedItem = values.Pressure;
             comboBoxTouchStrip.SelectedItem = values.TouchStripMode;
             comboBoxPedal.SelectedItem = values.PedalMode;
@@ -80,7 +79,6 @@ namespace PushWhacker
             configValues.Scale = comboBoxScale.SelectedItem as string;
             configValues.Key = comboBoxKey.SelectedItem as string;
             configValues.Octave = comboBoxOctave.SelectedItem as string;
-            configValues.Debug = debugCheckBox.Checked;
             configValues.Pressure = comboBoxPressure.SelectedItem as string;
             configValues.TouchStripMode = comboBoxTouchStrip.SelectedItem as string;
             configValues.PedalMode = comboBoxPedal.SelectedItem as string;

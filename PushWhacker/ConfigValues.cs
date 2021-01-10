@@ -53,7 +53,6 @@ namespace PushWhacker
         public string Key { get; set; }
         public string Octave { get; set; }
         public int OctaveNumber { get { return Int32.Parse(Octave); } }
-        public bool Debug { get; set; }
         public string Pressure { get; set; }
         public string TouchStripMode { get; set; }
         public string PedalMode { get; set; }
@@ -88,7 +87,6 @@ namespace PushWhacker
                     Scale = (string)regKey.GetValue("Scale", "Major");
                     Key = (string)regKey.GetValue("Key", "C");
                     Octave = (string)regKey.GetValue("Octave", "3");
-                    Debug = (int)regKey.GetValue("Debug", 0) != 0;
                     Pressure = (string)regKey.GetValue("Pressure", ConfigValues.Pressures.ChannelAftertouch);
                     TouchStripMode = (string)regKey.GetValue("TouchStripMode", TouchStripModes.Modulation);
                     PedalMode = (string)regKey.GetValue("PedalMode", PedalModes.FootSwitch);
@@ -109,7 +107,6 @@ namespace PushWhacker
                 regKey.SetValue("Scale", Scale);
                 regKey.SetValue("Key", Key);
                 regKey.SetValue("Octave", Octave);
-                regKey.SetValue("Debug", Debug ? 1 : 0);
                 regKey.SetValue("Pressure", Pressure);
                 regKey.SetValue("TouchStripMode", TouchStripMode);
                 regKey.SetValue("PedalMode", PedalMode);

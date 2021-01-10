@@ -169,10 +169,6 @@ namespace PushWhacker
                     OverlayKeySwitchPads();
                     break;
 
-                case ConfigValues.Layouts.Linear:
-                    SetScaleNotesAndLightsChromatic(8);
-                    break;
-
                 case ConfigValues.Layouts.Strummer:
                     SetScaleNotesAndLightsStrummer();
                     break;
@@ -321,6 +317,10 @@ namespace PushWhacker
         {
             ClearLights();
             scaleNoteMapping = new int[64];
+            for (var i = 0; i < 64; i++)
+            {
+                scaleNoteMapping[i] = -1;
+            }
             DefineSpecificButton(0, 4, 62, Push.Colours.DullGreen);
             DefineSpecificButton(0, 5, 64, Push.Colours.DullGreen);
             DefineSpecificButton(0, 6, 65, Push.Colours.DullGreen);
@@ -411,7 +411,7 @@ namespace PushWhacker
 
         static void OverlayKeySwitchPads()
         {
-            var note = 12;
+            var note = 0;
             for (var row = 0; row < 8; row++)
             {
                 for (var col = 0; col < 3; col++)
@@ -618,7 +618,7 @@ namespace PushWhacker
                 if (midiEvent.CommandCode == MidiCommandCode.NoteOn || !notesOn.ContainsKey(padNoteNumber))
                 {
                     noteOnEvent.NoteNumber = scaleNoteMapping[noteOnEvent.NoteNumber - Push.FirstPad];
-                    if (noteOnEvent.NoteNumber == 0)
+                    if (noteOnEvent.NoteNumber < 0)
                     {
                         return;
                     }

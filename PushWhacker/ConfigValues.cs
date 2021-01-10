@@ -12,7 +12,6 @@ namespace PushWhacker
             public const string Chromatic = "Chromatic";
             public const string InKeyPlusKS = "In Key with KS";
             public const string ChromaticPlusKS = "Chromatic with KS";
-            public const string Linear = "Linear";
             public const string Scaler = "Scaler";
             public const string Strummer = "Strummer";
             public const string Drums = "Drums";

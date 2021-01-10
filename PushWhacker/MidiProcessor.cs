@@ -10,10 +10,15 @@ namespace PushWhacker
         static ConfigValues configValues;
         const string SourceMidi = "Ableton Push 2";
 
+        const int KsOct0Note = 1000;
+        const int KsOct1Note = 1001;
+        const int KsOct2Note = 1002;
+
         static MidiIn midiIn = null;
         static MidiOut midiOut = null;
         static MidiOut midiLights = null;
         static bool footSwitchPressed = false;
+        static int KsFirstNote = 0;
         static int lastModulationValue = 0;
         static int[] scaleNoteMapping;
         static Dictionary<int, int> ccValues;
@@ -411,15 +416,17 @@ namespace PushWhacker
 
         static void OverlayKeySwitchPads()
         {
-            var note = 0;
-            for (var row = 0; row < 8; row++)
+            var note = KsFirstNote;
+            for (var row = 0; row < 7; row++)
             {
                 for (var col = 0; col < 3; col++)
                 {
                     DefineSpecificButton(row, col, note++, Push.Colours.DullRed);
                 }
             }
-
+            DefineSpecificButton(7, 0, KsOct0Note, KsFirstNote == 0 ? Push.Colours.Green : Push.Colours.DullYellow);
+            DefineSpecificButton(7, 1, KsOct1Note, KsFirstNote == 12 ? Push.Colours.Green : Push.Colours.DullYellow);
+            DefineSpecificButton(7, 2, KsOct2Note, KsFirstNote == 24 ? Push.Colours.Green : Push.Colours.DullYellow);
         }
 
         static void SetPadLED(int sourceNote, int colour)
@@ -615,26 +622,52 @@ namespace PushWhacker
                     return;
                 }
 
-                if (midiEvent.CommandCode == MidiCommandCode.NoteOn || !notesOn.ContainsKey(padNoteNumber))
+                if (midiEvent.CommandCode == MidiCommandCode.NoteOn)
                 {
-                    noteOnEvent.NoteNumber = scaleNoteMapping[noteOnEvent.NoteNumber - Push.FirstPad];
-                    if (noteOnEvent.NoteNumber < 0)
+                    var noteEncoded = scaleNoteMapping[noteOnEvent.NoteNumber - Push.FirstPad];
+
+                    if (noteEncoded >= 128)
+                    {
+                        switch (noteEncoded)
+                        {
+                            case KsOct0Note:
+                                KsFirstNote = 0;
+                                break;
+                            case KsOct1Note:
+                                KsFirstNote = 12;
+                                break;
+                            case KsOct2Note:
+                                KsFirstNote = 24;
+                                break;
+                            default:
+                                return;
+                        }
+                        SetScaleNotesAndLights();
+                        return;
+                    }
+                    
+                    if (noteEncoded < 0)
                     {
                         return;
                     }
 
                     if (configValues.PedalMode == ConfigValues.PedalModes.RaiseSemitone && footSwitchPressed)
                     {
-                        noteOnEvent.NoteNumber += 1;
+                        noteEncoded += 1;
                     }
 
+                    noteOnEvent.NoteNumber = noteEncoded;
                     notesOn[padNoteNumber] = noteOnEvent.NoteNumber;
                 }
-                else
+                else if (notesOn.ContainsKey(padNoteNumber))
                 {
                     noteOnEvent.NoteNumber = notesOn[padNoteNumber];
                     notesOn.Remove(padNoteNumber);
-                    if (notesOn.Values.Contains(noteOnEvent.NoteNumber)) return;
+                    if (notesOn.ContainsValue(noteOnEvent.NoteNumber)) return;
+                }
+                else
+                {
+                    return;
                 }
             }
 

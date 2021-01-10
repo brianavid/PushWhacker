@@ -13,6 +13,7 @@ namespace PushWhacker
         const int KsOct0Note = 1000;
         const int KsOct1Note = 1001;
         const int KsOct2Note = 1002;
+        const int ScalarNote = 2000;
 
         static MidiIn midiIn = null;
         static MidiOut midiOut = null;
@@ -23,6 +24,8 @@ namespace PushWhacker
         static int[] scaleNoteMapping;
         static Dictionary<int, int> ccValues;
         static Dictionary<int, int> notesOn = new Dictionary<int, int>();
+        static int[] ScalerKsNotes = new int[] { -1, 47, 45, 43, 41, 40, 38, 36 };
+        static int[] ScalerPadNotes = new int[] { 48, 50, 52, 53, 55, 57, 59, 60 };
 
         public static Dictionary<string, int[]> Scales { get; private set; }
 
@@ -162,7 +165,7 @@ namespace PushWhacker
                     break;
 
                 case ConfigValues.Layouts.Scaler:
-                    SetScaleNotesAndLightsInKey(7);
+                    SetScaleNotesAndLightsScalar();
                     break;
 
                 case ConfigValues.Layouts.Chromatic:
@@ -396,7 +399,23 @@ namespace PushWhacker
             }
         }
 
-        static void SetScaleNotesAndLightsBigDrums()
+        static void SetScaleNotesAndLightsScalar()
+        {
+            scaleNoteMapping = new int[64];
+            for (var i = 0; i < 64; i++)
+            {
+                scaleNoteMapping[i] = -1;
+            }
+            for (var row = 1; row < 8; row++)
+            {
+                for (var col = 0; col < 8; col++)
+                {
+                    DefineSpecificButton(row, col, ScalarNote, row%2 == 0 ? Push.Colours.White : Push.Colours.LightGrey);
+                }
+            }
+        }
+
+            static void SetScaleNotesAndLightsBigDrums()
         {
             var note = 36;
             scaleNoteMapping = new int[64];
@@ -616,15 +635,31 @@ namespace PushWhacker
             {
                 var noteOnEvent = midiEvent as NoteEvent;
                 var padNoteNumber = noteOnEvent.NoteNumber;
+                var noteEncoded = scaleNoteMapping[padNoteNumber - Push.FirstPad];
 
                 if (padNoteNumber < Push.FirstPad || padNoteNumber > Push.LastPad)
                 {
                     return;
                 }
 
+                if (noteEncoded == ScalarNote)
+                {
+                    var row = (padNoteNumber - Push.FirstPad) / 8;
+                    var col = (padNoteNumber - Push.FirstPad) % 8;
+                    if (midiEvent.CommandCode == MidiCommandCode.NoteOn)
+                    {
+                        var n1 = new NoteEvent(0, noteOnEvent.Channel, midiEvent.CommandCode, ScalerKsNotes[row], noteOnEvent.Velocity);
+                        var n2 = new NoteEvent(0, noteOnEvent.Channel, MidiCommandCode.NoteOff, ScalerPadNotes[row], noteOnEvent.Velocity);
+                        midiOut.Send(n1.GetAsShortMessage());
+                        midiOut.Send(n2.GetAsShortMessage());
+                    }
+                    var n3 = new NoteEvent(0, noteOnEvent.Channel, midiEvent.CommandCode, ScalerPadNotes[col], noteOnEvent.Velocity);
+                    midiOut.Send(n3.GetAsShortMessage());
+                    return;
+                }
+
                 if (midiEvent.CommandCode == MidiCommandCode.NoteOn)
                 {
-                    var noteEncoded = scaleNoteMapping[noteOnEvent.NoteNumber - Push.FirstPad];
 
                     if (noteEncoded >= 128)
                     {
@@ -639,6 +674,7 @@ namespace PushWhacker
                             case KsOct2Note:
                                 KsFirstNote = 24;
                                 break;
+                                return;
                             default:
                                 return;
                         }

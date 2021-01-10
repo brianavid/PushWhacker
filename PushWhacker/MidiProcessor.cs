@@ -180,6 +180,10 @@ namespace PushWhacker
                 case ConfigValues.Layouts.Drums:
                     SetScaleNotesAndLightsDrum();
                     break;
+
+                case ConfigValues.Layouts.BigDrums:
+                    SetScaleNotesAndLightsBigDrums();
+                    break;
             }
 
             SetButtonLED(Push.Buttons.OctaveDown, Push.Colours.On);
@@ -387,6 +391,24 @@ namespace PushWhacker
             }
         }
 
+        static void SetScaleNotesAndLightsBigDrums()
+        {
+            var note = 36;
+            scaleNoteMapping = new int[64];
+            for (var row = 0; row < 8; row+=2)
+            {
+                for (var col = 0; col < 8; col+=2)
+                {
+                    var colour = col / 2 % 2 == row / 2 % 2 ? Push.Colours.White : Push.Colours.DullBlue;
+                    var n = note++;
+                    DefineSpecificButton(row, col, n, colour);
+                    DefineSpecificButton(row+1, col, n, colour);
+                    DefineSpecificButton(row, col+1, n, colour);
+                    DefineSpecificButton(row+1, col+1, n, colour);
+                }
+            }
+        }
+
         static void OverlayKeySwitchPads()
         {
             var note = 12;
@@ -471,7 +493,7 @@ namespace PushWhacker
                     case Push.Buttons.FootSwitch:
                         if (configValues.PedalMode == ConfigValues.PedalModes.RaiseSemitone)
                         {
-                            footSwitchPressed = (ccEvent.ControllerValue < 64);
+                            footSwitchPressed = (ccEvent.ControllerValue >= 64);    // Assuming correct calibration for polarity
                             return;
                         }
                         else break;
@@ -612,6 +634,10 @@ namespace PushWhacker
                 {
                     noteOnEvent.NoteNumber = notesOn[padNoteNumber];
                     notesOn.Remove(padNoteNumber);
+                    foreach (var noteStillPlaying in notesOn.Values)
+                    {
+                        if (noteStillPlaying == noteOnEvent.NoteNumber) return;
+                    }
                 }
             }
 

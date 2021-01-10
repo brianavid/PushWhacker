@@ -36,7 +36,8 @@
     <ApplicationIcon>PushWhacker.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NAudio">
+    <Reference Include="NAudio, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\NAudio-master\NAudio\bin\Debug\netstandard2.0\NAudio.dll</HintPath>
     </Reference>
     <Reference Include="System" />

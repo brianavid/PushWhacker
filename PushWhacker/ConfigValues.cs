@@ -14,10 +14,11 @@ namespace PushWhacker
             public const string ChromaticPlusKS = "Chromatic with KS";
             public const string Linear = "Linear";
             public const string Scaler = "Scaler";
-            public const string Drums = "Drums";
             public const string Strummer = "Strummer";
+            public const string Drums = "Drums";
+            public const string BigDrums = "Big Drums";
 
-            public static string[] Choices = new string[] { InKey, Chromatic, InKeyPlusKS, ChromaticPlusKS, Scaler, Drums, Strummer };
+            public static string[] Choices = new string[] { InKey, Chromatic, InKeyPlusKS, ChromaticPlusKS, Scaler, Strummer, Drums, BigDrums };
         }
 
         public class Pressures

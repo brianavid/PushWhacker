@@ -78,22 +78,17 @@ namespace PushWhacker
 
         public void Load()
         {
-            try { 
-                using (RegistryKey regKey = Registry.CurrentUser.OpenSubKey("Software", true).CreateSubKey("PushWhacker"))
-                {
-                    Output = (string)regKey.GetValue("Output", "");
-                    Layout = (string)regKey.GetValue("Layout", ConfigValues.Layouts.InKey);
-                    Channel = (string)regKey.GetValue("Channel", "1");
-                    Scale = (string)regKey.GetValue("Scale", "Major");
-                    Key = (string)regKey.GetValue("Key", "C");
-                    Octave = (string)regKey.GetValue("Octave", "3");
-                    Pressure = (string)regKey.GetValue("Pressure", ConfigValues.Pressures.ChannelAftertouch);
-                    TouchStripMode = (string)regKey.GetValue("TouchStripMode", TouchStripModes.Modulation);
-                    PedalMode = (string)regKey.GetValue("PedalMode", PedalModes.FootSwitch);
-                }
-            }
-            catch (Exception ex)
+            using (RegistryKey regKey = Registry.CurrentUser.OpenSubKey("Software", true).CreateSubKey("PushWhacker"))
             {
+                Output = (string)regKey.GetValue("Output", "");
+                Layout = (string)regKey.GetValue("Layout", ConfigValues.Layouts.InKey);
+                Channel = (string)regKey.GetValue("Channel", "1");
+                Scale = (string)regKey.GetValue("Scale", "Major");
+                Key = (string)regKey.GetValue("Key", "C");
+                Octave = (string)regKey.GetValue("Octave", "3");
+                Pressure = (string)regKey.GetValue("Pressure", ConfigValues.Pressures.ChannelAftertouch);
+                TouchStripMode = (string)regKey.GetValue("TouchStripMode", TouchStripModes.Modulation);
+                PedalMode = (string)regKey.GetValue("PedalMode", PedalModes.FootSwitch);
             }
         }
 

@@ -673,7 +673,6 @@ namespace PushWhacker
                             case KsOct2Note:
                                 KsFirstNote = 24;
                                 break;
-                                return;
                             default:
                                 return;
                         }

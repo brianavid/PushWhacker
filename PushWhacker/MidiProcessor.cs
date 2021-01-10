@@ -634,10 +634,7 @@ namespace PushWhacker
                 {
                     noteOnEvent.NoteNumber = notesOn[padNoteNumber];
                     notesOn.Remove(padNoteNumber);
-                    foreach (var noteStillPlaying in notesOn.Values)
-                    {
-                        if (noteStillPlaying == noteOnEvent.NoteNumber) return;
-                    }
+                    if (notesOn.Values.Contains(noteOnEvent.NoteNumber)) return;
                 }
             }
 

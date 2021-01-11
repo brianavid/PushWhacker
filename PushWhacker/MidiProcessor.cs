@@ -97,11 +97,13 @@ namespace PushWhacker
 
                 if (midiIn == null || midiLights == null)
                 {
+                    FinishInput();
                     return false;
                 }
             }
             catch (Exception)
             {
+                FinishInput();
                 return false;
             }
 

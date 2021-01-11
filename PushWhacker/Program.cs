@@ -16,12 +16,17 @@ namespace PushWhacker
             configValues.Load();
 
             MidiProcessor midiProcessor = new MidiProcessor(configValues);
-            midiProcessor.StartProcessing();
+            if (!midiProcessor.StartProcessing())
+            {
+                MessageBox.Show("Can't start Push Midi Processing");
+            }
+            else
+            {
+                var applicationContext = new CustomApplicationContext(configValues, midiProcessor);
+                Application.Run(applicationContext);
 
-            var applicationContext = new CustomApplicationContext(configValues, midiProcessor);
-            Application.Run(applicationContext);
-
-            midiProcessor.StopProcessing();
+                midiProcessor.StopProcessing();
+            }
         }
 
     }

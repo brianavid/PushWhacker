@@ -83,7 +83,10 @@ namespace PushWhacker
             configValues.Save();
 
             midiProcessor.StopProcessing();
-            midiProcessor.StartProcessing();
+            if (!midiProcessor.StartProcessing())
+            {
+                MessageBox.Show("Can't start Push Midi Processing");
+            }
         }
 
         private void okButton_Click(object sender, EventArgs e)

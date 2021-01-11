@@ -49,7 +49,6 @@ namespace PushWhacker
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.comboBoxOutput = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.comboBoxChannel = new System.Windows.Forms.ComboBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.buttonColHi = new System.Windows.Forms.Button();
             this.buttonColLo = new System.Windows.Forms.Button();
@@ -245,7 +244,6 @@ namespace PushWhacker
             // 
             this.tabPage2.Controls.Add(this.comboBoxOutput);
             this.tabPage2.Controls.Add(this.label1);
-            this.tabPage2.Controls.Add(this.comboBoxChannel);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -259,7 +257,7 @@ namespace PushWhacker
             this.comboBoxOutput.FormattingEnabled = true;
             this.comboBoxOutput.Location = new System.Drawing.Point(72, 17);
             this.comboBoxOutput.Name = "comboBoxOutput";
-            this.comboBoxOutput.Size = new System.Drawing.Size(204, 21);
+            this.comboBoxOutput.Size = new System.Drawing.Size(268, 21);
             this.comboBoxOutput.TabIndex = 20;
             // 
             // label1
@@ -270,32 +268,6 @@ namespace PushWhacker
             this.label1.Size = new System.Drawing.Size(61, 13);
             this.label1.TabIndex = 21;
             this.label1.Text = "Output Midi";
-            // 
-            // comboBoxChannel
-            // 
-            this.comboBoxChannel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxChannel.FormattingEnabled = true;
-            this.comboBoxChannel.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-            "16"});
-            this.comboBoxChannel.Location = new System.Drawing.Point(287, 16);
-            this.comboBoxChannel.Name = "comboBoxChannel";
-            this.comboBoxChannel.Size = new System.Drawing.Size(49, 21);
-            this.comboBoxChannel.TabIndex = 22;
             // 
             // tabPage3
             // 
@@ -368,7 +340,6 @@ namespace PushWhacker
         private System.Windows.Forms.ComboBox comboBoxScale;
         private System.Windows.Forms.ComboBox comboBoxOutput;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox comboBoxChannel;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.Button buttonColHi;
         private System.Windows.Forms.Button buttonColLo;

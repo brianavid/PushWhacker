@@ -48,7 +48,6 @@ namespace PushWhacker
 
         public string Output { get; set; }
         public string Layout { get; set; }
-        public string Channel { get; set; }
         public string Scale { get; set; }
         public string Key { get; set; }
         public string Octave { get; set; }
@@ -82,7 +81,6 @@ namespace PushWhacker
             {
                 Output = (string)regKey.GetValue("Output", "");
                 Layout = (string)regKey.GetValue("Layout", ConfigValues.Layouts.InKey);
-                Channel = (string)regKey.GetValue("Channel", "1");
                 Scale = (string)regKey.GetValue("Scale", "Major");
                 Key = (string)regKey.GetValue("Key", "C");
                 Octave = (string)regKey.GetValue("Octave", "3");
@@ -98,7 +96,6 @@ namespace PushWhacker
             {
                 regKey.SetValue("Output", Output);
                 regKey.SetValue("Layout", Layout);
-                regKey.SetValue("Channel", Channel);
                 regKey.SetValue("Scale", Scale);
                 regKey.SetValue("Key", Key);
                 regKey.SetValue("Octave", Octave);

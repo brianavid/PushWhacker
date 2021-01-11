@@ -53,7 +53,6 @@ namespace PushWhacker
 
             comboBoxOutput.SelectedIndex = 0;
             comboBoxLayout.SelectedIndex = 0;
-            comboBoxChannel.SelectedIndex = 0;
             comboBoxScale.SelectedIndex = 0;
             comboBoxKey.SelectedIndex = 0;
             comboBoxPressure.SelectedIndex = 0;
@@ -62,7 +61,6 @@ namespace PushWhacker
 
             if (!String.IsNullOrEmpty(values.Output)) comboBoxOutput.SelectedItem = values.Output;
             if (!String.IsNullOrEmpty(values.Layout)) comboBoxLayout.SelectedItem = values.Layout;
-            if (!String.IsNullOrEmpty(values.Channel)) comboBoxChannel.SelectedItem = values.Channel;
             if (!String.IsNullOrEmpty(values.Scale)) comboBoxScale.SelectedItem = values.Scale;
             if (!String.IsNullOrEmpty(values.Key)) comboBoxKey.SelectedItem = values.Key;
             comboBoxOctave.SelectedItem = !String.IsNullOrEmpty(values.Octave) ? values.Octave : "3";
@@ -75,7 +73,6 @@ namespace PushWhacker
         {
             configValues.Output = comboBoxOutput.SelectedItem as string;
             configValues.Layout = comboBoxLayout.SelectedItem as string;
-            configValues.Channel = comboBoxChannel.SelectedItem as string;
             configValues.Scale = comboBoxScale.SelectedItem as string;
             configValues.Key = comboBoxKey.SelectedItem as string;
             configValues.Octave = comboBoxOctave.SelectedItem as string;

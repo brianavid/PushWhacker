@@ -416,6 +416,10 @@ namespace PushWhacker
             {
                 scaleNoteMapping[i] = -1;
             }
+            for (var col = 0; col < 8; col++)
+            {
+                DefineSpecificButton(0, col, -1, Push.Colours.Black);
+            }
             for (var row = 1; row < 8; row++)
             {
                 for (var col = 0; col < 8; col++)
@@ -670,15 +674,10 @@ namespace PushWhacker
                 {
                     var row = (padNoteNumber - Push.FirstPad) / 8;
                     var col = (padNoteNumber - Push.FirstPad) % 8;
-                    if (midiEvent.CommandCode == MidiCommandCode.NoteOn)
-                    {
-                        var n1 = new NoteEvent(0, noteOnEvent.Channel, midiEvent.CommandCode, ScalerKsNotes[row], noteOnEvent.Velocity);
-                        var n2 = new NoteEvent(0, noteOnEvent.Channel, MidiCommandCode.NoteOff, ScalerPadNotes[row], noteOnEvent.Velocity);
-                        midiOut.Send(n1.GetAsShortMessage());
-                        midiOut.Send(n2.GetAsShortMessage());
-                    }
-                    var n3 = new NoteEvent(0, noteOnEvent.Channel, midiEvent.CommandCode, ScalerPadNotes[col], noteOnEvent.Velocity);
-                    midiOut.Send(n3.GetAsShortMessage());
+                    var n1 = new NoteEvent(0, noteOnEvent.Channel, midiEvent.CommandCode, ScalerKsNotes[row], noteOnEvent.Velocity);
+                    var n2 = new NoteEvent(0, noteOnEvent.Channel, midiEvent.CommandCode, ScalerPadNotes[col], noteOnEvent.Velocity);
+                    midiOut.Send(n1.GetAsShortMessage());
+                    midiOut.Send(n2.GetAsShortMessage());
                     return;
                 }
 

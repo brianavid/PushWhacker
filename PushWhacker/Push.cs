@@ -14,6 +14,9 @@ namespace PushWhacker
             public const int OctaveDown = 54;
             public const int PageLeft = 62;
             public const int PageRight = 63;
+            public const int ScaleLeft = 44;
+            public const int ScaleRight = 45;
+
             public const int BrightnessCC = 79;
             public const int FootSwitch = 69;
 

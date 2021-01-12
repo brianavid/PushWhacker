@@ -28,6 +28,7 @@ namespace PushWhacker
         static int[] ScalerPadNotes = new int[] { 48, 50, 52, 53, 55, 57, 59, 60 };
 
         public static Dictionary<string, int[]> Scales { get; private set; }
+        public static string[] ScaleNames;
 
         public MidiProcessor(ConfigValues values)
         {
@@ -49,6 +50,9 @@ namespace PushWhacker
             Scales["Octatonic HW"] = new int[] { 1, 2, 1, 2, 1, 2, 1, 2 };
             Scales["Hungarian (Gypsy) Minor"] = new int[] { 2, 1, 3, 1, 1, 3, 1 };
             Scales["Dbl Harm (Gypsy) Major "] = new int[] { 1, 3, 1, 2, 1, 3, 1 };
+            
+            ScaleNames = Scales.Keys.ToArray();
+
 
             ccValues = new Dictionary<int, int>();
             ccValues[14] = 0;
@@ -155,6 +159,8 @@ namespace PushWhacker
 
         static void SetScaleNotesAndLights()
         {
+            PushDisplay.WriteText($"{configValues.Key}{configValues.Octave} {configValues.Scale}");
+
             switch (configValues.Layout)
             {
                 case ConfigValues.Layouts.InKey:
@@ -196,6 +202,8 @@ namespace PushWhacker
             SetButtonLED(Push.Buttons.OctaveUp, Push.Colours.On);
             SetButtonLED(Push.Buttons.PageLeft, Push.Colours.On);
             SetButtonLED(Push.Buttons.PageRight, Push.Colours.On);
+            SetButtonLED(Push.Buttons.ScaleLeft, Push.Colours.On);
+            SetButtonLED(Push.Buttons.ScaleRight, Push.Colours.On);
 
             SetButtonLED(Push.Buttons.ScaleMajor, configValues.Scale == "Major" ? Push.Colours.On : Push.Colours.Dim);
             SetButtonLED(Push.Buttons.ScaleMinor, configValues.Scale == "Minor" ? Push.Colours.On : Push.Colours.Dim);
@@ -551,12 +559,8 @@ namespace PushWhacker
                             {
                                 configValues.Key = configValues.Keys.Keys.ToArray()[keyIndex - 1];
                                 configValues.Save();
-                                DisplayKeyOnPads();
+                                SetScaleNotesAndLights();
                             }
-                        }
-                        else
-                        {
-                            SetScaleNotesAndLights();
                         }
                         return;
 
@@ -568,12 +572,34 @@ namespace PushWhacker
                             {
                                 configValues.Key = configValues.Keys.Keys.ToArray()[keyIndex + 1];
                                 configValues.Save();
-                                DisplayKeyOnPads();
+                                SetScaleNotesAndLights();
                             }
                         }
-                        else
+                        return;
+
+                    case Push.Buttons.ScaleLeft:
+                        if (ccEvent.ControllerValue > 64)
                         {
-                            SetScaleNotesAndLights();
+                            int scaleIndex = Array.IndexOf(ScaleNames, configValues.Scale);
+                            if (scaleIndex > 0)
+                            {
+                                configValues.Scale = ScaleNames[scaleIndex - 1];
+                                configValues.Save();
+                                SetScaleNotesAndLights();
+                            }
+                        }
+                        return;
+
+                    case Push.Buttons.ScaleRight:
+                        if (ccEvent.ControllerValue > 64)
+                        {
+                            int scaleIndex = Array.IndexOf(ScaleNames, configValues.Scale);
+                            if (scaleIndex < ScaleNames.Count() - 1)
+                            {
+                                configValues.Scale = ScaleNames[scaleIndex + 1];
+                                configValues.Save();
+                                SetScaleNotesAndLights();
+                            }
                         }
                         return;
 
@@ -591,10 +617,6 @@ namespace PushWhacker
                                     break;
                             }
                             configValues.Save();
-                            DisplayKeyOnPads();
-                        }
-                        else
-                        {
                             SetScaleNotesAndLights();
                         }
                         return;
@@ -636,12 +658,13 @@ namespace PushWhacker
             {
                 var noteOnEvent = midiEvent as NoteEvent;
                 var padNoteNumber = noteOnEvent.NoteNumber;
-                var noteEncoded = scaleNoteMapping[padNoteNumber - Push.FirstPad];
 
                 if (padNoteNumber < Push.FirstPad || padNoteNumber > Push.LastPad)
                 {
                     return;
                 }
+
+                var noteEncoded = scaleNoteMapping[padNoteNumber - Push.FirstPad];
 
                 if (noteEncoded == ScalarNote)
                 {
@@ -722,15 +745,6 @@ namespace PushWhacker
 #endif
 
             midiOut.Send(midiEvent.GetAsShortMessage());
-        }
-
-        static void DisplayKeyOnPads()
-        {
-            for (int i = 0; i < 64; i++)
-            {
-                int sourceNote = Push.FirstPad + i;
-                SetPadLED(sourceNote, LetterDisplay.IsBit(configValues.Key, i) ? Push.Colours.White : Push.Colours.Black);
-            }
         }
 
         private static void SetLedBrightness(int brightness)

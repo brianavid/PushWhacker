@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Windows.Forms;
 using NAudio.Midi;
 
@@ -15,17 +16,42 @@ namespace PushWhacker
             ConfigValues configValues = new ConfigValues();
             configValues.Load();
 
-            MidiProcessor midiProcessor = new MidiProcessor(configValues);
-            if (!midiProcessor.StartProcessing())
+            if (!PushDisplay.Open())
             {
-                MessageBox.Show("Can't start Push Midi Processing");
+                MessageBox.Show("Can't open Push display");
             }
             else
             {
-                var applicationContext = new CustomApplicationContext(configValues, midiProcessor);
-                Application.Run(applicationContext);
+                MidiProcessor midiProcessor = new MidiProcessor(configValues);
+                if (!midiProcessor.StartProcessing())
+                {
+                    MessageBox.Show("Can't start Push Midi Processing");
+                }
+                else
+                {
+                    var running = true;
+                    new Thread(() =>
+                    {
+                        Thread.CurrentThread.IsBackground = true;
+                        while (running)
+                        {
+                            PushDisplay.RefreshDisplay();
+                            Thread.Sleep(40);
+                        }
+                    }).Start();
 
-                midiProcessor.StopProcessing();
+                    var applicationContext = new CustomApplicationContext(configValues, midiProcessor);
+                    Application.Run(applicationContext);
+
+                    running = false;
+                    Thread.Sleep(100);
+                    PushDisplay.WriteText("Goodbye");
+                    PushDisplay.RefreshDisplay();
+                    Thread.Sleep(1000);
+
+                    midiProcessor.StopProcessing();
+                    PushDisplay.Close();
+                }
             }
         }
 

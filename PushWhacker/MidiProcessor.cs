@@ -750,6 +750,7 @@ namespace PushWhacker
         {
             //  Use the rh controller to set the LED brightness
             SendSysex(new byte[] { 0x06, (byte)brightness });
+            SendSysex(new byte[] { 0x08, (byte)((brightness % 64) * 2), (byte)(brightness >= 64 ? 1 : 0) });
         }
 
         private static void SetPressureMode(bool isPoly)

@@ -72,6 +72,8 @@ namespace PushWhacker
 
         public static void Close()
         {
+            if (usbDevice == null) return;
+
             RefreshThreadWanted = false;
             while (RefreshThreadRunning)
             {

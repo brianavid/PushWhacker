@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Device.Net;
 using Usb.Net;
@@ -25,6 +26,9 @@ namespace PushWhacker
         private static WindowsUsbInterfaceManager usbInterfaceManager;
         private static UsbDevice usbDevice;
         private static Bitmap bmp;
+
+        static bool RefreshThreadWanted;
+        static bool RefreshThreadRunning;
 
         public static bool Open()
         {
@@ -62,11 +66,22 @@ namespace PushWhacker
 
             bmp = new Bitmap(960, 160);
 
+            KeepDisplayRefreshed();
             return true;
         }
 
         public static void Close()
         {
+            RefreshThreadWanted = false;
+            while (RefreshThreadRunning)
+            {
+                Thread.Sleep(40);
+            }
+            Thread.Sleep(40);
+            WriteText("Goodbye");
+            RefreshDisplayAsync().Wait();
+            Thread.Sleep(40);
+
             usbDevice.Close();
             usbDevice.Dispose();
             usbInterfaceManager.Close();
@@ -94,12 +109,24 @@ namespace PushWhacker
             }
         }
 
-        internal static void RefreshDisplay()
+        static void KeepDisplayRefreshed()
         {
-            RefreshDisplayAsync().Wait();
+            RefreshThreadWanted = true;
+            RefreshThreadRunning = true;
+            new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                while (RefreshThreadWanted)
+                {
+                    RefreshDisplayAsync().Wait();
+                    Thread.Sleep(40);
+                }
+            }).Start();
+
+            RefreshThreadRunning = false;
         }
 
-        internal static async Task RefreshDisplayAsync()
+        static async Task RefreshDisplayAsync()
         {
             Bitmap bmp2;
             lock (bmp)

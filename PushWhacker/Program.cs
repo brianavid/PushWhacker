@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Threading;
 using System.Windows.Forms;
-using NAudio.Midi;
 
 namespace PushWhacker
 {
@@ -29,29 +27,13 @@ namespace PushWhacker
                 }
                 else
                 {
-                    var running = true;
-                    new Thread(() =>
-                    {
-                        Thread.CurrentThread.IsBackground = true;
-                        while (running)
-                        {
-                            PushDisplay.RefreshDisplay();
-                            Thread.Sleep(40);
-                        }
-                    }).Start();
-
                     var applicationContext = new CustomApplicationContext(configValues, midiProcessor);
                     Application.Run(applicationContext);
 
-                    running = false;
-                    Thread.Sleep(100);
-                    PushDisplay.WriteText("Goodbye");
-                    PushDisplay.RefreshDisplay();
-                    Thread.Sleep(1000);
-
                     midiProcessor.StopProcessing();
-                    PushDisplay.Close();
                 }
+
+                PushDisplay.Close();
             }
         }
 

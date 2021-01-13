@@ -168,7 +168,7 @@ namespace PushWhacker
                     break;
 
                 case ConfigValues.Layouts.InKeyPlusKS:
-                    SetScaleNotesAndLightsInKey(3);
+                    SetScaleNotesAndLightsInKey(3, 3);
                     OverlayKeySwitchPads();
                     break;
 
@@ -181,7 +181,7 @@ namespace PushWhacker
                     break;
 
                 case ConfigValues.Layouts.ChromaticPlusKS:
-                    SetScaleNotesAndLightsChromatic(5);
+                    SetScaleNotesAndLightsChromatic(5, 3);
                     OverlayKeySwitchPads();
                     break;
 
@@ -222,7 +222,7 @@ namespace PushWhacker
             SetPedalMode(configValues.PedalMode == ConfigValues.PedalModes.FootController);
         }
 
-        static void SetScaleNotesAndLightsInKey(int cycleWidth)
+        static void SetScaleNotesAndLightsInKey(int cycleWidth, int offset = 0)
         {
             var intervals = Scales[configValues.Scale];
             int nearestToC4 = -1;
@@ -232,17 +232,17 @@ namespace PushWhacker
             int rowStartPos = 0;
 
             scaleNoteMapping = new int[64];
-            for (int i = 0; i < 64; i++)
+            for (int i = 0; i < 64-offset; i++)
             {
                 int col = i % 8;
                 int pos = (rowStartPos + col) % intervals.Length;
-                int sourceNote = Push.FirstPad + i;
+                int sourceNote = Push.FirstPad + i + offset;
                 bool isOctaveNote = (targetNote - startingNote) % 12 == 0;
                 bool isC4 = targetNote == nearestToC4 || nearestToC4 < 0 && targetNote >= 60;
 
                 if (isC4) nearestToC4 = targetNote;
 
-                scaleNoteMapping[i] = targetNote;
+                scaleNoteMapping[i+offset] = targetNote;
 
 #if false
                             if (configValues.Debug)
@@ -270,7 +270,7 @@ namespace PushWhacker
             }
         }
 
-        static void SetScaleNotesAndLightsChromatic(int cycleWidth)
+        static void SetScaleNotesAndLightsChromatic(int cycleWidth, int offset = 0)
         {
             var intervals = Scales[configValues.Scale];
             int nearestToC4 = -1;
@@ -291,17 +291,17 @@ namespace PushWhacker
             int rowStartNote = startingNote;
 
             scaleNoteMapping = new int[64];
-            for (int i = 0; i < 64; i++)
+            for (int i = 0; i < 64-offset; i++)
             {
                 int col = i % 8;
-                int sourceNote = Push.FirstPad + i;
+                int sourceNote = Push.FirstPad + i + offset;
                 bool isOctaveNote = (targetNote - startingNote) % 12 == 0;
                 bool isScaleNote = isInScale[(targetNote - startingNote) % 12];
                 bool isC4 = targetNote == nearestToC4 || nearestToC4 < 0 && targetNote >= 60;
 
                 if (isC4) nearestToC4 = targetNote;
 
-                scaleNoteMapping[i] = targetNote;
+                scaleNoteMapping[i+offset] = targetNote;
 
 #if false
                             if (configValues.Debug)

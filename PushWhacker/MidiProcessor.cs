@@ -142,17 +142,17 @@ namespace PushWhacker
                 midiIn.Stop();
                 midiIn.MessageReceived -= midiIn_MessageReceived;
                 midiIn.ErrorReceived -= midiIn_ErrorReceived;
-                midiIn.Dispose();
+                midiIn.Close();
                 midiIn = null;
             }
             if (midiLights != null)
             {
-                midiLights.Dispose();
+                midiLights.Close();
                 midiLights = null;
             }
             if (midiOut != null)
             {
-                midiOut.Dispose();
+                midiOut.Close();
                 midiOut = null;
             }
         }

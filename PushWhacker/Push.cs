@@ -12,8 +12,8 @@ namespace PushWhacker
         {
             public const int OctaveUp = 55;
             public const int OctaveDown = 54;
-            public const int PageLeft = 62;
-            public const int PageRight = 63;
+            public const int KeyDown = 47;
+            public const int KeyUp = 46;
             public const int ScaleLeft = 44;
             public const int ScaleRight = 45;
 

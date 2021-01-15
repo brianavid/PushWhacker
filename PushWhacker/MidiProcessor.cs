@@ -200,8 +200,8 @@ namespace PushWhacker
 
             SetButtonLED(Push.Buttons.OctaveDown, Push.Colours.On);
             SetButtonLED(Push.Buttons.OctaveUp, Push.Colours.On);
-            SetButtonLED(Push.Buttons.PageLeft, Push.Colours.On);
-            SetButtonLED(Push.Buttons.PageRight, Push.Colours.On);
+            SetButtonLED(Push.Buttons.KeyDown, Push.Colours.On);
+            SetButtonLED(Push.Buttons.KeyUp, Push.Colours.On);
             SetButtonLED(Push.Buttons.ScaleLeft, Push.Colours.On);
             SetButtonLED(Push.Buttons.ScaleRight, Push.Colours.On);
 
@@ -555,7 +555,7 @@ namespace PushWhacker
                         }
                         return;
 
-                    case Push.Buttons.PageLeft:
+                    case Push.Buttons.KeyDown:
                         if (ccEvent.ControllerValue > 64)
                         {
                             int keyIndex = configValues.Keys[configValues.Key];
@@ -568,7 +568,7 @@ namespace PushWhacker
                         }
                         return;
 
-                    case Push.Buttons.PageRight:
+                    case Push.Buttons.KeyUp:
                         if (ccEvent.ControllerValue > 64)
                         {
                             int keyIndex = configValues.Keys[configValues.Key];

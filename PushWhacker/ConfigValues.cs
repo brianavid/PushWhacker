@@ -83,7 +83,7 @@ namespace PushWhacker
                 Layout = (string)regKey.GetValue("Layout", ConfigValues.Layouts.InKey);
                 Scale = (string)regKey.GetValue("Scale", "Major");
                 Key = (string)regKey.GetValue("Key", "C");
-                Octave = (string)regKey.GetValue("Octave", "3");
+                Octave = (string)regKey.GetValue("Octave", "2");
                 Pressure = (string)regKey.GetValue("Pressure", ConfigValues.Pressures.ChannelAftertouch);
                 TouchStripMode = (string)regKey.GetValue("TouchStripMode", TouchStripModes.Modulation);
                 PedalMode = (string)regKey.GetValue("PedalMode", PedalModes.FootSwitch);

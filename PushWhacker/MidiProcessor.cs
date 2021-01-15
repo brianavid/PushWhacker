@@ -226,7 +226,7 @@ namespace PushWhacker
         {
             var intervals = Scales[configValues.Scale];
             int nearestToC4 = -1;
-            int startingNote = configValues.Keys[configValues.Key] + (12 * configValues.OctaveNumber);
+            int startingNote = configValues.Keys[configValues.Key] + (12 * configValues.OctaveNumber+12);
             int targetNote = startingNote;
             int rowStartNote = startingNote;
             int rowStartPos = 0;
@@ -286,7 +286,7 @@ namespace PushWhacker
                 }
             }
 
-            int startingNote = configValues.Keys[configValues.Key] + (12 * configValues.OctaveNumber);
+            int startingNote = configValues.Keys[configValues.Key] + (12 * configValues.OctaveNumber+12);
             int targetNote = startingNote;
             int rowStartNote = startingNote;
 
@@ -540,7 +540,7 @@ namespace PushWhacker
                     case Push.Buttons.OctaveDown:
                         if (ccEvent.ControllerValue > 64)
                         {
-                            configValues.Octave = (Math.Max(configValues.OctaveNumber, 1) - 1).ToString();
+                            configValues.Octave = (Math.Max(configValues.OctaveNumber, 0) - 1).ToString();
                             configValues.Save();
                             SetScaleNotesAndLights();
                         }
@@ -549,7 +549,7 @@ namespace PushWhacker
                     case Push.Buttons.OctaveUp:
                         if (ccEvent.ControllerValue > 64)
                         {
-                            configValues.Octave = (Math.Min(configValues.OctaveNumber, 7) + 1).ToString();
+                            configValues.Octave = (Math.Min(configValues.OctaveNumber, 6) + 1).ToString();
                             configValues.Save();
                             SetScaleNotesAndLights();
                         }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace PushWhacker
 {
@@ -132,6 +133,9 @@ namespace PushWhacker
         {
             midiIn.MessageReceived += midiIn_MessageReceived;
             midiIn.ErrorReceived += midiIn_ErrorReceived;
+
+            midiIn.CreateSysexBuffers(512, 10);
+            midiIn.SysexMessageReceived += midiIn_SysexMessageReceived;
             midiIn.Start();
         }
 
@@ -141,6 +145,7 @@ namespace PushWhacker
             {
                 midiIn.Stop();
                 midiIn.MessageReceived -= midiIn_MessageReceived;
+                midiIn.SysexMessageReceived -= midiIn_SysexMessageReceived;
                 midiIn.ErrorReceived -= midiIn_ErrorReceived;
                 midiIn.Close();
                 midiIn = null;
@@ -744,6 +749,24 @@ namespace PushWhacker
 #endif
 
             midiOut.Send(midiEvent.GetAsShortMessage());
+        }
+
+
+        static void midiIn_SysexMessageReceived(object sender, MidiInSysexMessageEventArgs e)
+        {
+            var sysexMessage = e.SysexBytes;
+
+            StringBuilder sb = new StringBuilder();
+            foreach( var b in sysexMessage)
+            {
+                sb.AppendFormat("{0:x02} ", b);
+            }
+            System.Diagnostics.Trace.WriteLine($"Sysex {sb}");
+        }
+
+        private static void RequestDeviceIdInfo()
+        {
+            midiLights.SendBuffer(new byte[] { 0xF0, 0x7E, 0x01, 0x06, 0x01, 0xF7 });
         }
 
         private static void SetLedBrightness(int brightness)

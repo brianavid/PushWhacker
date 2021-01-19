@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#define USE_DISPLAY
+using System;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
@@ -12,6 +12,7 @@ namespace PushWhacker
 {
     class PushDisplay
     {
+#if USE_DISPLAY
         private const int AbletonVendorID = 0x2982;
         private const int Push2ProductId = 0x1967;
         private static byte[] FrameHeader = new byte[] { 0xFF, 0xCC, 0xAA, 0x88,
@@ -29,9 +30,10 @@ namespace PushWhacker
 
         static bool RefreshThreadWanted;
         static bool RefreshThreadRunning;
-
+#endif
         public static bool Open()
         {
+#if USE_DISPLAY
             return OpenAsync().Result;
         }
 
@@ -67,11 +69,13 @@ namespace PushWhacker
             bmp = new Bitmap(960, 160);
 
             KeepDisplayRefreshed();
+#endif
             return true;
         }
 
         public static void Close()
         {
+#if USE_DISPLAY
             if (usbDevice == null) return;
 
             RefreshThreadWanted = false;
@@ -83,17 +87,18 @@ namespace PushWhacker
             WriteText("Goodbye");
             RefreshDisplayAsync().Wait();
             Thread.Sleep(40);
-
             usbDevice.Close();
             usbDevice.Dispose();
             usbInterfaceManager.Close();
             usbInterfaceManager.Dispose();
             usbDevice = null;
             usbInterfaceManager = null;
+#endif
         }
 
         public static void WriteText(string text, int fontSize = 48)
         {
+#if USE_DISPLAY
             lock (bmp)
             {
                 //Create a buffer with some data in it
@@ -177,6 +182,7 @@ namespace PushWhacker
             var b = (colour.B >> 3) & 0x1F;
 
             return (short)(b << 11 | g << 5 | r);
+#endif
         }
     }
 }

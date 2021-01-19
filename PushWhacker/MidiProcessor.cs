@@ -28,6 +28,8 @@ namespace PushWhacker
         static int[] ScalerKsNotes = new int[] { -1, 47, 45, 43, 41, 40, 38, 36 };
         static int[] ScalerPadNotes = new int[] { 48, 50, 52, 53, 55, 57, 59, 60 };
 
+        static ConfigValues.PedalCalibrationId currentPedalCalibration;
+
         public static Dictionary<string, int[]> Scales { get; private set; }
         public static string[] ScaleNames;
 
@@ -147,6 +149,7 @@ namespace PushWhacker
                 midiIn.MessageReceived -= midiIn_MessageReceived;
                 midiIn.SysexMessageReceived -= midiIn_SysexMessageReceived;
                 midiIn.ErrorReceived -= midiIn_ErrorReceived;
+                midiIn.Reset();
                 midiIn.Close();
                 midiIn = null;
             }
@@ -786,6 +789,24 @@ namespace PushWhacker
             {
                 switch (sysexMessage[6])
                 {
+                    case 0x13:
+                        int val;
+                        switch (currentPedalCalibration)
+                        {
+                            case ConfigValues.PedalCalibrationId.SwitchOff:
+                            case ConfigValues.PedalCalibrationId.SwitchOn:
+                                val = sysexMessage[13] + (sysexMessage[14] << 7);
+                                configValues.PedalCalibrations[currentPedalCalibration] = val;
+                                break;
+                            case ConfigValues.PedalCalibrationId.ControlToe:
+                            case ConfigValues.PedalCalibrationId.ControlHeel:
+                                val = sysexMessage[11] + (sysexMessage[12] << 7);
+                                configValues.PedalCalibrations[currentPedalCalibration] = val;
+                                break;
+                        }
+
+                        configValues.Save();
+                        break;
                     default:
                         break;
                 }
@@ -818,16 +839,26 @@ namespace PushWhacker
             SendSysex(new byte[] { 0x17, isPitchBend ? (byte)0x68 : (byte)0x05 });
         }
 
+        public static void CalibrateFootPedal(ConfigValues.PedalCalibrationId pedalCalibration)
+        {
+            currentPedalCalibration = pedalCalibration;
+            SendSysex(new byte[] { 0x13, 0x09 });
+        }
+
         private static void SetPedalMode(bool isContinuous)
         {
-            //  The voltages in the Sysex 0x31 messages belows (***)  were measured externally via Sysex exchanges within Midi Ox.
-            //  They cannot be calibrated in this software as NAudio cannot receive Sysex
-            //  The numbers used are for my own two pedals - once continuous and one discrete - which I swap around as needed.
             if (isContinuous)
             {
+                var heel = configValues.PedalCalibrations[ConfigValues.PedalCalibrationId.ControlHeel];
+                var toe  = configValues.PedalCalibrations[ConfigValues.PedalCalibrationId.ControlToe];
+                if (heel == toe)
+                {
+                    toe = 4095;
+                    heel = 0;
+                }
                 SendSysex(new byte[] { 0x30, 0x03, 0x7F, 0x00, 0x00 });
                 SendSysex(new byte[] { 0x30, 0x02, 0x04, 0x00, 0x00 });
-                SendSysex(new byte[] { 0x31, 0x02, 0x4C, 0x01, 0x79, 0x17 });   // ***
+                SendSysex(new byte[] { 0x31, 0x02, (byte)(heel & 0x7F), (byte)(heel >> 7), (byte)(toe & 0x7F), (byte)(toe >> 7) });
                 SendSysex(new byte[] { 0x32, 0x02, 0x00, 0x00, 0x00, 0x08, 0x00, 0x10, 0x00, 0x18, 0x00, });
                 SendSysex(new byte[] { 0x32, 0x02, 0x04, 0x20, 0x00, 0x28, 0x00, 0x30, 0x00, 0x38, 0x00, });
                 SendSysex(new byte[] { 0x32, 0x02, 0x08, 0x40, 0x00, 0x48, 0x00, 0x50, 0x00, 0x58, 0x00, });
@@ -839,9 +870,16 @@ namespace PushWhacker
             }
             else
             {
+                var off  = configValues.PedalCalibrations[ConfigValues.PedalCalibrationId.SwitchOff];
+                var on   = configValues.PedalCalibrations[ConfigValues.PedalCalibrationId.SwitchOn];
+                if (off == on)
+                {
+                    on = 4095;
+                    off = 0;
+                }
                 SendSysex(new byte[] { 0x30, 0x02, 0x7F, 0x00, 0x00 });
                 SendSysex(new byte[] { 0x30, 0x03, 0x45, 0x00, 0x00 });
-                SendSysex(new byte[] { 0x31, 0x03, 0x16, 0x02, 0x71, 0x1D });   // ***
+                SendSysex(new byte[] { 0x31, 0x03, (byte)(off & 0x7F), (byte)(off >> 7), (byte)(on & 0x7F), (byte)(on >> 7) }); 
                 SendSysex(new byte[] { 0x32, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, });
                 SendSysex(new byte[] { 0x32, 0x03, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, });
                 SendSysex(new byte[] { 0x32, 0x03, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, });

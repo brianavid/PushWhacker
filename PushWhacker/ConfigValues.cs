@@ -46,6 +46,8 @@ namespace PushWhacker
             public static string[] Choices = new string[] { FootSwitch, RaiseSemitone, FootController };
         }
 
+        public enum PedalCalibrationId { SwitchOff, SwitchOn, ControlHeel, ControlToe };
+
         public string Output { get; set; }
         public string Layout { get; set; }
         public string Scale { get; set; }
@@ -55,6 +57,7 @@ namespace PushWhacker
         public string Pressure { get; set; }
         public string TouchStripMode { get; set; }
         public string PedalMode { get; set; }
+        public Dictionary<PedalCalibrationId, int> PedalCalibrations { get; set; }
 
         public Dictionary<string, int> Keys { get; }
 
@@ -87,6 +90,11 @@ namespace PushWhacker
                 Pressure = (string)regKey.GetValue("Pressure", ConfigValues.Pressures.ChannelAftertouch);
                 TouchStripMode = (string)regKey.GetValue("TouchStripMode", TouchStripModes.Modulation);
                 PedalMode = (string)regKey.GetValue("PedalMode", PedalModes.FootSwitch);
+                PedalCalibrations = new Dictionary<PedalCalibrationId, int>();
+                foreach (var cal in (PedalCalibrationId[])Enum.GetValues(typeof(PedalCalibrationId)))
+                {
+                    PedalCalibrations[cal] = (int)regKey.GetValue("PedalCalibration_" + cal.ToString(), 0);
+                }
             }
         }
 
@@ -102,6 +110,10 @@ namespace PushWhacker
                 regKey.SetValue("Pressure", Pressure);
                 regKey.SetValue("TouchStripMode", TouchStripMode);
                 regKey.SetValue("PedalMode", PedalMode);
+                foreach (var cal in (PedalCalibrationId[])Enum.GetValues(typeof(PedalCalibrationId)))
+                {
+                    regKey.SetValue("PedalCalibration_" + cal.ToString(), PedalCalibrations[cal]);
+                }
             }
         }
     }

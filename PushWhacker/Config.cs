@@ -110,5 +110,25 @@ namespace PushWhacker
         {
             MidiProcessor.DisplayColours(1);
         }
+
+        private void buttonCalibrateUp_Click(object sender, EventArgs e)
+        {
+            MidiProcessor.CalibrateFootPedal(ConfigValues.PedalCalibrationId.SwitchOff);
+        }
+
+        private void buttonCalibrateDown_Click(object sender, EventArgs e)
+        {
+            MidiProcessor.CalibrateFootPedal(ConfigValues.PedalCalibrationId.SwitchOn);
+        }
+
+        private void buttonCalibrateHeel_Click(object sender, EventArgs e)
+        {
+            MidiProcessor.CalibrateFootPedal(ConfigValues.PedalCalibrationId.ControlHeel);
+        }
+
+        private void buttonCalibrateToe_Click(object sender, EventArgs e)
+        {
+            MidiProcessor.CalibrateFootPedal(ConfigValues.PedalCalibrationId.ControlToe);
+        }
     }
 }

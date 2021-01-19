@@ -26,6 +26,8 @@ namespace PushWhacker
             public const int ScaleMinor = 48;
 
             public const int ToggleTouchStrip = 90;
+
+            public const int ShowInfo = 30;
         }
 
         public class Colours

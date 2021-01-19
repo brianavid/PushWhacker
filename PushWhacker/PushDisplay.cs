@@ -92,7 +92,7 @@ namespace PushWhacker
             usbInterfaceManager = null;
         }
 
-        public static void WriteText(string text)
+        public static void WriteText(string text, int fontSize = 48)
         {
             lock (bmp)
             {
@@ -101,7 +101,7 @@ namespace PushWhacker
                 {
                     Color bgcolor = Color.Black;
                     Color fgcolor = Color.White;
-                    Font font = new Font("Arial", 48);
+                    Font font = new Font("Arial", fontSize);
                     graphics.FillRectangle(new SolidBrush(bgcolor), 0, 0, bmp.Width, bmp.Height);
                     graphics.DrawString(text, font, new SolidBrush(fgcolor), 20, 20);
                     graphics.Flush();

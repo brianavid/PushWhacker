@@ -214,6 +214,7 @@ namespace PushWhacker
             SetButtonLED(Push.Buttons.ScaleMinor, configValues.Scale == "Minor" ? Push.Colours.On : Push.Colours.Dim);
 
             SetButtonLED(Push.Buttons.ToggleTouchStrip, Push.Colours.On);
+            SetButtonLED(Push.Buttons.ShowInfo, Push.Colours.On);
 
             for (int i = 0; i < Push.Buttons.Layouts.Length; i++)
             {
@@ -645,6 +646,17 @@ namespace PushWhacker
                         }
                         return;
 
+                    case Push.Buttons.ShowInfo:
+                        if (ccEvent.ControllerValue > 64)
+                        {
+                            RequestDeviceIdInfo();
+                        }
+                        else
+                        {
+                            SetScaleNotesAndLights();
+                        }
+                        return;
+
                     case Push.Buttons.BrightnessCC:
                         SetLedBrightness(ccEvent.ControllerValue);
                         return;
@@ -762,6 +774,26 @@ namespace PushWhacker
                 sb.AppendFormat("{0:x02} ", b);
             }
             System.Diagnostics.Trace.WriteLine($"Sysex {sb}");
+
+            if (sysexMessage.Length == 23 && sysexMessage[1] == 0x7E && sysexMessage[2] == 0x01 && sysexMessage[3] == 0x06 && sysexMessage[4] == 0x02)
+            {
+                var swRevision = sysexMessage[14] + (sysexMessage[14] << 7);
+                var serialNo = sysexMessage[16] + (sysexMessage[17] << 7) + (sysexMessage[18] << 14) + (sysexMessage[19] << 21) + (sysexMessage[20] << 28);
+
+                PushDisplay.WriteText(String.Format("Push2 ver {0}.{1}.{2}  Sn:{3}  Rev:{4}", sysexMessage[12], sysexMessage[13], swRevision, serialNo, sysexMessage[21]), 36);
+            }
+            else if (sysexMessage.Length > 8 && sysexMessage[1] == 0x00 && sysexMessage[2] == 0x21 && sysexMessage[3] == 0x1d && sysexMessage[4] == 0x01 && sysexMessage[5] == 0x01)
+            {
+                switch (sysexMessage[6])
+                {
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                PushDisplay.WriteText(sb.ToString(), 16);
+            }
         }
 
         private static void RequestDeviceIdInfo()

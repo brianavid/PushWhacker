@@ -167,7 +167,7 @@ namespace PushWhacker
 
         static void SetScaleNotesAndLights()
         {
-            PushDisplay.WriteText($"{configValues.Key}{configValues.Octave} {configValues.Scale}");
+            DisplayMode();
 
             switch (configValues.Layout)
             {
@@ -229,6 +229,12 @@ namespace PushWhacker
             SetPressureMode(configValues.Pressure == ConfigValues.Pressures.PolyPressure);
             SetTouchStripMode(configValues.TouchStripMode == ConfigValues.TouchStripModes.PitchBend);
             SetPedalMode(configValues.PedalMode == ConfigValues.PedalModes.FootController);
+        }
+
+        private static void DisplayMode()
+        {
+            var raiseSemitoneIndicator = footSwitchPressed ? " (+#)" : "";
+            PushDisplay.WriteText($"{configValues.Key}{configValues.Octave} {configValues.Scale}{raiseSemitoneIndicator}");
         }
 
         static void SetScaleNotesAndLightsInKey(int cycleWidth, int offset = 0)
@@ -542,6 +548,7 @@ namespace PushWhacker
                         if (configValues.PedalMode == ConfigValues.PedalModes.RaiseSemitone)
                         {
                             footSwitchPressed = (ccEvent.ControllerValue >= 64);    // Assuming correct calibration for polarity
+                            DisplayMode();
                             return;
                         }
                         else break;
@@ -656,7 +663,7 @@ namespace PushWhacker
                         }
                         else
                         {
-                            SetScaleNotesAndLights();
+                            DisplayMode();
                         }
                         return;
 

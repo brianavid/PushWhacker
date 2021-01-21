@@ -226,6 +226,11 @@ namespace PushWhacker
                 SetButtonLED(Push.Buttons.Layouts[i], colour);
             }
 
+            foreach (int cc in Push.Buttons.PassThruCCs)
+            {
+                SetButtonLED(cc, Push.Colours.Blue);
+            }
+
             SetPressureMode(configValues.Pressure == ConfigValues.Pressures.PolyPressure);
             SetTouchStripMode(configValues.TouchStripMode == ConfigValues.TouchStripModes.PitchBend);
             SetPedalMode(configValues.PedalMode == ConfigValues.PedalModes.FootController);
@@ -681,6 +686,12 @@ namespace PushWhacker
                         configValues.Save();
                         SetScaleNotesAndLights();
                     }
+                    return;
+                }
+
+                if (!Push.Buttons.PassThruCCs.Contains((byte)ccEvent.Controller))
+                {
+                    //  Other than those defined as passed thru, all others are reserved and ignored
                     return;
                 }
             }

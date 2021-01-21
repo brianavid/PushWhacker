@@ -28,6 +28,8 @@ namespace PushWhacker
             public const int ToggleTouchStrip = 90;
 
             public const int ShowInfo = 30;
+
+            public static SortedSet<int> PassThruCCs = new SortedSet<int>(Enumerable.Range(20,8).Union(Enumerable.Range(71, 8)).Union(Enumerable.Range(102, 8)));
         }
 
         public class Colours

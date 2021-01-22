@@ -672,6 +672,40 @@ namespace PushWhacker
                         }
                         return;
 
+#if EXPERIMENTAL_MMC
+                    case Push.Buttons.RecordButton:
+                        if (ccEvent.ControllerValue > 64)
+                        {
+                            playing = true;
+                            recording = true;
+                            midiOut.SendBuffer(new byte[] { 0xF0, 0x7F, 0x01, 0x06, 0x06, 0xF7 });
+                            SetButtonLED(Push.Buttons.RecordButton, Push.Colours.Red);
+                        }
+                        return;
+
+                    case Push.Buttons.PlayButton:
+                        if (ccEvent.ControllerValue > 64)
+                        {
+                            playing = !playing;
+                            recording = false;
+                            onTime = DateTime.Now;
+                            midiOut.SendBuffer(new byte[] { 0xF0, 0x7F, 0x01, 0x06, (byte)(playing ? 0x02 : 0x01), 0xF7 });
+                            SetButtonLED(Push.Buttons.PlayButton, playing ? Push.Colours.Green : Push.Colours.White);
+                            SetButtonLED(Push.Buttons.RecordButton, Push.Colours.White);
+                        }
+                        else
+                        {
+                            if (!playing)
+                            {
+                                if ((DateTime.Now - onTime).TotalMilliseconds > 1000)
+                                {
+                                    midiOut.SendBuffer(new byte[] { 0xF0, 0x7F, 0x01, 0x06, 0x05, 0xF7 });
+                                }
+                            }
+                        }
+                        return;
+#endif
+
                     case Push.Buttons.BrightnessCC:
                         SetLedBrightness(ccEvent.ControllerValue);
                         return;

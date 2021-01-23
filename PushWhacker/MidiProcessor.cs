@@ -27,6 +27,8 @@ namespace PushWhacker
         static Dictionary<int, int> notesOn = new Dictionary<int, int>();
         static int[] ScalerKsNotes = new int[] { -1, 47, 45, 43, 41, 40, 38, 36 };
         static int[] ScalerPadNotes = new int[] { 48, 50, 52, 53, 55, 57, 59, 60 };
+        static MidiEvent repeatEvent;
+        static DateTime repeatAtTime;
 
         static ConfigValues.PedalCalibrationId currentPedalCalibration;
 
@@ -530,9 +532,15 @@ namespace PushWhacker
         static void midiIn_MessageReceived(object sender, MidiInMessageEventArgs e)
         {
             var midiEvent = e.MidiEvent;
+
             if (midiEvent == null || midiEvent.CommandCode == MidiCommandCode.AutoSensing)
             {
-                return;
+                if (repeatEvent != null && DateTime.Now >= repeatAtTime)
+                {
+                    midiEvent = repeatEvent;
+                }
+                else
+                    return;
             }
 
             if (midiEvent.CommandCode == MidiCommandCode.ControlChange)
@@ -593,8 +601,14 @@ namespace PushWhacker
                             {
                                 configValues.Key = configValues.Keys.Keys.ToArray()[keyIndex - 1];
                                 configValues.Save();
-                                SetScaleNotesAndLights();
+                                DisplayMode();
+                                RequestKeyRepeat();
                             }
+                        }
+                        else
+                        {
+                            CancelKeyRepeat();
+                            SetScaleNotesAndLights();
                         }
                         return;
 
@@ -606,8 +620,14 @@ namespace PushWhacker
                             {
                                 configValues.Key = configValues.Keys.Keys.ToArray()[keyIndex + 1];
                                 configValues.Save();
-                                SetScaleNotesAndLights();
+                                DisplayMode();
+                                RequestKeyRepeat();
                             }
+                        }
+                        else
+                        {
+                            CancelKeyRepeat();
+                            SetScaleNotesAndLights();
                         }
                         return;
 
@@ -619,13 +639,14 @@ namespace PushWhacker
                             {
                                 configValues.Layout = ConfigValues.Layouts.Choices[layoutIndex - 1];
                                 configValues.Save();
-                                SetScaleNotesAndLights();
-                                PushDisplay.WriteText(configValues.Layout);
+                                RequestKeyRepeat();
                             }
+                            PushDisplay.WriteText(configValues.Layout);
                         }
                         else
                         {
-                            DisplayMode();
+                            CancelKeyRepeat();
+                            SetScaleNotesAndLights();
                         }
                         return;
 
@@ -637,13 +658,14 @@ namespace PushWhacker
                             {
                                 configValues.Layout = ConfigValues.Layouts.Choices[layoutIndex + 1];
                                 configValues.Save();
-                                SetScaleNotesAndLights();
-                                PushDisplay.WriteText(configValues.Layout);
+                                RequestKeyRepeat();
                             }
+                            PushDisplay.WriteText(configValues.Layout);
                         }
                         else
                         {
-                            DisplayMode();
+                            CancelKeyRepeat();
+                            SetScaleNotesAndLights();
                         }
                         return;
 
@@ -655,8 +677,14 @@ namespace PushWhacker
                             {
                                 configValues.Scale = ScaleNames[scaleIndex - 1];
                                 configValues.Save();
-                                SetScaleNotesAndLights();
+                                DisplayMode();
+                                RequestKeyRepeat();
                             }
+                        }
+                        else
+                        {
+                            CancelKeyRepeat();
+                            SetScaleNotesAndLights();
                         }
                         return;
 
@@ -668,8 +696,14 @@ namespace PushWhacker
                             {
                                 configValues.Scale = ScaleNames[scaleIndex + 1];
                                 configValues.Save();
-                                SetScaleNotesAndLights();
+                                DisplayMode();
+                                RequestKeyRepeat();
                             }
+                        }
+                        else
+                        {
+                            CancelKeyRepeat();
+                            SetScaleNotesAndLights();
                         }
                         return;
 
@@ -849,6 +883,17 @@ namespace PushWhacker
 #endif
 
             midiOut.Send(midiEvent.GetAsShortMessage());
+
+            void RequestKeyRepeat()
+            {
+                repeatAtTime = DateTime.Now.AddMilliseconds(repeatEvent == null ? 1000 : 500);
+                repeatEvent = midiEvent;
+            }
+
+            void CancelKeyRepeat()
+            {
+                repeatEvent = null;
+            }
         }
 
 

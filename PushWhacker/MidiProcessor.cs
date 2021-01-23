@@ -243,10 +243,10 @@ namespace PushWhacker
                 case ConfigValues.Layouts.Chromatic:
                 case ConfigValues.Layouts.ChromaticPlusKS:
                     var raiseSemitoneIndicator = footSwitchPressed ? " (+#)" : "";
-                    PushDisplay.WriteText($"{configValues.Layout} {configValues.Key}{configValues.Octave} {configValues.Scale}{raiseSemitoneIndicator}");
+                    PushDisplay.WriteText($"{configValues.Layout}\n{configValues.Key}{configValues.Octave} {configValues.Scale}{raiseSemitoneIndicator}", 36);
                     break;
                 default:
-                    PushDisplay.WriteText($"{configValues.Layout}");
+                    PushDisplay.WriteText($"{configValues.Layout}", 36);
                     break;
             }
         }

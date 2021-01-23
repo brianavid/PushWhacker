@@ -206,30 +206,28 @@ namespace PushWhacker
                     break;
             }
 
+            for (int cc = 1; cc < 127; cc++)
+            {
+                if (!Push.Buttons.ReservedCCs.Contains(cc))
+                {
+                    SetButtonLED(cc, Push.Buttons.Coloured.Contains(cc) ? Push.Colours.Blue : Push.Colours.White);
+                }
+            }
+
             SetButtonLED(Push.Buttons.OctaveDown, Push.Colours.On);
             SetButtonLED(Push.Buttons.OctaveUp, Push.Colours.On);
             SetButtonLED(Push.Buttons.KeyDown, Push.Colours.On);
             SetButtonLED(Push.Buttons.KeyUp, Push.Colours.On);
             SetButtonLED(Push.Buttons.ScaleLeft, Push.Colours.On);
             SetButtonLED(Push.Buttons.ScaleRight, Push.Colours.On);
+            SetButtonLED(Push.Buttons.LayoutLeft, Push.Colours.On);
+            SetButtonLED(Push.Buttons.LayoutRight, Push.Colours.On);
 
             SetButtonLED(Push.Buttons.ScaleMajor, configValues.Scale == "Major" ? Push.Colours.On : Push.Colours.Dim);
             SetButtonLED(Push.Buttons.ScaleMinor, configValues.Scale == "Minor" ? Push.Colours.On : Push.Colours.Dim);
 
             SetButtonLED(Push.Buttons.ToggleTouchStrip, Push.Colours.On);
             SetButtonLED(Push.Buttons.ShowInfo, Push.Colours.On);
-
-            for (int i = 0; i < Push.Buttons.Layouts.Length; i++)
-            {
-                int colour = i >= ConfigValues.Layouts.Choices.Length ? Push.Colours.Off :
-                             configValues.Layout == ConfigValues.Layouts.Choices[i] ? Push.Colours.Red : Push.Colours.White;
-                SetButtonLED(Push.Buttons.Layouts[i], colour);
-            }
-
-            foreach (int cc in Push.Buttons.PassThruCCs)
-            {
-                SetButtonLED(cc, Push.Colours.Blue);
-            }
 
             SetPressureMode(configValues.Pressure == ConfigValues.Pressures.PolyPressure);
             SetTouchStripMode(configValues.TouchStripMode == ConfigValues.TouchStripModes.PitchBend);
@@ -238,8 +236,19 @@ namespace PushWhacker
 
         private static void DisplayMode()
         {
-            var raiseSemitoneIndicator = footSwitchPressed ? " (+#)" : "";
-            PushDisplay.WriteText($"{configValues.Key}{configValues.Octave} {configValues.Scale}{raiseSemitoneIndicator}");
+            switch (configValues.Layout)
+            {
+                case ConfigValues.Layouts.InKey:
+                case ConfigValues.Layouts.InKeyPlusKS:
+                case ConfigValues.Layouts.Chromatic:
+                case ConfigValues.Layouts.ChromaticPlusKS:
+                    var raiseSemitoneIndicator = footSwitchPressed ? " (+#)" : "";
+                    PushDisplay.WriteText($"{configValues.Layout} {configValues.Key}{configValues.Octave} {configValues.Scale}{raiseSemitoneIndicator}");
+                    break;
+                default:
+                    PushDisplay.WriteText($"{configValues.Layout}");
+                    break;
+            }
         }
 
         static void SetScaleNotesAndLightsInKey(int cycleWidth, int offset = 0)
@@ -602,6 +611,32 @@ namespace PushWhacker
                         }
                         return;
 
+                    case Push.Buttons.LayoutLeft:
+                        if (ccEvent.ControllerValue > 64)
+                        {
+                            int layoutIndex = Array.IndexOf(ConfigValues.Layouts.Choices, configValues.Layout);
+                            if (layoutIndex > 0)
+                            {
+                                configValues.Layout = ConfigValues.Layouts.Choices[layoutIndex - 1];
+                                configValues.Save();
+                                SetScaleNotesAndLights();
+                            }
+                        }
+                        return;
+
+                    case Push.Buttons.LayoutRight:
+                        if (ccEvent.ControllerValue > 64)
+                        {
+                            int layoutIndex = Array.IndexOf(ConfigValues.Layouts.Choices, configValues.Layout);
+                            if (layoutIndex < ConfigValues.Layouts.Choices.Count() - 1)
+                            {
+                                configValues.Layout = ConfigValues.Layouts.Choices[layoutIndex + 1];
+                                configValues.Save();
+                                SetScaleNotesAndLights();
+                            }
+                        }
+                        return;
+
                     case Push.Buttons.ScaleLeft:
                         if (ccEvent.ControllerValue > 64)
                         {
@@ -711,19 +746,7 @@ namespace PushWhacker
                         return;
                 }
 
-                if (Push.Buttons.Layouts.Contains((byte)ccEvent.Controller) && ccEvent.ControllerValue > 64)
-                {
-                    int index = Array.IndexOf(Push.Buttons.Layouts, (byte)ccEvent.Controller);
-                    if (index < ConfigValues.Layouts.Choices.Length)
-                    {
-                        configValues.Layout = ConfigValues.Layouts.Choices[index];
-                        configValues.Save();
-                        SetScaleNotesAndLights();
-                    }
-                    return;
-                }
-
-                if (!Push.Buttons.PassThruCCs.Contains((byte)ccEvent.Controller))
+                if (Push.Buttons.ReservedCCs.Contains((byte)ccEvent.Controller))
                 {
                     //  Other than those defined as passed thru, all others are reserved and ignored
                     return;

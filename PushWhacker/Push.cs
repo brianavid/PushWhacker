@@ -16,23 +16,24 @@ namespace PushWhacker
             public const int KeyUp = 46;
             public const int ScaleLeft = 44;
             public const int ScaleRight = 45;
+            public const int LayoutLeft = 62;
+            public const int LayoutRight = 63;
 
             public const int BrightnessCC = 79;
             public const int FootSwitch = 69;
 
-            public static  int[] Layouts = { 43, 42, 41, 40, 39, 38, 37, 36 };
-
             public const int ScaleMajor = 49;
             public const int ScaleMinor = 48;
 
-            public const int ToggleTouchStrip = 90;
+            public const int ToggleTouchStrip = 57;
 
             public const int ShowInfo = 30;
 
             public const int PlayButton = 85;
             public const int RecordButton = 86;
 
-            public static SortedSet<int> PassThruCCs = new SortedSet<int>(Enumerable.Range(20,8).Union(Enumerable.Range(71, 8)).Union(Enumerable.Range(102, 8)));
+            public static SortedSet<int> ReservedCCs = new SortedSet<int> { 59, 110, 111, 112, 113, 56, 57, 58, 31, 50, 51 };
+            public static SortedSet<int> Coloured = new SortedSet<int>(Enumerable.Range(20, 8).Union(Enumerable.Range(102, 8)));
         }
 
         public class Colours

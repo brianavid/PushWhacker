@@ -243,10 +243,10 @@ namespace PushWhacker
                 case ConfigValues.Layouts.Chromatic:
                 case ConfigValues.Layouts.ChromaticPlusKS:
                     var raiseSemitoneIndicator = footSwitchPressed ? " (+#)" : "";
-                    PushDisplay.WriteText($"{configValues.Layout}\n{configValues.Key}{configValues.Octave} {configValues.Scale}{raiseSemitoneIndicator}", 36);
+                    PushDisplay.WriteText($"{configValues.Key}{configValues.Octave} {configValues.Scale}{raiseSemitoneIndicator}");
                     break;
                 default:
-                    PushDisplay.WriteText($"{configValues.Layout}", 36);
+                    PushDisplay.WriteText($"{configValues.Layout}");
                     break;
             }
         }
@@ -620,7 +620,12 @@ namespace PushWhacker
                                 configValues.Layout = ConfigValues.Layouts.Choices[layoutIndex - 1];
                                 configValues.Save();
                                 SetScaleNotesAndLights();
+                                PushDisplay.WriteText(configValues.Layout);
                             }
+                        }
+                        else
+                        {
+                            DisplayMode();
                         }
                         return;
 
@@ -633,7 +638,12 @@ namespace PushWhacker
                                 configValues.Layout = ConfigValues.Layouts.Choices[layoutIndex + 1];
                                 configValues.Save();
                                 SetScaleNotesAndLights();
+                                PushDisplay.WriteText(configValues.Layout);
                             }
+                        }
+                        else
+                        {
+                            DisplayMode();
                         }
                         return;
 

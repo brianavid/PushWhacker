@@ -98,6 +98,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Resources\PushWhacker.ico" />
     <None Include="Nlog.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -115,7 +116,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="License.txt" />
-    <EmbeddedResource Include="Resources\PushWhacker.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

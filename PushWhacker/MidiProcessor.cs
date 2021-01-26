@@ -873,6 +873,20 @@ namespace PushWhacker
                 midiLights.Send(midiEvent.GetAsShortMessage());
             }
 
+            if (midiEvent.CommandCode == MidiCommandCode.KeyAfterTouch)
+            {
+                var polyPressureEvent = midiEvent as NoteEvent;
+                var padNoteNumber = polyPressureEvent.NoteNumber;
+                if (notesOn.ContainsKey(padNoteNumber))
+                {
+                    polyPressureEvent.NoteNumber = notesOn[padNoteNumber];
+                }
+                else
+                {
+                    return;
+                }
+            }
+
 #if DEBUG
             System.Diagnostics.Trace.WriteLine(String.Format("{0}  {1,-10} {2}",
                 FormatTimeStamp(e.Timestamp), FormatMidiBytes(e.RawMessage), midiEvent));

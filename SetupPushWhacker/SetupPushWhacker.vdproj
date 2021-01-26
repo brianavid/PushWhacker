@@ -33,6 +33,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_86AC349EE788474BBE0C5E2C5339651C"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_B89B49D150413D6AA77D3FAE25FA7906"
         "OwnerKey" = "8:_EE562EA254C74500999C54C57BACDB58"
         "MsmSig" = "8:_UNDEFINED"
@@ -313,6 +319,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_86AC349EE788474BBE0C5E2C5339651C"
+            {
+            "SourcePath" = "8:..\\PushWhacker\\PushWhacker.ico"
+            "TargetName" = "8:PushWhacker.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_FE9119C9F945489F9A5A537AF9821A39"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B89B49D150413D6AA77D3FAE25FA7906"
             {
             "AssemblyRegister" = "3:1"
@@ -587,7 +613,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:PushWhacker"
         "ProductCode" = "8:{89CC92DA-5228-442E-95DB-0A9F2F5FBAB4}"
-        "PackageCode" = "8:{88D849CE-6413-44C0-BDF1-F900FED403A3}"
+        "PackageCode" = "8:{0F051AA7-4492-4691-AFCA-8C24F7D7756A}"
         "UpgradeCode" = "8:{A02EC8B9-4506-4F96-870F-3CD259B7C7F7}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -707,7 +733,7 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_3DBA077DDD384D1E90D3AFEB3097A45F"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_A27AB885FEA84E31962CF612559EABA7"
             {
             "Name" = "8:PushWhacker"
             "Arguments" = "8:"

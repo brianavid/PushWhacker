@@ -225,8 +225,8 @@ namespace PushWhacker
             SetButtonLED(Push.Buttons.LayoutLeft, Push.Colours.On);
             SetButtonLED(Push.Buttons.LayoutRight, Push.Colours.On);
 
-            SetButtonLED(Push.Buttons.ScaleMajor, configValues.Scale == "Major" ? Push.Colours.On : Push.Colours.Dim);
-            SetButtonLED(Push.Buttons.ScaleMinor, configValues.Scale == "Minor" ? Push.Colours.On : Push.Colours.Dim);
+            SetButtonLED(Push.Buttons.ResetScale, Push.Colours.On);
+            SetButtonLED(Push.Buttons.ResetLayout, Push.Colours.On);
 
             SetButtonLED(Push.Buttons.ToggleTouchStrip, Push.Colours.On);
             SetButtonLED(Push.Buttons.ShowInfo, Push.Colours.On);
@@ -707,22 +707,18 @@ namespace PushWhacker
                         }
                         return;
 
-                    case Push.Buttons.ScaleMajor:
-                    case Push.Buttons.ScaleMinor:
-                        if (ccEvent.ControllerValue > 64)
-                        {
-                            switch ((byte)ccEvent.Controller)
-                            {
-                                case Push.Buttons.ScaleMajor:
-                                    configValues.Scale = "Major";
-                                    break;
-                                case Push.Buttons.ScaleMinor:
-                                    configValues.Scale = "Minor";
-                                    break;
-                            }
-                            configValues.Save();
-                            SetScaleNotesAndLights();
-                        }
+                    case Push.Buttons.ResetScale:
+                        configValues.Scale = ScaleNames[0];
+                        configValues.Key = "C";
+                        configValues.Octave = "2";
+                        configValues.Save();
+                        SetScaleNotesAndLights();
+                        return;
+
+                    case Push.Buttons.ResetLayout:
+                        configValues.Layout = ConfigValues.Layouts.Choices[0]; ;
+                        configValues.Save();
+                        SetScaleNotesAndLights();
                         return;
 
                     case Push.Buttons.ToggleTouchStrip:

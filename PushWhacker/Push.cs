@@ -22,8 +22,8 @@ namespace PushWhacker
             public const int BrightnessCC = 79;
             public const int FootSwitch = 69;
 
-            public const int ScaleMajor = 49;
-            public const int ScaleMinor = 48;
+            public const int ResetScale = 49;
+            public const int ResetLayout = 48;
 
             public const int ToggleTouchStrip = 57;
 

@@ -6,8 +6,7 @@ namespace PushWhacker
 {
     public class CustomApplicationContext : ApplicationContext
     {
-        private static readonly string IconFileName = "PushWhacker.ico";
-        private static readonly string DefaultTooltip = "Push Whacker";
+        private static readonly string DefaultTooltip = "PushWhacker";
 
         private static ConfigValues configValues;
         private static MidiProcessor midiProcessor;
@@ -33,7 +32,7 @@ namespace PushWhacker
             notifyIcon = new NotifyIcon(components)
             {
                 ContextMenuStrip = new ContextMenuStrip(),
-                Icon = new Icon(IconFileName),
+                Icon = new Icon(System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("PushWhacker.Resources.PushWhacker.ico")),
                 Text = DefaultTooltip,
                 Visible = true
             };

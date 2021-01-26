@@ -106,12 +106,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_EB795042921686E223D42946B6150E64"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_EE562EA254C74500999C54C57BACDB58"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -163,6 +157,12 @@
         "OwnerKey" = "8:_F0786CB8D3A90EE35B514B71A74ECFA3"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_EB795042921686E223D42946B6150E64"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -181,6 +181,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -197,6 +205,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
     }
     "Deployable"
@@ -613,7 +637,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:PushWhacker"
         "ProductCode" = "8:{89CC92DA-5228-442E-95DB-0A9F2F5FBAB4}"
-        "PackageCode" = "8:{0F051AA7-4492-4691-AFCA-8C24F7D7756A}"
+        "PackageCode" = "8:{B9FAFF94-71DE-43A6-A55E-F78DBC434675}"
         "UpgradeCode" = "8:{A02EC8B9-4506-4F96-870F-3CD259B7C7F7}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -733,18 +757,18 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_A27AB885FEA84E31962CF612559EABA7"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_1E98170C4F694646BFE3F98FCA9F31B3"
             {
             "Name" = "8:PushWhacker"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
-            "IconIndex" = "3:32512"
+            "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
             "Target" = "8:_EE562EA254C74500999C54C57BACDB58"
             "Folder" = "8:_DBCCF3295623411E95CFDE341D4FA4A4"
             "WorkingFolder" = "8:_FE9119C9F945489F9A5A537AF9821A39"
-            "Icon" = "8:_EE562EA254C74500999C54C57BACDB58"
+            "Icon" = "8:_86AC349EE788474BBE0C5E2C5339651C"
             "Feature" = "8:"
             }
         }

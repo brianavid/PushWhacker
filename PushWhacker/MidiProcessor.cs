@@ -601,13 +601,16 @@ namespace PushWhacker
                             {
                                 configValues.Key = configValues.Keys.Keys.ToArray()[keyIndex - 1];
                                 configValues.Save();
+                                if (!RequestButtonRepeat())
+                                {
+                                    SetScaleNotesAndLights();
+                                }
                                 DisplayMode();
-                                RequestKeyRepeat();
                             }
                         }
                         else
                         {
-                            CancelKeyRepeat();
+                            CancelButtonRepeat();
                             SetScaleNotesAndLights();
                         }
                         return;
@@ -620,13 +623,16 @@ namespace PushWhacker
                             {
                                 configValues.Key = configValues.Keys.Keys.ToArray()[keyIndex + 1];
                                 configValues.Save();
+                                if (!RequestButtonRepeat())
+                                {
+                                    SetScaleNotesAndLights();
+                                }
                                 DisplayMode();
-                                RequestKeyRepeat();
                             }
                         }
                         else
                         {
-                            CancelKeyRepeat();
+                            CancelButtonRepeat();
                             SetScaleNotesAndLights();
                         }
                         return;
@@ -639,13 +645,16 @@ namespace PushWhacker
                             {
                                 configValues.Layout = ConfigValues.Layouts.Choices[layoutIndex - 1];
                                 configValues.Save();
-                                RequestKeyRepeat();
+                                if (!RequestButtonRepeat())
+                                {
+                                    SetScaleNotesAndLights();
+                                }
                             }
                             PushDisplay.WriteText(configValues.Layout);
                         }
                         else
                         {
-                            CancelKeyRepeat();
+                            CancelButtonRepeat();
                             SetScaleNotesAndLights();
                         }
                         return;
@@ -658,13 +667,16 @@ namespace PushWhacker
                             {
                                 configValues.Layout = ConfigValues.Layouts.Choices[layoutIndex + 1];
                                 configValues.Save();
-                                RequestKeyRepeat();
+                                if (!RequestButtonRepeat())
+                                {
+                                    SetScaleNotesAndLights();
+                                }
                             }
                             PushDisplay.WriteText(configValues.Layout);
                         }
                         else
                         {
-                            CancelKeyRepeat();
+                            CancelButtonRepeat();
                             SetScaleNotesAndLights();
                         }
                         return;
@@ -677,13 +689,16 @@ namespace PushWhacker
                             {
                                 configValues.Scale = ScaleNames[scaleIndex - 1];
                                 configValues.Save();
+                                if (!RequestButtonRepeat())
+                                {
+                                    SetScaleNotesAndLights();
+                                }
                                 DisplayMode();
-                                RequestKeyRepeat();
                             }
                         }
                         else
                         {
-                            CancelKeyRepeat();
+                            CancelButtonRepeat();
                             SetScaleNotesAndLights();
                         }
                         return;
@@ -696,13 +711,16 @@ namespace PushWhacker
                             {
                                 configValues.Scale = ScaleNames[scaleIndex + 1];
                                 configValues.Save();
+                                if (!RequestButtonRepeat())
+                                {
+                                    SetScaleNotesAndLights();
+                                }
                                 DisplayMode();
-                                RequestKeyRepeat();
                             }
                         }
                         else
                         {
-                            CancelKeyRepeat();
+                            CancelButtonRepeat();
                             SetScaleNotesAndLights();
                         }
                         return;
@@ -894,13 +912,18 @@ namespace PushWhacker
 
             midiOut.Send(midiEvent.GetAsShortMessage());
 
-            void RequestKeyRepeat()
+            bool  RequestButtonRepeat()
             {
+                //  Key repeat is probably not appropriate
+#if false
                 repeatAtTime = DateTime.Now.AddMilliseconds(repeatEvent == null ? 1000 : 500);
                 repeatEvent = midiEvent;
+                return true;
+#endif
+                return false;
             }
 
-            void CancelKeyRepeat()
+            void CancelButtonRepeat()
             {
                 repeatEvent = null;
             }

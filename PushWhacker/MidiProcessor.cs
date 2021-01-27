@@ -32,6 +32,8 @@ namespace PushWhacker
 
         static ConfigValues.PedalCalibrationId currentPedalCalibration;
 
+        static Dictionary<int, int> noteColours = new Dictionary<int, int>();
+
         public static Dictionary<string, int[]> Scales { get; private set; }
         public static string[] ScaleNames;
 
@@ -497,6 +499,13 @@ namespace PushWhacker
         {
             var ledNote = new NoteOnEvent(0, 1, sourceNote, colour, 0);
             midiLights.Send(ledNote.GetAsShortMessage());
+            noteColours[sourceNote] = colour;
+        }
+
+        static void ModifyPadLED(int sourceNote, int colour)
+        {
+            var ledNote = new NoteOnEvent(0, 1, sourceNote, colour, 0);
+            midiLights.Send(ledNote.GetAsShortMessage());
         }
 
         static void SetButtonLED(int button, int colour)
@@ -867,11 +876,13 @@ namespace PushWhacker
                         noteEncoded += 1;
                     }
 
+                    ModifyPadLED(padNoteNumber, Push.Colours.Red);
                     noteOnEvent.NoteNumber = noteEncoded;
                     notesOn[padNoteNumber] = noteOnEvent.NoteNumber;
                 }
                 else if (notesOn.ContainsKey(padNoteNumber))
                 {
+                    ModifyPadLED(padNoteNumber, noteColours[padNoteNumber]);
                     noteOnEvent.NoteNumber = notesOn[padNoteNumber];
                     notesOn.Remove(padNoteNumber);
                     if (notesOn.ContainsValue(noteOnEvent.NoteNumber)) return;

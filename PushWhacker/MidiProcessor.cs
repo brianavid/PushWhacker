@@ -876,13 +876,25 @@ namespace PushWhacker
                         noteEncoded += 1;
                     }
 
-                    ModifyPadLED(padNoteNumber, Push.Colours.Red);
                     noteOnEvent.NoteNumber = noteEncoded;
                     notesOn[padNoteNumber] = noteOnEvent.NoteNumber;
+                    for (var nn = Push.FirstPad; nn <= Push.LastPad; nn++)
+                    {
+                        if (scaleNoteMapping[nn - Push.FirstPad] == scaleNoteMapping[padNoteNumber - Push.FirstPad])
+                        {
+                            ModifyPadLED(nn, Push.Colours.Red);
+                        }
+                    }
                 }
                 else if (notesOn.ContainsKey(padNoteNumber))
                 {
-                    ModifyPadLED(padNoteNumber, noteColours[padNoteNumber]);
+                    for (var nn = Push.FirstPad; nn <= Push.LastPad; nn++)
+                    {
+                        if (scaleNoteMapping[nn - Push.FirstPad] == scaleNoteMapping[padNoteNumber - Push.FirstPad])
+                        {
+                            ModifyPadLED(nn, noteColours[nn]);
+                        }
+                    }
                     noteOnEvent.NoteNumber = notesOn[padNoteNumber];
                     notesOn.Remove(padNoteNumber);
                     if (notesOn.ContainsValue(noteOnEvent.NoteNumber)) return;

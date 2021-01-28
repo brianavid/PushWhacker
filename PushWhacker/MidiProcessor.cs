@@ -606,16 +606,19 @@ namespace PushWhacker
                         if (ccEvent.ControllerValue > 64)
                         {
                             int keyIndex = configValues.Keys[configValues.Key];
-                            if (keyIndex > 0)
+                            if (keyIndex == 0)
                             {
-                                configValues.Key = configValues.Keys.Keys.ToArray()[keyIndex - 1];
-                                configValues.Save();
-                                if (!RequestButtonRepeat())
-                                {
-                                    SetScaleNotesAndLights();
-                                }
-                                DisplayMode();
+                                configValues.Octave = (Math.Max(configValues.OctaveNumber, 0) - 1).ToString();
+                                keyIndex = 12;
                             }
+
+                            configValues.Key = configValues.Keys.Keys.ToArray()[keyIndex - 1];
+                            configValues.Save();
+                            if (!RequestButtonRepeat())
+                            {
+                                SetScaleNotesAndLights();
+                            }
+                            DisplayMode();
                         }
                         else
                         {
@@ -628,16 +631,18 @@ namespace PushWhacker
                         if (ccEvent.ControllerValue > 64)
                         {
                             int keyIndex = configValues.Keys[configValues.Key];
-                            if (keyIndex < 11)
+                            if (keyIndex >= 11)
                             {
-                                configValues.Key = configValues.Keys.Keys.ToArray()[keyIndex + 1];
-                                configValues.Save();
-                                if (!RequestButtonRepeat())
-                                {
-                                    SetScaleNotesAndLights();
-                                }
-                                DisplayMode();
+                                configValues.Octave = (Math.Min(configValues.OctaveNumber, 6) + 1).ToString();
+                                keyIndex = -1;
                             }
+                            configValues.Key = configValues.Keys.Keys.ToArray()[keyIndex + 1];
+                            configValues.Save();
+                            if (!RequestButtonRepeat())
+                            {
+                                SetScaleNotesAndLights();
+                            }
+                            DisplayMode();
                         }
                         else
                         {

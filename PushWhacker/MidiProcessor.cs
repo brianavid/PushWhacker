@@ -578,7 +578,10 @@ namespace PushWhacker
 
                     ccEvent.ControllerValue = ccValue;
                     ccValues[(byte)ccEvent.Controller] = ccValue;
-                    PushDisplay.WriteText($"CC {ccEvent.Controller} : {(ccValue*100 + 100) / 128}%");
+                    if (touchCCs.Values.ToList().Contains((byte)ccEvent.Controller))
+                    {
+                        PushDisplay.WriteText($"CC {ccEvent.Controller} : {(ccValue * 100 + 100) / 128}%");
+                    }
                 }
 
                 if (ccEvent.Controller == MidiController.Modulation)

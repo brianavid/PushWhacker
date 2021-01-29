@@ -23,6 +23,7 @@ namespace PushWhacker
         static int KsFirstNote = 0;
         static int lastModulationValue = 0;
         static int[] scaleNoteMapping;
+        static Dictionary<int, int> touchCCs;
         static Dictionary<int, int> ccValues;
         static Dictionary<int, int> notesOn = new Dictionary<int, int>();
         static int[] ScalerKsNotes = new int[] { -1, 47, 45, 43, 41, 40, 38, 36 };
@@ -60,6 +61,18 @@ namespace PushWhacker
             
             ScaleNames = Scales.Keys.ToArray();
 
+
+            touchCCs = new Dictionary<int, int>();
+            touchCCs[0] = 71;
+            touchCCs[1] = 72;
+            touchCCs[2] = 73;
+            touchCCs[3] = 74;
+            touchCCs[4] = 75;
+            touchCCs[5] = 76;
+            touchCCs[6] = 77;
+            touchCCs[7] = 78;
+            touchCCs[9] = 15;
+            touchCCs[10] = 14;
 
             ccValues = new Dictionary<int, int>();
             ccValues[14] = 0;
@@ -565,6 +578,7 @@ namespace PushWhacker
 
                     ccEvent.ControllerValue = ccValue;
                     ccValues[(byte)ccEvent.Controller] = ccValue;
+                    PushDisplay.WriteText($"CC {ccEvent.Controller} : {(ccValue*100 + 100) / 128}%");
                 }
 
                 if (ccEvent.Controller == MidiController.Modulation)
@@ -832,6 +846,19 @@ namespace PushWhacker
 
                 if (padNoteNumber < Push.FirstPad || padNoteNumber > Push.LastPad)
                 {
+                    if (touchCCs.Keys.Contains(padNoteNumber))
+                    {
+                        var touchCC = touchCCs[padNoteNumber];
+                        var touchVal = (ccValues[touchCC] * 100 + 100) / 128;
+                        if (midiEvent.CommandCode == MidiCommandCode.NoteOn && noteOnEvent.Velocity >= 64)
+                        {
+                            PushDisplay.WriteText($"CC {touchCC} : {touchVal}%");
+                        }
+                        else
+                        {
+                            DisplayMode();
+                        }
+                    }
                     return;
                 }
 

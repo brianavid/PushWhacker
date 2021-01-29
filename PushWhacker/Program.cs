@@ -27,7 +27,7 @@ namespace PushWhacker
 
                 if (!midiProcessor.StartProcessing())
                 {
-                    MessageBox.Show("Can't start Push Midi Processing");
+                    MessageBox.Show("Can't start Push Midi Processing\n\nThis is usually because another program or browser web page is using Midi and has locked all ports");
                 }
                 else
                 {

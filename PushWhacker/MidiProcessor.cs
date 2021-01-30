@@ -28,8 +28,10 @@ namespace PushWhacker
         static Dictionary<int, int> notesOn = new Dictionary<int, int>();
         static int[] ScalerKsNotes = new int[] { -1, 47, 45, 43, 41, 40, 38, 36 };
         static int[] ScalerPadNotes = new int[] { 48, 50, 52, 53, 55, 57, 59, 60 };
+#if BUTTON_REPEAT
         static MidiEvent repeatEvent;
         static DateTime repeatAtTime;
+#endif
 
         static ConfigValues.PedalCalibrationId currentPedalCalibration;
 
@@ -557,12 +559,14 @@ namespace PushWhacker
 
             if (midiEvent == null || midiEvent.CommandCode == MidiCommandCode.AutoSensing)
             {
+#if BUTTON_REPEAT
                 if (repeatEvent != null && DateTime.Now >= repeatAtTime)
                 {
                     midiEvent = repeatEvent;
                 }
                 else
-                    return;
+#endif
+                return;
             }
 
             if (midiEvent.CommandCode == MidiCommandCode.ControlChange)
@@ -973,7 +977,7 @@ namespace PushWhacker
             bool  RequestButtonRepeat()
             {
                 //  Key repeat is probably not appropriate
-#if false
+#if BUTTON_REPEAT
                 repeatAtTime = DateTime.Now.AddMilliseconds(repeatEvent == null ? 1000 : 500);
                 repeatEvent = midiEvent;
                 return true;
@@ -983,7 +987,9 @@ namespace PushWhacker
 
             void CancelButtonRepeat()
             {
+#if BUTTON_REPEAT
                 repeatEvent = null;
+#endif
             }
         }
 

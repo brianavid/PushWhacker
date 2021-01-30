@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="A0D23212-2237-433B-8B9D-B309A06A24A9" Name="PushWhackerSetup" Language="1033" Version="1.0.0.0" Manufacturer="BrianAvid" UpgradeCode="844e6c01-1527-477e-a21e-d5d5beb06e65">
+		<Package Manufacturer="BrianAvid" InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <Media Id='1' Cabinet='PushWhacker.cab' EmbedCab='yes' />
+
+    <Icon Id='ProductIcon.ico' SourceFile='..\PushWhacker\PushWhacker.ico' />
+    <Property Id='ARPPRODUCTICON' Value='ProductIcon.ico' />
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLDIR" Name="PushWhacker" >
+          <Component Id="PushWhackerExe" Guid="B8657646-B2A0-4984-AB73-E38386B6721E">
+            <File Id="PushWhackerExe" Name="PushWhacker.Exe" Source="..\PushWhacker\bin\release\PushWhacker.Exe" KeyPath="yes" Vital="yes">
+            </File>
+            <RemoveFolder Id="INSTALLFOLDER" On="uninstall" />
+          </Component>
+          <Component Id="NAudioDll" Guid="154043F5-CE12-4235-9599-127B3806F68A">
+            <File Id="NAudioDll" Name="NAudio.Dll" Source="..\PushWhacker\bin\release\NAudio.Dll" KeyPath="yes" Vital="yes" />
+          </Component>
+          <Component Id="DeviceNetDll" Guid="9CCB95ED-E9B6-4BEC-956C-B6BE3B828E8A">
+            <File Id="DeviceNetDll" Name="Device.Net.Dll" Source="..\PushWhacker\bin\release\Device.Net.Dll" KeyPath="yes" Vital="yes" />
+          </Component>
+          <Component Id="UsbNetDll" Guid="42325C80-40BB-47FD-A88E-96EA000116F4">
+            <File Id="UsbNetDll" Name="Usb.Net.Dll" Source="..\PushWhacker\bin\release\Usb.Net.Dll" KeyPath="yes" Vital="yes" />
+          </Component>
+        </Directory>
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="PushWhacker">
+          <Component Id="Shortcut" Guid="47D6C24F-893B-4A60-835C-AF63FA28DF93">
+            <RegistryValue Root='HKCU' Key='SOFTWARE\BrianAvid\PushWhacker'
+              Type='integer' Name='installed' Value='1' KeyPath='yes' />
+            <Shortcut Id="ShortcutPushWhacker" Directory="ApplicationProgramsFolder"
+              Name="PushWhacker" WorkingDirectory='INSTALLDIR' Target='[INSTALLDIR]PushWhacker.Exe'
+              Icon="ProductIcon.ico" />
+            <RemoveFolder Id="CleanupShortcut" Directory="ApplicationProgramsFolder" On="uninstall" />
+          </Component>
+        </Directory>
+      </Directory>
+    </Directory>
+    <Feature Id='Complete' Level="1">
+      <ComponentRef Id='PushWhackerExe' />
+      <ComponentRef Id='NAudioDll' />
+      <ComponentRef Id='DeviceNetDll' />
+      <ComponentRef Id='UsbNetDll' />
+      <ComponentRef Id='Shortcut' />
+    </Feature>
+  </Product>
+</Wix>

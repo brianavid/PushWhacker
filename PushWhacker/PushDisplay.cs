@@ -24,12 +24,27 @@ namespace PushWhacker
 
         private static WindowsUsbInterfaceManager usbInterfaceManager;
         private static UsbDevice usbDevice;
-        private static Bitmap bmp;
+
+        const int screenWidth = 960;
+        const int screenHeight = 160;
+        const int bufferPixelCount = 1024;  //  Padded from width to the end
+        const int lineBufferBytesCount = bufferPixelCount * 2;
+        const int bufferByteCount = 16 * 1024;
+        const int linesPerBuffer = bufferByteCount / lineBufferBytesCount;
+        const int numberOfBuffers = screenHeight / linesPerBuffer;
+
+        private static byte[][] buffers = new byte[numberOfBuffers][];
+        private static bool screenChanged = false;
 
         static bool RefreshThreadWanted;
         static bool RefreshThreadRunning;
         public static bool Open()
         {
+            for (var i = 0; i < numberOfBuffers; i++)
+            {
+                buffers[i] = new byte[bufferByteCount];
+            }
+
             return OpenAsync().Result;
         }
 
@@ -62,8 +77,6 @@ namespace PushWhacker
 
             await usbDevice.InitializeAsync();
 
-            bmp = new Bitmap(960, 160);
-
             KeepDisplayRefreshed();
             return true;
         }
@@ -93,25 +106,54 @@ namespace PushWhacker
 
         public static void WriteText(string text, int fontSize = 48)
         {
-            lock (bmp)
+            var bmp = new Bitmap(960, 160);
+
+            //Create a buffer with some data in it
+            using (Graphics graphics = Graphics.FromImage(bmp))
             {
-                //Create a buffer with some data in it
-                using (Graphics graphics = Graphics.FromImage(bmp))
+                Color bgcolor = Color.Black;
+                Color fgcolor = Color.White;
+                Font font = new Font("Arial", fontSize);
+                graphics.FillRectangle(new SolidBrush(bgcolor), 0, 0, bmp.Width, bmp.Height);
+                graphics.DrawString(text, font, new SolidBrush(fgcolor), 20, 20);
+                graphics.Flush();
+                font.Dispose();
+                graphics.Dispose();
+            }
+
+            var pixelLine = new short[bufferPixelCount];
+
+            lock (buffers)
+            {
+                for (var i = 0; i < numberOfBuffers; i++)
                 {
-                    Color bgcolor = Color.Black;
-                    Color fgcolor = Color.White;
-                    Font font = new Font("Arial", fontSize);
-                    graphics.FillRectangle(new SolidBrush(bgcolor), 0, 0, bmp.Width, bmp.Height);
-                    graphics.DrawString(text, font, new SolidBrush(fgcolor), 20, 20);
-                    graphics.Flush();
-                    font.Dispose();
-                    graphics.Dispose();
+                    var buffer = buffers[i];
+                    for (var j = 0; j < linesPerBuffer; j++)
+                    {
+                        var row = i * linesPerBuffer + j;
+                        for (var col = 0; col < screenWidth; col++)
+                        {
+                            pixelLine[col] = PushPixelColour(bmp.GetPixel(col, row));
+                        }
+                        for (var col = screenWidth; col < bufferPixelCount; col++)
+                        {
+                            pixelLine[col] = 0;
+                        }
+                        Buffer.BlockCopy(pixelLine, 0, buffer, j * lineBufferBytesCount, lineBufferBytesCount);
+                    }
+                    for (var j = 0; j < buffer.Length; j++)
+                    {
+                        buffer[j] ^= ShapingPattern[j % 4];
+                    }
                 }
             }
+
+            screenChanged = true;
         }
 
         static void KeepDisplayRefreshed()
         {
+            DateTime lastRefresh = DateTime.Now;
             RefreshThreadWanted = true;
             RefreshThreadRunning = true;
             new Thread(() =>
@@ -119,7 +161,13 @@ namespace PushWhacker
                 Thread.CurrentThread.IsBackground = true;
                 while (RefreshThreadWanted)
                 {
-                    RefreshDisplayAsync().Wait();
+                    bool wasScreenChanged = screenChanged;
+                    screenChanged = false;
+                    if (wasScreenChanged || DateTime.Now > lastRefresh.AddSeconds(1))
+                    {
+                        RefreshDisplayAsync().Wait();
+                        lastRefresh = DateTime.Now;
+                    }
                     Thread.Sleep(40);
                 }
             }).Start();
@@ -129,43 +177,21 @@ namespace PushWhacker
 
         static async Task RefreshDisplayAsync()
         {
-            Bitmap bmp2;
-            lock (bmp)
+            var buffers2 = new byte[numberOfBuffers][];
+
+            lock (buffers)
             {
-                bmp2 = (Bitmap)bmp.Clone();
+                for (var i = 0; i < numberOfBuffers; i++)
+                {
+                    buffers2[i] = (byte[])buffers[i].Clone();
+                }
             }
+
             await usbDevice.WriteAsync(FrameHeader);
 
-            const int screenWidth = 960;
-            const int screenHeight = 160;
-            const int bufferPixelCount = 1024;  //  Padded from width to the end
-            const int lineBufferBytesCount = bufferPixelCount * 2;
-            const int bufferByteCount = 16 * 1024;
-            const int linesPerBuffer = bufferByteCount / lineBufferBytesCount;
-
-            var pixelLine = new short[bufferPixelCount];
-            var buffer = new byte[bufferByteCount];
-
-            for (var i = 0; i < screenHeight / linesPerBuffer; i++)
+            for (var i = 0; i < numberOfBuffers; i++)
             {
-                for (var j = 0; j < linesPerBuffer; j++)
-                {
-                    var row = i * linesPerBuffer + j;
-                    for (var col = 0; col < screenWidth; col++)
-                    {
-                        pixelLine[col] = PushPixelColour(bmp2.GetPixel(col, row));
-                    }
-                    for (var col = screenWidth; col < bufferPixelCount; col++)
-                    {
-                        pixelLine[col] = 0;
-                    }
-                    Buffer.BlockCopy(pixelLine, 0, buffer, j * lineBufferBytesCount, lineBufferBytesCount);
-                }
-                for (var j = 0; j < buffer.Length; j++)
-                {
-                    buffer[j] ^= ShapingPattern[j % 4];
-                }
-                await usbDevice.WriteAsync(buffer);
+                await usbDevice.WriteAsync(buffers2[i]);
             }
         }
 

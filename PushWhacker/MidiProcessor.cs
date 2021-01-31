@@ -28,10 +28,7 @@ namespace PushWhacker
         static Dictionary<int, int> notesOn = new Dictionary<int, int>();
         static int[] ScalerKsNotes = new int[] { -1, 47, 45, 43, 41, 40, 38, 36 };
         static int[] ScalerPadNotes = new int[] { 48, 50, 52, 53, 55, 57, 59, 60 };
-#if BUTTON_REPEAT
-        static MidiEvent repeatEvent;
-        static DateTime repeatAtTime;
-#endif
+        static DateTime revertToDefaultTime = DateTime.MaxValue;
 
         static ConfigValues.PedalCalibrationId currentPedalCalibration;
 
@@ -184,9 +181,12 @@ namespace PushWhacker
             }
         }
 
-        static void SetScaleNotesAndLights()
+        static void SetScaleNotesAndLights(bool displayMode = true)
         {
-            DisplayMode();
+            if (displayMode)
+            {
+                DisplayMode();
+            }
 
             switch (configValues.Layout)
             {
@@ -559,13 +559,11 @@ namespace PushWhacker
 
             if (midiEvent == null || midiEvent.CommandCode == MidiCommandCode.AutoSensing)
             {
-#if BUTTON_REPEAT
-                if (repeatEvent != null && DateTime.Now >= repeatAtTime)
+                if (DateTime.Now >= revertToDefaultTime)
                 {
-                    midiEvent = repeatEvent;
+                    DisplayMode();
+                    revertToDefaultTime = DateTime.MaxValue;
                 }
-                else
-#endif
                 return;
             }
 
@@ -635,15 +633,6 @@ namespace PushWhacker
 
                             configValues.Key = configValues.Keys.Keys.ToArray()[keyIndex - 1];
                             configValues.Save();
-                            if (!RequestButtonRepeat())
-                            {
-                                SetScaleNotesAndLights();
-                            }
-                            DisplayMode();
-                        }
-                        else
-                        {
-                            CancelButtonRepeat();
                             SetScaleNotesAndLights();
                         }
                         return;
@@ -659,15 +648,6 @@ namespace PushWhacker
                             }
                             configValues.Key = configValues.Keys.Keys.ToArray()[keyIndex + 1];
                             configValues.Save();
-                            if (!RequestButtonRepeat())
-                            {
-                                SetScaleNotesAndLights();
-                            }
-                            DisplayMode();
-                        }
-                        else
-                        {
-                            CancelButtonRepeat();
                             SetScaleNotesAndLights();
                         }
                         return;
@@ -680,17 +660,13 @@ namespace PushWhacker
                             {
                                 configValues.Layout = ConfigValues.Layouts.Choices[layoutIndex - 1];
                                 configValues.Save();
-                                if (!RequestButtonRepeat())
-                                {
-                                    SetScaleNotesAndLights();
-                                }
+                                SetScaleNotesAndLights(false);
                             }
                             PushDisplay.WriteText(configValues.Layout);
                         }
                         else
                         {
-                            CancelButtonRepeat();
-                            SetScaleNotesAndLights();
+                            RequestDefaultDisplay();
                         }
                         return;
 
@@ -702,17 +678,13 @@ namespace PushWhacker
                             {
                                 configValues.Layout = ConfigValues.Layouts.Choices[layoutIndex + 1];
                                 configValues.Save();
-                                if (!RequestButtonRepeat())
-                                {
-                                    SetScaleNotesAndLights();
-                                }
+                                SetScaleNotesAndLights(false);
                             }
                             PushDisplay.WriteText(configValues.Layout);
                         }
                         else
                         {
-                            CancelButtonRepeat();
-                            SetScaleNotesAndLights();
+                            RequestDefaultDisplay();
                         }
                         return;
 
@@ -724,17 +696,8 @@ namespace PushWhacker
                             {
                                 configValues.Scale = ScaleNames[scaleIndex - 1];
                                 configValues.Save();
-                                if (!RequestButtonRepeat())
-                                {
-                                    SetScaleNotesAndLights();
-                                }
-                                DisplayMode();
+                                SetScaleNotesAndLights();
                             }
-                        }
-                        else
-                        {
-                            CancelButtonRepeat();
-                            SetScaleNotesAndLights();
                         }
                         return;
 
@@ -746,32 +709,34 @@ namespace PushWhacker
                             {
                                 configValues.Scale = ScaleNames[scaleIndex + 1];
                                 configValues.Save();
-                                if (!RequestButtonRepeat())
-                                {
-                                    SetScaleNotesAndLights();
-                                }
-                                DisplayMode();
+                                SetScaleNotesAndLights();
                             }
-                        }
-                        else
-                        {
-                            CancelButtonRepeat();
-                            SetScaleNotesAndLights();
                         }
                         return;
 
                     case Push.Buttons.ResetScale:
-                        configValues.Scale = ScaleNames[0];
-                        configValues.Key = "C";
-                        configValues.Octave = "2";
-                        configValues.Save();
-                        SetScaleNotesAndLights();
+                        if (ccEvent.ControllerValue > 64)
+                        {
+                            configValues.Scale = ScaleNames[0];
+                            configValues.Key = "C";
+                            configValues.Octave = "2";
+                            configValues.Save();
+                            SetScaleNotesAndLights();
+                        }
                         return;
 
                     case Push.Buttons.ResetLayout:
-                        configValues.Layout = ConfigValues.Layouts.Choices[0]; ;
-                        configValues.Save();
-                        SetScaleNotesAndLights();
+                        if (ccEvent.ControllerValue > 64)
+                        {
+                            configValues.Layout = ConfigValues.Layouts.Choices[0]; ;
+                            configValues.Save();
+                            SetScaleNotesAndLights(false);
+                            PushDisplay.WriteText(configValues.Layout);
+                        }
+                        else
+                        {
+                            RequestDefaultDisplay();
+                        }
                         return;
 
                     case Push.Buttons.ToggleTouchStrip:
@@ -973,26 +938,12 @@ namespace PushWhacker
 #endif
 
             midiOut.Send(midiEvent.GetAsShortMessage());
-
-            bool  RequestButtonRepeat()
-            {
-                //  Key repeat is probably not appropriate
-#if BUTTON_REPEAT
-                repeatAtTime = DateTime.Now.AddMilliseconds(repeatEvent == null ? 1000 : 500);
-                repeatEvent = midiEvent;
-                return true;
-#endif
-                return false;
-            }
-
-            void CancelButtonRepeat()
-            {
-#if BUTTON_REPEAT
-                repeatEvent = null;
-#endif
-            }
         }
 
+        private static void RequestDefaultDisplay()
+        {
+            revertToDefaultTime = DateTime.Now.AddSeconds(2);
+        }
 
         static void midiIn_SysexMessageReceived(object sender, MidiInSysexMessageEventArgs e)
         {

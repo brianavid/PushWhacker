@@ -65,16 +65,16 @@ namespace PushWhacker
         {
             Keys = new Dictionary<string, int>();
             Keys["C"] = 0;
-            Keys["C#"] = 1;
+            Keys["D♭"] = 1;
             Keys["D"] = 2;
-            Keys["D#"] = 3;
+            Keys["E♭"] = 3;
             Keys["E"] = 4;
             Keys["F"] = 5;
             Keys["F#"] = 6;
             Keys["G"] = 7;
-            Keys["G#"] = 8;
+            Keys["A♭"] = 8;
             Keys["A"] = 9;
-            Keys["A#"] = 10;
+            Keys["B♭"] = 10;
             Keys["B"] = 11;
         }
 

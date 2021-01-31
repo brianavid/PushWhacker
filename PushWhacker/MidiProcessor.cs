@@ -813,8 +813,8 @@ namespace PushWhacker
 
             if (midiEvent.CommandCode == MidiCommandCode.NoteOn || midiEvent.CommandCode == MidiCommandCode.NoteOff)
             {
-                var noteOnEvent = midiEvent as NoteEvent;
-                var padNoteNumber = noteOnEvent.NoteNumber;
+                var noteEvent = midiEvent as NoteEvent;
+                var padNoteNumber = noteEvent.NoteNumber;
 
                 if (padNoteNumber < Push.FirstPad || padNoteNumber > Push.LastPad)
                 {
@@ -822,7 +822,7 @@ namespace PushWhacker
                     {
                         var touchCC = touchCCs[padNoteNumber];
                         var touchVal = (ccValues[touchCC] * 100 + 100) / 128;
-                        if (midiEvent.CommandCode == MidiCommandCode.NoteOn && noteOnEvent.Velocity >= 64)
+                        if (midiEvent.CommandCode == MidiCommandCode.NoteOn && noteEvent.Velocity >= 64)
                         {
                             PushDisplay.WriteText($"CC {touchCC} : {touchVal}%");
                         }
@@ -840,10 +840,24 @@ namespace PushWhacker
                 {
                     var row = (padNoteNumber - Push.FirstPad) / 8;
                     var col = (padNoteNumber - Push.FirstPad) % 8;
-                    var n1 = new NoteEvent(0, noteOnEvent.Channel, midiEvent.CommandCode, ScalerKsNotes[row], noteOnEvent.Velocity);
-                    var n2 = new NoteEvent(0, noteOnEvent.Channel, midiEvent.CommandCode, ScalerPadNotes[col], noteOnEvent.Velocity);
-                    midiOut.Send(n1.GetAsShortMessage());
-                    midiOut.Send(n2.GetAsShortMessage());
+                    if (midiEvent.CommandCode == MidiCommandCode.NoteOn)
+                    {
+                        var n1 = new NoteEvent(0, noteEvent.Channel, MidiCommandCode.NoteOn, ScalerKsNotes[row], noteEvent.Velocity);
+                        var n2 = new NoteEvent(0, noteEvent.Channel, MidiCommandCode.NoteOff, ScalerKsNotes[row], 0);
+                        var n3 = new NoteEvent(0, noteEvent.Channel, MidiCommandCode.NoteOn, ScalerPadNotes[col], noteEvent.Velocity);
+                        midiOut.Send(n1.GetAsShortMessage());
+                        System.Threading.Thread.Sleep(1);
+                        midiOut.Send(n2.GetAsShortMessage());
+                        System.Threading.Thread.Sleep(1);
+                        midiOut.Send(n3.GetAsShortMessage());
+                        ModifyPadLED(padNoteNumber, Push.Colours.Red);
+                    }
+                    else
+                    {
+                        var n = new NoteEvent(0, noteEvent.Channel, MidiCommandCode.NoteOff, ScalerPadNotes[col], 0);
+                        midiOut.Send(n.GetAsShortMessage());
+                        ModifyPadLED(padNoteNumber, noteColours[padNoteNumber]);
+                    }
                     return;
                 }
 
@@ -880,8 +894,8 @@ namespace PushWhacker
                         noteEncoded += 1;
                     }
 
-                    noteOnEvent.NoteNumber = noteEncoded;
-                    notesOn[padNoteNumber] = noteOnEvent.NoteNumber;
+                    noteEvent.NoteNumber = noteEncoded;
+                    notesOn[padNoteNumber] = noteEvent.NoteNumber;
                     for (var nn = Push.FirstPad; nn <= Push.LastPad; nn++)
                     {
                         if (scaleNoteMapping[nn - Push.FirstPad] == scaleNoteMapping[padNoteNumber - Push.FirstPad])
@@ -899,9 +913,9 @@ namespace PushWhacker
                             ModifyPadLED(nn, noteColours[nn]);
                         }
                     }
-                    noteOnEvent.NoteNumber = notesOn[padNoteNumber];
+                    noteEvent.NoteNumber = notesOn[padNoteNumber];
                     notesOn.Remove(padNoteNumber);
-                    if (notesOn.ContainsValue(noteOnEvent.NoteNumber)) return;
+                    if (notesOn.ContainsValue(noteEvent.NoteNumber)) return;
                 }
                 else
                 {

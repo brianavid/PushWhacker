@@ -50,6 +50,7 @@ namespace PushWhacker
 
         public string Output { get; set; }
         public string Layout { get; set; }
+        public bool FixLayout { get; set; }
         public string Scale { get; set; }
         public string Key { get; set; }
         public string Octave { get; set; }
@@ -86,6 +87,7 @@ namespace PushWhacker
                 UserModeOnly = (int)regKey.GetValue("UserModeOnly", 0) != 0;
                 Output = (string)regKey.GetValue("Output", "");
                 Layout = (string)regKey.GetValue("Layout", ConfigValues.Layouts.InKey);
+                FixLayout = (int)regKey.GetValue("FixLayout", 0) != 0;
                 Scale = (string)regKey.GetValue("Scale", "Major");
                 Key = (string)regKey.GetValue("Key", "C");
                 Octave = (string)regKey.GetValue("Octave", "2");
@@ -107,6 +109,7 @@ namespace PushWhacker
                 regKey.SetValue("UserModeOnly", UserModeOnly ? 1 : 0);
                 regKey.SetValue("Output", Output);
                 regKey.SetValue("Layout", Layout);
+                regKey.SetValue("FixLayout", FixLayout ? 1 : 0);
                 regKey.SetValue("Scale", Scale);
                 regKey.SetValue("Key", Key);
                 regKey.SetValue("Octave", Octave);

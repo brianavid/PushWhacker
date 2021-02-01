@@ -68,6 +68,7 @@ namespace PushWhacker
             comboBoxTouchStrip.SelectedItem = values.TouchStripMode;
             comboBoxPedal.SelectedItem = values.PedalMode;
             checkBoxUserModeOnly.Checked = configValues.UserModeOnly;
+            checkBoxFix.Checked = configValues.FixLayout;
         }
 
         private void StoreValues()
@@ -75,6 +76,7 @@ namespace PushWhacker
             configValues.UserModeOnly = checkBoxUserModeOnly.Checked;
             configValues.Output = comboBoxOutput.SelectedItem as string;
             configValues.Layout = comboBoxLayout.SelectedItem as string;
+            configValues.FixLayout = checkBoxFix.Checked;
             configValues.Scale = comboBoxScale.SelectedItem as string;
             configValues.Key = comboBoxKey.SelectedItem as string;
             configValues.Octave = comboBoxOctave.SelectedItem as string;

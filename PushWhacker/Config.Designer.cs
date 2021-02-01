@@ -60,6 +60,7 @@ namespace PushWhacker
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.buttonColHi = new System.Windows.Forms.Button();
             this.buttonColLo = new System.Windows.Forms.Button();
+            this.checkBoxFix = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -92,6 +93,7 @@ namespace PushWhacker
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.checkBoxFix);
             this.tabPage1.Controls.Add(this.label7);
             this.tabPage1.Controls.Add(this.comboBoxTouchStrip);
             this.tabPage1.Controls.Add(this.comboBoxPressure);
@@ -396,6 +398,17 @@ namespace PushWhacker
             this.buttonColLo.UseVisualStyleBackColor = true;
             this.buttonColLo.Click += new System.EventHandler(this.buttonColLo_Click);
             // 
+            // checkBoxFix
+            // 
+            this.checkBoxFix.AutoSize = true;
+            this.checkBoxFix.Enabled = false;
+            this.checkBoxFix.Location = new System.Drawing.Point(298, 13);
+            this.checkBoxFix.Name = "checkBoxFix";
+            this.checkBoxFix.Size = new System.Drawing.Size(39, 17);
+            this.checkBoxFix.TabIndex = 32;
+            this.checkBoxFix.Text = "Fix";
+            this.checkBoxFix.UseVisualStyleBackColor = true;
+            // 
             // Config
             // 
             this.AcceptButton = this.okButton;
@@ -453,5 +466,6 @@ namespace PushWhacker
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button buttonCalibrateToe;
         private System.Windows.Forms.CheckBox checkBoxUserModeOnly;
+        private System.Windows.Forms.CheckBox checkBoxFix;
     }
 }

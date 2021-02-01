@@ -57,6 +57,7 @@ namespace PushWhacker
         public string Pressure { get; set; }
         public string TouchStripMode { get; set; }
         public string PedalMode { get; set; }
+        public bool UserModeOnly { get; set; }
         public Dictionary<PedalCalibrationId, int> PedalCalibrations { get; set; }
 
         public Dictionary<string, int> Keys { get; }
@@ -82,6 +83,7 @@ namespace PushWhacker
         {
             using (RegistryKey regKey = Registry.CurrentUser.OpenSubKey("Software", true).CreateSubKey("PushWhacker"))
             {
+                UserModeOnly = (int)regKey.GetValue("UserModeOnly", 0) != 0;
                 Output = (string)regKey.GetValue("Output", "");
                 Layout = (string)regKey.GetValue("Layout", ConfigValues.Layouts.InKey);
                 Scale = (string)regKey.GetValue("Scale", "Major");
@@ -102,6 +104,7 @@ namespace PushWhacker
         {
             using (RegistryKey regKey = Registry.CurrentUser.OpenSubKey("Software", true).CreateSubKey("PushWhacker"))
             {
+                regKey.SetValue("UserModeOnly", UserModeOnly ? 1 : 0);
                 regKey.SetValue("Output", Output);
                 regKey.SetValue("Layout", Layout);
                 regKey.SetValue("Scale", Scale);

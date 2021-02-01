@@ -9,7 +9,8 @@ namespace PushWhacker
     public class MidiProcessor
     {
         static ConfigValues configValues;
-        const string SourceMidi = "Ableton Push 2";
+        const string SourceMidi = "MIDIIN2 (Ableton Push 2)";
+        const string LightsMidi = "MIDIOUT2 (Ableton Push 2)";
 
         const int KsOct0Note = 1000;
         const int KsOct1Note = 1001;
@@ -29,6 +30,8 @@ namespace PushWhacker
         static int[] ScalerKsNotes = new int[] { -1, 47, 45, 43, 41, 40, 38, 36 };
         static int[] ScalerPadNotes = new int[] { 48, 50, 52, 53, 55, 57, 59, 60 };
         static DateTime revertToDefaultTime = DateTime.MaxValue;
+
+        static bool inUserMode = false;
 
         static ConfigValues.PedalCalibrationId currentPedalCalibration;
 
@@ -98,10 +101,9 @@ namespace PushWhacker
                         midiIn = new MidiIn(device);
                     }
                 }
-
                 for (int device = 0; device < MidiOut.NumberOfDevices; device++)
                 {
-                    if (MidiOut.DeviceInfo(device).ProductName == SourceMidi)
+                    if (MidiOut.DeviceInfo(device).ProductName == LightsMidi)
                     {
                         midiLights = new MidiOut(device);
                     }
@@ -130,8 +132,14 @@ namespace PushWhacker
                 return false;
             }
 
-            SetScaleNotesAndLights();
-            SetLedBrightness(ccValues[79]);
+            inUserMode = !configValues.UserModeOnly;
+            SendSysex(new byte[] { 0x0A, (byte)(inUserMode ? 1 : 0) });
+
+            if (inUserMode)
+            {
+                SetScaleNotesAndLights();
+                SetLedBrightness(ccValues[79]);
+            }
 
             if (midiOut != null)
             {
@@ -247,6 +255,10 @@ namespace PushWhacker
 
             SetButtonLED(Push.Buttons.ToggleTouchStrip, Push.Colours.On);
             SetButtonLED(Push.Buttons.ShowInfo, Push.Colours.On);
+            if (configValues.UserModeOnly)
+            {
+                SetButtonLED(Push.Buttons.UserMode, Push.Colours.On);
+            }
 
             SetPressureMode(configValues.Pressure == ConfigValues.Pressures.PolyPressure);
             SetTouchStripMode(configValues.TouchStripMode == ConfigValues.TouchStripModes.PitchBend);
@@ -765,6 +777,23 @@ namespace PushWhacker
                         }
                         return;
 
+                    case Push.Buttons.UserMode:
+                        if (configValues.UserModeOnly && ccEvent.ControllerValue > 64)
+                        {
+                            if (inUserMode)
+                            {
+                                PushDisplay.WriteText("");
+                                ClearLights();
+                            }
+                            inUserMode = !inUserMode;
+                            SendSysex(new byte[] { 0x0A, (byte)(inUserMode ? 1 : 0)});
+                            if (inUserMode)
+                            {
+                                SetScaleNotesAndLights();
+                            }
+                        }
+                        return;
+
 #if EXPERIMENTAL_MMC
                     case Push.Buttons.RecordButton:
                         if (ccEvent.ControllerValue > 64)
@@ -863,7 +892,6 @@ namespace PushWhacker
 
                 if (midiEvent.CommandCode == MidiCommandCode.NoteOn)
                 {
-
                     if (noteEncoded >= 128)
                     {
                         switch (noteEncoded)
@@ -981,6 +1009,9 @@ namespace PushWhacker
             {
                 switch (sysexMessage[6])
                 {
+                    case 0x0A:
+                        inUserMode = sysexMessage[7] != 0;
+                        break;
                     case 0x13:
                         int val;
                         switch (currentPedalCalibration)

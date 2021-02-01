@@ -38,6 +38,7 @@ namespace PushWhacker
 
         static bool RefreshThreadWanted;
         static bool RefreshThreadRunning;
+
         public static bool Open()
         {
             for (var i = 0; i < numberOfBuffers; i++)
@@ -75,7 +76,15 @@ namespace PushWhacker
 
             usbDevice = new UsbDevice(PushDeviceId, usbInterfaceManager, logger, tracer);
 
-            await usbDevice.InitializeAsync();
+            try
+            {
+                await usbDevice.InitializeAsync();
+            }
+            catch (Exception)
+            {
+                usbDevice = null;
+                return false;
+            }
 
             KeepDisplayRefreshed();
             return true;
@@ -163,7 +172,7 @@ namespace PushWhacker
                 {
                     bool wasScreenChanged = screenChanged;
                     screenChanged = false;
-                    if (wasScreenChanged || DateTime.Now > lastRefresh.AddSeconds(1))
+                    if (usbDevice != null && (wasScreenChanged || DateTime.Now > lastRefresh.AddSeconds(1)))
                     {
                         RefreshDisplayAsync().Wait();
                         lastRefresh = DateTime.Now;

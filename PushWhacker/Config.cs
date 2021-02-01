@@ -67,10 +67,12 @@ namespace PushWhacker
             comboBoxPressure.SelectedItem = values.Pressure;
             comboBoxTouchStrip.SelectedItem = values.TouchStripMode;
             comboBoxPedal.SelectedItem = values.PedalMode;
+            checkBoxUserModeOnly.Checked = configValues.UserModeOnly;
         }
 
         private void StoreValues()
         {
+            configValues.UserModeOnly = checkBoxUserModeOnly.Checked;
             configValues.Output = comboBoxOutput.SelectedItem as string;
             configValues.Layout = comboBoxLayout.SelectedItem as string;
             configValues.Scale = comboBoxScale.SelectedItem as string;
@@ -94,11 +96,6 @@ namespace PushWhacker
             StoreValues();
 
             this.DialogResult = DialogResult.OK;
-        }
-
-        private void buttonApply_Click(object sender, EventArgs e)
-        {
-            StoreValues();
         }
 
         private void buttonColLo_Click(object sender, EventArgs e)

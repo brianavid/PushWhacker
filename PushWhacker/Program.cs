@@ -17,7 +17,7 @@ namespace PushWhacker
             ConfigValues configValues = new ConfigValues();
             configValues.Load();
 
-            if (!PushDisplay.Open())
+            if (!PushDisplay.Open() && !configValues.UserModeOnly)
             {
                 MessageBox.Show("Can't open Push display");
             }

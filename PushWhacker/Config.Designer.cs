@@ -30,7 +30,6 @@ namespace PushWhacker
         private void InitializeComponent()
         {
             this.okButton = new System.Windows.Forms.Button();
-            this.buttonApply = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.label7 = new System.Windows.Forms.Label();
@@ -45,6 +44,7 @@ namespace PushWhacker
             this.comboBoxKey = new System.Windows.Forms.ComboBox();
             this.comboBoxScale = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.checkBoxUserModeOnly = new System.Windows.Forms.CheckBox();
             this.comboBoxOutput = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
@@ -77,16 +77,6 @@ namespace PushWhacker
             this.okButton.Text = "OK";
             this.okButton.UseVisualStyleBackColor = true;
             this.okButton.Click += new System.EventHandler(this.okButton_Click);
-            // 
-            // buttonApply
-            // 
-            this.buttonApply.Location = new System.Drawing.Point(243, 186);
-            this.buttonApply.Name = "buttonApply";
-            this.buttonApply.Size = new System.Drawing.Size(58, 23);
-            this.buttonApply.TabIndex = 13;
-            this.buttonApply.Text = "Apply";
-            this.buttonApply.UseVisualStyleBackColor = true;
-            this.buttonApply.Click += new System.EventHandler(this.buttonApply_Click);
             // 
             // tabControl1
             // 
@@ -232,6 +222,7 @@ namespace PushWhacker
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.checkBoxUserModeOnly);
             this.tabPage2.Controls.Add(this.comboBoxOutput);
             this.tabPage2.Controls.Add(this.label1);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
@@ -239,8 +230,18 @@ namespace PushWhacker
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(346, 143);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Output";
+            this.tabPage2.Text = "Midi";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxUserModeOnly
+            // 
+            this.checkBoxUserModeOnly.AutoSize = true;
+            this.checkBoxUserModeOnly.Location = new System.Drawing.Point(9, 64);
+            this.checkBoxUserModeOnly.Name = "checkBoxUserModeOnly";
+            this.checkBoxUserModeOnly.Size = new System.Drawing.Size(229, 17);
+            this.checkBoxUserModeOnly.TabIndex = 22;
+            this.checkBoxUserModeOnly.Text = "Shared with Ableton Live (User Mode Only)";
+            this.checkBoxUserModeOnly.UseVisualStyleBackColor = true;
             // 
             // comboBoxOutput
             // 
@@ -401,7 +402,6 @@ namespace PushWhacker
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(370, 221);
-            this.Controls.Add(this.buttonApply);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.okButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -423,7 +423,6 @@ namespace PushWhacker
 
         #endregion
         private System.Windows.Forms.Button okButton;
-        private System.Windows.Forms.Button buttonApply;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
@@ -453,5 +452,6 @@ namespace PushWhacker
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button buttonCalibrateToe;
+        private System.Windows.Forms.CheckBox checkBoxUserModeOnly;
     }
 }

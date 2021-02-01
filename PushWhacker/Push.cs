@@ -28,6 +28,7 @@ namespace PushWhacker
             public const int ToggleTouchStrip = 57;
 
             public const int ShowInfo = 30;
+            public const int UserMode = 59;
 
             public const int PlayButton = 85;
             public const int RecordButton = 86;

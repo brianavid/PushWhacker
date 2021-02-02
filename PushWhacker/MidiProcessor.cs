@@ -285,11 +285,21 @@ namespace PushWhacker
         static void SetScaleNotesAndLightsInKey(int cycleWidth, int offset = 0)
         {
             var intervals = Scales[configValues.Scale];
+            var intervalsFromRoot = Enumerable.Range(0, intervals.Length+1).Select(i => intervals.Take(i).Sum()).ToArray();
+            var keyNote = configValues.Keys[configValues.Key];
+
+            int FindRowStartPos()
+            {
+                int pos;
+                for (pos = 0; keyNote + intervalsFromRoot[intervalsFromRoot.Length - pos - 1] >= 12; pos++) { }
+                return intervalsFromRoot.Length - pos;
+            }
+
             int nearestToC4 = -1;
-            int startingNote = configValues.Keys[configValues.Key] + (12 * configValues.OctaveNumber+12);
+            int rowStartPos = configValues.FixLayout ? FindRowStartPos() : intervals.Length;
+            int startingNote = keyNote + (12 * configValues.OctaveNumber) + intervalsFromRoot[rowStartPos];
             int targetNote = startingNote;
             int rowStartNote = startingNote;
-            int rowStartPos = 0;
 
             scaleNoteMapping = new int[64];
             for (int i = 0; i < 64-offset; i++)
@@ -297,7 +307,7 @@ namespace PushWhacker
                 int col = i % 8;
                 int pos = (rowStartPos + col) % intervals.Length;
                 int sourceNote = Push.FirstPad + i + offset;
-                bool isOctaveNote = (targetNote - startingNote) % 12 == 0;
+                bool isOctaveNote = (targetNote - keyNote) % 12 == 0;
                 bool isC4 = targetNote == nearestToC4 || nearestToC4 < 0 && targetNote >= 60;
 
                 if (isC4) nearestToC4 = targetNote;
@@ -332,6 +342,7 @@ namespace PushWhacker
 
         static void SetScaleNotesAndLightsChromatic(int cycleWidth, int offset = 0)
         {
+            var keyNote = configValues.Keys[configValues.Key];
             var intervals = Scales[configValues.Scale];
             int nearestToC4 = -1;
             var isInScale = new bool[12];
@@ -346,7 +357,7 @@ namespace PushWhacker
                 }
             }
 
-            int startingNote = configValues.Keys[configValues.Key] + (12 * configValues.OctaveNumber+12);
+            int startingNote = (configValues.FixLayout ? 0 : keyNote) + (12 * configValues.OctaveNumber+12);
             int targetNote = startingNote;
             int rowStartNote = startingNote;
 
@@ -355,9 +366,9 @@ namespace PushWhacker
             {
                 int col = i % 8;
                 int sourceNote = Push.FirstPad + i + offset;
-                bool isOctaveNote = (targetNote - startingNote) % 12 == 0;
-                bool isScaleNote = isInScale[(targetNote - startingNote) % 12];
-                bool isC4 = targetNote == nearestToC4 || nearestToC4 < 0 && targetNote >= 60;
+                bool isOctaveNote = targetNote % 12 == keyNote;
+                bool isScaleNote = isInScale[(targetNote - keyNote) % 12];
+                bool isC4 = targetNote == 60;
 
                 if (isC4) nearestToC4 = targetNote;
 

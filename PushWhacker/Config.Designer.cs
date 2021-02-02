@@ -401,7 +401,6 @@ namespace PushWhacker
             // checkBoxFix
             // 
             this.checkBoxFix.AutoSize = true;
-            this.checkBoxFix.Enabled = false;
             this.checkBoxFix.Location = new System.Drawing.Point(298, 13);
             this.checkBoxFix.Name = "checkBoxFix";
             this.checkBoxFix.Size = new System.Drawing.Size(39, 17);

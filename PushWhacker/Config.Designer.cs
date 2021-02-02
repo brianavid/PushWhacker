@@ -60,7 +60,9 @@ namespace PushWhacker
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.buttonColHi = new System.Windows.Forms.Button();
             this.buttonColLo = new System.Windows.Forms.Button();
-            this.checkBoxFix = new System.Windows.Forms.CheckBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.radioButtonFloatKey = new System.Windows.Forms.RadioButton();
+            this.radioButtonFixedKey = new System.Windows.Forms.RadioButton();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -93,7 +95,9 @@ namespace PushWhacker
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.checkBoxFix);
+            this.tabPage1.Controls.Add(this.radioButtonFixedKey);
+            this.tabPage1.Controls.Add(this.radioButtonFloatKey);
+            this.tabPage1.Controls.Add(this.label11);
             this.tabPage1.Controls.Add(this.label7);
             this.tabPage1.Controls.Add(this.comboBoxTouchStrip);
             this.tabPage1.Controls.Add(this.comboBoxPressure);
@@ -116,7 +120,7 @@ namespace PushWhacker
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(3, 108);
+            this.label7.Location = new System.Drawing.Point(3, 123);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(62, 13);
             this.label7.TabIndex = 31;
@@ -126,7 +130,7 @@ namespace PushWhacker
             // 
             this.comboBoxTouchStrip.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxTouchStrip.FormattingEnabled = true;
-            this.comboBoxTouchStrip.Location = new System.Drawing.Point(71, 100);
+            this.comboBoxTouchStrip.Location = new System.Drawing.Point(71, 115);
             this.comboBoxTouchStrip.Name = "comboBoxTouchStrip";
             this.comboBoxTouchStrip.Size = new System.Drawing.Size(204, 21);
             this.comboBoxTouchStrip.TabIndex = 30;
@@ -135,7 +139,7 @@ namespace PushWhacker
             // 
             this.comboBoxPressure.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxPressure.FormattingEnabled = true;
-            this.comboBoxPressure.Location = new System.Drawing.Point(71, 73);
+            this.comboBoxPressure.Location = new System.Drawing.Point(71, 88);
             this.comboBoxPressure.Name = "comboBoxPressure";
             this.comboBoxPressure.Size = new System.Drawing.Size(204, 21);
             this.comboBoxPressure.TabIndex = 29;
@@ -143,7 +147,7 @@ namespace PushWhacker
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(17, 81);
+            this.label6.Location = new System.Drawing.Point(17, 96);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(48, 13);
             this.label6.TabIndex = 28;
@@ -152,7 +156,7 @@ namespace PushWhacker
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(274, 49);
+            this.label4.Location = new System.Drawing.Point(274, 64);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(24, 13);
             this.label4.TabIndex = 26;
@@ -171,7 +175,7 @@ namespace PushWhacker
             "6",
             "7",
             "8"});
-            this.comboBoxOctave.Location = new System.Drawing.Point(298, 45);
+            this.comboBoxOctave.Location = new System.Drawing.Point(298, 60);
             this.comboBoxOctave.Name = "comboBoxOctave";
             this.comboBoxOctave.Size = new System.Drawing.Size(30, 21);
             this.comboBoxOctave.TabIndex = 25;
@@ -188,7 +192,7 @@ namespace PushWhacker
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(31, 48);
+            this.label3.Location = new System.Drawing.Point(31, 63);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(34, 13);
             this.label3.TabIndex = 23;
@@ -207,7 +211,7 @@ namespace PushWhacker
             // 
             this.comboBoxKey.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxKey.FormattingEnabled = true;
-            this.comboBoxKey.Location = new System.Drawing.Point(71, 46);
+            this.comboBoxKey.Location = new System.Drawing.Point(71, 61);
             this.comboBoxKey.MaxDropDownItems = 12;
             this.comboBoxKey.Name = "comboBoxKey";
             this.comboBoxKey.Size = new System.Drawing.Size(44, 21);
@@ -217,7 +221,7 @@ namespace PushWhacker
             // 
             this.comboBoxScale.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxScale.FormattingEnabled = true;
-            this.comboBoxScale.Location = new System.Drawing.Point(124, 46);
+            this.comboBoxScale.Location = new System.Drawing.Point(124, 61);
             this.comboBoxScale.Name = "comboBoxScale";
             this.comboBoxScale.Size = new System.Drawing.Size(151, 21);
             this.comboBoxScale.TabIndex = 24;
@@ -398,15 +402,36 @@ namespace PushWhacker
             this.buttonColLo.UseVisualStyleBackColor = true;
             this.buttonColLo.Click += new System.EventHandler(this.buttonColLo_Click);
             // 
-            // checkBoxFix
+            // label11
             // 
-            this.checkBoxFix.AutoSize = true;
-            this.checkBoxFix.Location = new System.Drawing.Point(298, 13);
-            this.checkBoxFix.Name = "checkBoxFix";
-            this.checkBoxFix.Size = new System.Drawing.Size(39, 17);
-            this.checkBoxFix.TabIndex = 32;
-            this.checkBoxFix.Text = "Fix";
-            this.checkBoxFix.UseVisualStyleBackColor = true;
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(10, 37);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(56, 13);
+            this.label11.TabIndex = 33;
+            this.label11.Text = "Start note:";
+            // 
+            // radioButtonFloatKey
+            // 
+            this.radioButtonFloatKey.AutoSize = true;
+            this.radioButtonFloatKey.Checked = true;
+            this.radioButtonFloatKey.Location = new System.Drawing.Point(72, 35);
+            this.radioButtonFloatKey.Name = "radioButtonFloatKey";
+            this.radioButtonFloatKey.Size = new System.Drawing.Size(80, 17);
+            this.radioButtonFloatKey.TabIndex = 34;
+            this.radioButtonFloatKey.TabStop = true;
+            this.radioButtonFloatKey.Text = "Root of key";
+            this.radioButtonFloatKey.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonFixedKey
+            // 
+            this.radioButtonFixedKey.AutoSize = true;
+            this.radioButtonFixedKey.Location = new System.Drawing.Point(158, 35);
+            this.radioButtonFixedKey.Name = "radioButtonFixedKey";
+            this.radioButtonFixedKey.Size = new System.Drawing.Size(159, 17);
+            this.radioButtonFixedKey.TabIndex = 35;
+            this.radioButtonFixedKey.Text = "Fixed at C (or nearest in-key)";
+            this.radioButtonFixedKey.UseVisualStyleBackColor = true;
             // 
             // Config
             // 
@@ -465,6 +490,8 @@ namespace PushWhacker
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button buttonCalibrateToe;
         private System.Windows.Forms.CheckBox checkBoxUserModeOnly;
-        private System.Windows.Forms.CheckBox checkBoxFix;
+        private System.Windows.Forms.RadioButton radioButtonFixedKey;
+        private System.Windows.Forms.RadioButton radioButtonFloatKey;
+        private System.Windows.Forms.Label label11;
     }
 }

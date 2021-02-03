@@ -68,6 +68,8 @@ namespace PushWhacker
             this.buttonColLo = new System.Windows.Forms.Button();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.comboBoxSwitchedScale = new System.Windows.Forms.ComboBox();
+            this.label13 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage5.SuspendLayout();
@@ -104,6 +106,8 @@ namespace PushWhacker
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label13);
+            this.tabPage1.Controls.Add(this.comboBoxSwitchedScale);
             this.tabPage1.Controls.Add(this.label4);
             this.tabPage1.Controls.Add(this.comboBoxOctave);
             this.tabPage1.Controls.Add(this.label2);
@@ -486,6 +490,24 @@ namespace PushWhacker
             this.textBox1.Text = resources.GetString("textBox1.Text");
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
+            // comboBoxSwitchedScale
+            // 
+            this.comboBoxSwitchedScale.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxSwitchedScale.FormattingEnabled = true;
+            this.comboBoxSwitchedScale.Location = new System.Drawing.Point(124, 71);
+            this.comboBoxSwitchedScale.Name = "comboBoxSwitchedScale";
+            this.comboBoxSwitchedScale.Size = new System.Drawing.Size(151, 21);
+            this.comboBoxSwitchedScale.TabIndex = 27;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(31, 74);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(81, 13);
+            this.label13.TabIndex = 28;
+            this.label13.Text = "Switched Scale";
+            // 
             // Config
             // 
             this.AcceptButton = this.okButton;
@@ -554,5 +576,7 @@ namespace PushWhacker
         private System.Windows.Forms.ComboBox comboBoxKeyChangeAmount;
         private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.ComboBox comboBoxSwitchedScale;
     }
 }

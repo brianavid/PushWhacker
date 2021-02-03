@@ -44,6 +44,7 @@ namespace PushWhacker
             foreach (var scale in MidiProcessor.Scales.Keys)
             {
                 comboBoxScale.Items.Add(scale);
+                comboBoxSwitchedScale.Items.Add(scale);
             }
 
             foreach (var key in configValues.Keys.Keys)
@@ -54,6 +55,7 @@ namespace PushWhacker
             comboBoxOutput.SelectedIndex = 0;
             comboBoxLayout.SelectedIndex = 0;
             comboBoxScale.SelectedIndex = 0;
+            comboBoxSwitchedScale.SelectedIndex = 0;
             comboBoxKey.SelectedIndex = 0;
             comboBoxPressure.SelectedIndex = 0;
             comboBoxTouchStrip.SelectedIndex = 0;
@@ -62,6 +64,10 @@ namespace PushWhacker
             if (!String.IsNullOrEmpty(values.Output)) comboBoxOutput.SelectedItem = values.Output;
             if (!String.IsNullOrEmpty(values.Layout)) comboBoxLayout.SelectedItem = values.Layout;
             if (!String.IsNullOrEmpty(values.Scale)) comboBoxScale.SelectedItem = values.Scale;
+            if (!String.IsNullOrEmpty(values.SwitchedScale)) 
+                comboBoxSwitchedScale.SelectedItem = values.Scale;
+            else
+                comboBoxSwitchedScale.SelectedItem = comboBoxScale.SelectedItem;
             if (!String.IsNullOrEmpty(values.Key)) comboBoxKey.SelectedItem = values.Key;
             comboBoxOctave.SelectedItem = !String.IsNullOrEmpty(values.Octave) ? values.Octave : "3";
             comboBoxPressure.SelectedItem = values.Pressure;
@@ -80,6 +86,7 @@ namespace PushWhacker
             configValues.FixLayout = comboBoxPadStartNote.SelectedIndex != 0;
             configValues.KeyChangeFifths = comboBoxKeyChangeAmount.SelectedIndex != 0;
             configValues.Scale = comboBoxScale.SelectedItem as string;
+            configValues.SwitchedScale = comboBoxSwitchedScale.SelectedItem as string;
             configValues.Key = comboBoxKey.SelectedItem as string;
             configValues.Octave = comboBoxOctave.SelectedItem as string;
             configValues.Pressure = comboBoxPressure.SelectedItem as string;

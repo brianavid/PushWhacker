@@ -41,9 +41,10 @@ namespace PushWhacker
         {
             public const string FootSwitch = "Foot Switch (Hold 2 CC 69)";
             public const string RaiseSemitone = "Raise Semitone";
+            public const string SwitchScale = "Switch to Alternate Scale";
             public const string FootController = "Foot Controller (CC4)";
 
-            public static string[] Choices = new string[] { FootSwitch, RaiseSemitone, FootController };
+            public static string[] Choices = new string[] { FootSwitch, RaiseSemitone, SwitchScale, FootController };
         }
 
         public enum PedalCalibrationId { SwitchOff, SwitchOn, ControlHeel, ControlToe };
@@ -52,6 +53,7 @@ namespace PushWhacker
         public string Layout { get; set; }
         public bool FixLayout { get; set; }
         public string Scale { get; set; }
+        public string SwitchedScale { get; set; }
         public string Key { get; set; }
         public string Octave { get; set; }
         public int OctaveNumber { get { return Int32.Parse(Octave); } }
@@ -90,6 +92,7 @@ namespace PushWhacker
                 Layout = (string)regKey.GetValue("Layout", ConfigValues.Layouts.InKey);
                 FixLayout = (int)regKey.GetValue("FixLayout", 0) != 0;
                 Scale = (string)regKey.GetValue("Scale", "Major");
+                SwitchedScale = (string)regKey.GetValue("SwitchedScale", Scale);
                 Key = (string)regKey.GetValue("Key", "C");
                 Octave = (string)regKey.GetValue("Octave", "2");
                 Pressure = (string)regKey.GetValue("Pressure", ConfigValues.Pressures.ChannelAftertouch);
@@ -113,6 +116,7 @@ namespace PushWhacker
                 regKey.SetValue("Layout", Layout);
                 regKey.SetValue("FixLayout", FixLayout ? 1 : 0);
                 regKey.SetValue("Scale", Scale);
+                regKey.SetValue("SwitchedScale", SwitchedScale);
                 regKey.SetValue("Key", Key);
                 regKey.SetValue("Octave", Octave);
                 regKey.SetValue("Pressure", Pressure);

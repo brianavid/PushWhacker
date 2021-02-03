@@ -20,10 +20,12 @@ namespace PushWhacker
         static MidiIn midiIn = null;
         static MidiOut midiOut = null;
         static MidiOut midiLights = null;
-        static bool footSwitchPressed = false;
+        static bool raisedSemitoneSwitch = false;
+        static bool switchedScale = false;
         static int KsFirstNote = 0;
         static int lastModulationValue = 0;
         static int[] scaleNoteMapping;
+        static int[] scaleNoteMapping2;
         static Dictionary<int, int> touchCCs;
         static Dictionary<int, int> ccValues;
         static Dictionary<int, int> notesOn = new Dictionary<int, int>();
@@ -196,6 +198,9 @@ namespace PushWhacker
                 DisplayMode();
             }
 
+            scaleNoteMapping = null;
+            scaleNoteMapping2 = null;
+
             switch (configValues.Layout)
             {
                 case ConfigValues.Layouts.InKey:
@@ -267,13 +272,26 @@ namespace PushWhacker
 
         private static void DisplayMode()
         {
+            var raiseSemitoneIndicator = raisedSemitoneSwitch ? " (+#)" : "";
             switch (configValues.Layout)
             {
                 case ConfigValues.Layouts.InKey:
                 case ConfigValues.Layouts.InKeyPlusKS:
+                    if (configValues.PedalMode == ConfigValues.PedalModes.SwitchScale && 
+                        configValues.SwitchedScale != configValues.Scale &&
+                        (switchedScale || configValues.SwitchedScale != ScaleNames[0]))
+                    {
+                        var scale1 = switchedScale ? configValues.SwitchedScale : configValues.Scale;
+                        var scale2 = switchedScale ? configValues.Scale : configValues.SwitchedScale;
+                        PushDisplay.WriteText($"{configValues.Key}{configValues.Octave} {scale1} [{scale2}]");
+                    }
+                    else
+                    {
+                        PushDisplay.WriteText($"{configValues.Key}{configValues.Octave} {configValues.Scale}{raiseSemitoneIndicator}");
+                    }
+                    break;
                 case ConfigValues.Layouts.Chromatic:
                 case ConfigValues.Layouts.ChromaticPlusKS:
-                    var raiseSemitoneIndicator = footSwitchPressed ? " (+#)" : "";
                     PushDisplay.WriteText($"{configValues.Key}{configValues.Octave} {configValues.Scale}{raiseSemitoneIndicator}");
                     break;
                 default:
@@ -285,6 +303,7 @@ namespace PushWhacker
         static void SetScaleNotesAndLightsInKey(int cycleWidth, int offset = 0)
         {
             var intervals = Scales[configValues.Scale];
+            var intervals2 = Scales[configValues.SwitchedScale];
             var intervalsFromRoot = Enumerable.Range(0, intervals.Length+1).Select(i => intervals.Take(i).Sum()).ToArray();
             var keyNote = configValues.Keys[configValues.Key];
 
@@ -300,8 +319,19 @@ namespace PushWhacker
             int startingNote = keyNote + (12 * configValues.OctaveNumber) + intervalsFromRoot[rowStartPos];
             int targetNote = startingNote;
             int rowStartNote = startingNote;
+            int targetNote2 = startingNote;
+            int rowStartNote2 = startingNote;
 
             scaleNoteMapping = new int[64];
+            if (configValues.SwitchedScale != configValues.Scale && intervals.Length == intervals2.Length)
+            {
+                scaleNoteMapping2 = new int[64];
+            }
+            else
+            {
+                intervals2 = intervals;
+            }
+
             for (int i = 0; i < 64-offset; i++)
             {
                 int col = i % 8;
@@ -313,6 +343,10 @@ namespace PushWhacker
                 if (isC4) nearestToC4 = targetNote;
 
                 scaleNoteMapping[i+offset] = targetNote;
+                if (scaleNoteMapping2 != null)
+                {
+                    scaleNoteMapping2[i + offset] = targetNote2;
+                }
 
 #if false
                             if (configValues.Debug)
@@ -324,15 +358,19 @@ namespace PushWhacker
 
 #endif
                 targetNote += intervals[pos];
+                targetNote2 += intervals2[pos];
                 if (col == 7)
                 {
                     targetNote = rowStartNote;
+                    targetNote2 = rowStartNote2;
                     for (int j = 0; j < cycleWidth; j++)
                     {
                         pos = (rowStartPos + j) % intervals.Length;
                         targetNote += intervals[pos];
+                        targetNote2 += intervals2[pos];
                     }
                     rowStartNote = targetNote;
+                    rowStartNote2 = targetNote2;
                     rowStartPos = (rowStartPos + cycleWidth) % intervals.Length;
                 }
 
@@ -620,11 +658,23 @@ namespace PushWhacker
                     case Push.Buttons.FootSwitch:
                         if (configValues.PedalMode == ConfigValues.PedalModes.RaiseSemitone)
                         {
-                            footSwitchPressed = (ccEvent.ControllerValue >= 64);    // Assuming correct calibration for polarity
+                            raisedSemitoneSwitch = (ccEvent.ControllerValue >= 64);    // Assuming correct calibration for polarity
                             DisplayMode();
                             return;
                         }
-                        else break;
+                        if (configValues.PedalMode == ConfigValues.PedalModes.SwitchScale)
+                        {
+                            switch (configValues.Layout)
+                            {
+                                case ConfigValues.Layouts.InKey:
+                                case ConfigValues.Layouts.InKeyPlusKS:
+                                    switchedScale = (ccEvent.ControllerValue >= 64);    // Assuming correct calibration for polarity
+                                    DisplayMode();
+                                    break;
+                            }
+                            return;
+                        }
+                        break;
 
                     case Push.Buttons.OctaveDown:
                         if (ccEvent.ControllerValue > 64)
@@ -705,12 +755,25 @@ namespace PushWhacker
                     case Push.Buttons.ScaleLeft:
                         if (ccEvent.ControllerValue > 64)
                         {
-                            int scaleIndex = Array.IndexOf(ScaleNames, configValues.Scale);
-                            if (scaleIndex > 0)
+                            if (switchedScale)
                             {
-                                configValues.Scale = ScaleNames[scaleIndex - 1];
-                                configValues.Save();
-                                SetScaleNotesAndLights();
+                                int scaleIndex = Array.IndexOf(ScaleNames, configValues.SwitchedScale);
+                                if (scaleIndex > 0)
+                                {
+                                    configValues.SwitchedScale = ScaleNames[scaleIndex - 1];
+                                    configValues.Save();
+                                    SetScaleNotesAndLights();
+                                }
+                            }
+                            else
+                            {
+                                int scaleIndex = Array.IndexOf(ScaleNames, configValues.Scale);
+                                if (scaleIndex > 0)
+                                {
+                                    configValues.Scale = ScaleNames[scaleIndex - 1];
+                                    configValues.Save();
+                                    SetScaleNotesAndLights();
+                                }
                             }
                         }
                         return;
@@ -718,12 +781,25 @@ namespace PushWhacker
                     case Push.Buttons.ScaleRight:
                         if (ccEvent.ControllerValue > 64)
                         {
-                            int scaleIndex = Array.IndexOf(ScaleNames, configValues.Scale);
-                            if (scaleIndex < ScaleNames.Count() - 1)
+                            if (switchedScale)
                             {
-                                configValues.Scale = ScaleNames[scaleIndex + 1];
-                                configValues.Save();
-                                SetScaleNotesAndLights();
+                                int scaleIndex = Array.IndexOf(ScaleNames, configValues.SwitchedScale);
+                                if (scaleIndex < ScaleNames.Count() - 1)
+                                {
+                                    configValues.SwitchedScale = ScaleNames[scaleIndex + 1];
+                                    configValues.Save();
+                                    SetScaleNotesAndLights();
+                                }
+                            }
+                            else
+                            {
+                                int scaleIndex = Array.IndexOf(ScaleNames, configValues.Scale);
+                                if (scaleIndex < ScaleNames.Count() - 1)
+                                {
+                                    configValues.Scale = ScaleNames[scaleIndex + 1];
+                                    configValues.Save();
+                                    SetScaleNotesAndLights();
+                                }
                             }
                         }
                         return;
@@ -732,6 +808,7 @@ namespace PushWhacker
                         if (ccEvent.ControllerValue > 64)
                         {
                             configValues.Scale = ScaleNames[0];
+                            configValues.SwitchedScale = ScaleNames[0];
                             configValues.Key = "C";
                             configValues.Octave = "2";
                             configValues.Save();
@@ -865,7 +942,10 @@ namespace PushWhacker
                     return;
                 }
 
-                var noteEncoded = scaleNoteMapping[padNoteNumber - Push.FirstPad];
+                var noteEncoded = 
+                    (switchedScale && scaleNoteMapping2 != null) ?
+                        scaleNoteMapping2[padNoteNumber - Push.FirstPad] :
+                        scaleNoteMapping[padNoteNumber - Push.FirstPad];
 
                 if (noteEncoded == ScalarNote)
                 {
@@ -919,7 +999,7 @@ namespace PushWhacker
                         return;
                     }
 
-                    if (configValues.PedalMode == ConfigValues.PedalModes.RaiseSemitone && footSwitchPressed)
+                    if (configValues.PedalMode == ConfigValues.PedalModes.RaiseSemitone && raisedSemitoneSwitch)
                     {
                         noteEncoded += 1;
                     }

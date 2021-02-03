@@ -59,6 +59,7 @@ namespace PushWhacker
         public string TouchStripMode { get; set; }
         public string PedalMode { get; set; }
         public bool UserModeOnly { get; set; }
+        public bool KeyChangeFifths { get; set; }
         public Dictionary<PedalCalibrationId, int> PedalCalibrations { get; set; }
 
         public Dictionary<string, int> Keys { get; }
@@ -93,6 +94,7 @@ namespace PushWhacker
                 Octave = (string)regKey.GetValue("Octave", "2");
                 Pressure = (string)regKey.GetValue("Pressure", ConfigValues.Pressures.ChannelAftertouch);
                 TouchStripMode = (string)regKey.GetValue("TouchStripMode", TouchStripModes.Modulation);
+                KeyChangeFifths = (int)regKey.GetValue("KeyChangeFifths", 0) != 0;
                 PedalMode = (string)regKey.GetValue("PedalMode", PedalModes.FootSwitch);
                 PedalCalibrations = new Dictionary<PedalCalibrationId, int>();
                 foreach (var cal in (PedalCalibrationId[])Enum.GetValues(typeof(PedalCalibrationId)))
@@ -115,6 +117,7 @@ namespace PushWhacker
                 regKey.SetValue("Octave", Octave);
                 regKey.SetValue("Pressure", Pressure);
                 regKey.SetValue("TouchStripMode", TouchStripMode);
+                regKey.SetValue("KeyChangeFifths", KeyChangeFifths ? 1 : 0);
                 regKey.SetValue("PedalMode", PedalMode);
                 foreach (var cal in (PedalCalibrationId[])Enum.GetValues(typeof(PedalCalibrationId)))
                 {

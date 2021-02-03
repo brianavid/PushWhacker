@@ -647,9 +647,9 @@ namespace PushWhacker
                     case Push.Buttons.KeyDown:
                         if (ccEvent.ControllerValue > 64)
                         {
+                            int keyChangeAmmount = configValues.KeyChangeFifths ? 5 : 11;
                             int keyIndex = configValues.Keys[configValues.Key];
-                            
-                            configValues.Key = configValues.Keys.Keys.ToArray()[(keyIndex + 5) % 12];
+                            configValues.Key = configValues.Keys.Keys.ToArray()[(keyIndex + keyChangeAmmount) % 12];
                             configValues.Save();
                             SetScaleNotesAndLights();
                         }
@@ -658,8 +658,9 @@ namespace PushWhacker
                     case Push.Buttons.KeyUp:
                         if (ccEvent.ControllerValue > 64)
                         {
+                            int keyChangeAmmount = configValues.KeyChangeFifths ? 7 : 1;
                             int keyIndex = configValues.Keys[configValues.Key];
-                            configValues.Key = configValues.Keys.Keys.ToArray()[(keyIndex + 7) % 12];
+                            configValues.Key = configValues.Keys.Keys.ToArray()[(keyIndex + keyChangeAmmount) % 12];
                             configValues.Save();
                             SetScaleNotesAndLights();
                         }

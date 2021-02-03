@@ -51,6 +51,8 @@ namespace PushWhacker
             contextMenu.MenuItems.AddRange(new MenuItem[] { configContextMenuItem, exitContextMenuItem });
 
             notifyIcon.ContextMenu = contextMenu;
+            notifyIcon.DoubleClick += new System.EventHandler(this.configItem_Click);
+
 
         }
 

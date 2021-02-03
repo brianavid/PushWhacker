@@ -68,7 +68,8 @@ namespace PushWhacker
             comboBoxTouchStrip.SelectedItem = values.TouchStripMode;
             comboBoxPedal.SelectedItem = values.PedalMode;
             checkBoxUserModeOnly.Checked = configValues.UserModeOnly;
-            radioButtonFixedKey.Checked = configValues.FixLayout;
+            comboBoxPadStartNote.SelectedIndex = configValues.FixLayout ? 1 : 0;
+            comboBoxKeyChangeAmount.SelectedIndex = configValues.KeyChangeFifths ? 1 : 0;
         }
 
         private void StoreValues()
@@ -76,7 +77,8 @@ namespace PushWhacker
             configValues.UserModeOnly = checkBoxUserModeOnly.Checked;
             configValues.Output = comboBoxOutput.SelectedItem as string;
             configValues.Layout = comboBoxLayout.SelectedItem as string;
-            configValues.FixLayout = radioButtonFixedKey.Checked;
+            configValues.FixLayout = comboBoxPadStartNote.SelectedIndex != 0;
+            configValues.KeyChangeFifths = comboBoxKeyChangeAmount.SelectedIndex != 0;
             configValues.Scale = comboBoxScale.SelectedItem as string;
             configValues.Key = comboBoxKey.SelectedItem as string;
             configValues.Octave = comboBoxOctave.SelectedItem as string;
@@ -129,5 +131,6 @@ namespace PushWhacker
         {
             MidiProcessor.CalibrateFootPedal(ConfigValues.PedalCalibrationId.ControlToe);
         }
+
     }
 }

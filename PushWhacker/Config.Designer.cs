@@ -471,7 +471,7 @@ namespace PushWhacker
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Config";
-            this.Text = "Config";
+            this.Text = "PushWhacker Configuration";
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();

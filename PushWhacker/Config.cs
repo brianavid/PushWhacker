@@ -65,7 +65,7 @@ namespace PushWhacker
             if (!String.IsNullOrEmpty(values.Layout)) comboBoxLayout.SelectedItem = values.Layout;
             if (!String.IsNullOrEmpty(values.Scale)) comboBoxScale.SelectedItem = values.Scale;
             if (!String.IsNullOrEmpty(values.SwitchedScale)) 
-                comboBoxSwitchedScale.SelectedItem = values.Scale;
+                comboBoxSwitchedScale.SelectedItem = values.SwitchedScale;
             else
                 comboBoxSwitchedScale.SelectedItem = comboBoxScale.SelectedItem;
             if (!String.IsNullOrEmpty(values.Key)) comboBoxKey.SelectedItem = values.Key;

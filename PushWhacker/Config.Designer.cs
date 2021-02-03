@@ -405,9 +405,9 @@ namespace PushWhacker
             this.checkBoxUserModeOnly.AutoSize = true;
             this.checkBoxUserModeOnly.Location = new System.Drawing.Point(9, 64);
             this.checkBoxUserModeOnly.Name = "checkBoxUserModeOnly";
-            this.checkBoxUserModeOnly.Size = new System.Drawing.Size(229, 17);
+            this.checkBoxUserModeOnly.Size = new System.Drawing.Size(289, 17);
             this.checkBoxUserModeOnly.TabIndex = 22;
-            this.checkBoxUserModeOnly.Text = "Shared with Ableton Live (User Mode Only)";
+            this.checkBoxUserModeOnly.Text = "Shared with Ableton Live (User Mode Only - No Display)";
             this.checkBoxUserModeOnly.UseVisualStyleBackColor = true;
             // 
             // comboBoxOutput

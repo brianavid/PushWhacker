@@ -20,9 +20,6 @@ namespace PushWhacker
 
         private static byte[] ShapingPattern = new byte[] { 0xE7, 0xF3, 0xE7, 0xFF };
 
-        static string PushDeviceId;
-
-        private static WindowsUsbInterfaceManager usbInterfaceManager;
         private static UsbDevice usbDevice;
 
         const int screenWidth = 960;
@@ -51,30 +48,21 @@ namespace PushWhacker
 
         public static async Task<bool> OpenAsync()
         {
-            var logger = new DebugLogger();
-            var tracer = new DebugTracer();
-            WindowsUsbDeviceFactory.Register(logger, tracer);
-            var deviceDefinitions = new FilterDeviceDefinition { DeviceType = DeviceType.Usb, VendorId = AbletonVendorID, ProductId = Push2ProductId };
-            var deviceDefinition = DeviceManager.Current.GetConnectedDeviceDefinitionsAsync(deviceDefinitions).Result;
-            
+            var deviceDefinitions = new FilterDeviceDefinition(AbletonVendorID, Push2ProductId);
+            var deviceFactory = WindowsUsbDeviceFactoryExtensions.CreateWindowsUsbDeviceFactory(deviceDefinitions);
+            var deviceDefinition = deviceFactory.GetConnectedDeviceDefinitionsAsync().Result;
+
             if (deviceDefinition == null || deviceDefinition.Count() < 1)
             {
                 return false;
             }
 
-            PushDeviceId = deviceDefinition.First().DeviceId;
+            var PushDeviceId = deviceDefinition.First().DeviceId;
 
             //This is the only platform specific part. Each platform has a UsbInterfaceManager
-            usbInterfaceManager = new WindowsUsbInterfaceManager
-            (
-                PushDeviceId,
-                logger,
-                tracer,
-                null,
-                null
-            );
+            var usbInterfaceManager = new WindowsUsbInterfaceManager(PushDeviceId);
 
-            usbDevice = new UsbDevice(PushDeviceId, usbInterfaceManager, logger, tracer);
+            usbDevice = new UsbDevice(PushDeviceId, usbInterfaceManager);
 
             try
             {
@@ -107,10 +95,7 @@ namespace PushWhacker
 
             usbDevice.Close();
             usbDevice.Dispose();
-            usbInterfaceManager.Close();
-            usbInterfaceManager.Dispose();
             usbDevice = null;
-            usbInterfaceManager = null;
         }
 
         public static void WriteText(string text, int fontSize = 48)

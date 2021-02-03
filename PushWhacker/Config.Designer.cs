@@ -29,6 +29,7 @@ namespace PushWhacker
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Config));
             this.okButton = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -65,12 +66,15 @@ namespace PushWhacker
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.buttonColHi = new System.Windows.Forms.Button();
             this.buttonColLo = new System.Windows.Forms.Button();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.tabPage6.SuspendLayout();
             this.SuspendLayout();
             // 
             // okButton
@@ -91,6 +95,7 @@ namespace PushWhacker
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -459,6 +464,28 @@ namespace PushWhacker
             this.buttonColLo.UseVisualStyleBackColor = true;
             this.buttonColLo.Click += new System.EventHandler(this.buttonColLo_Click);
             // 
+            // tabPage6
+            // 
+            this.tabPage6.Controls.Add(this.textBox1);
+            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage6.Size = new System.Drawing.Size(346, 143);
+            this.tabPage6.TabIndex = 5;
+            this.tabPage6.Text = "About";
+            this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(7, 7);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(328, 130);
+            this.textBox1.TabIndex = 0;
+            this.textBox1.Text = resources.GetString("textBox1.Text");
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
             // Config
             // 
             this.AcceptButton = this.okButton;
@@ -482,6 +509,8 @@ namespace PushWhacker
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.tabPage3.ResumeLayout(false);
+            this.tabPage6.ResumeLayout(false);
+            this.tabPage6.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -523,5 +552,7 @@ namespace PushWhacker
         private System.Windows.Forms.ComboBox comboBoxPadStartNote;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.ComboBox comboBoxKeyChangeAmount;
+        private System.Windows.Forms.TabPage tabPage6;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }

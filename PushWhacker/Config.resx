@@ -117,4 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="textBox1.Text" xml:space="preserve">
+    <value>PushWhacker Copyright Brian Collins 2021
+
+Source code released under the MIT License is available at https://github.com/brianavid/PushWhacker
+
+Icon from PNG Image (https://pngimage.net/musica-electronica-png-3/) used with permission.</value>
+  </data>
 </root>

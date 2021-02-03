@@ -132,5 +132,9 @@ namespace PushWhacker
             MidiProcessor.CalibrateFootPedal(ConfigValues.PedalCalibrationId.ControlToe);
         }
 
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -129,5 +129,28 @@ namespace PushWhacker
                 }
             }
         }
+
+        public void SaveStore(string store)
+        {
+            using (RegistryKey regKey = Registry.CurrentUser.OpenSubKey("Software", true).CreateSubKey("PushWhacker"))
+            {
+                regKey.SetValue($"Scale_{store}", Scale);
+                regKey.SetValue($"SwitchedScale_{store}", SwitchedScale);
+                regKey.SetValue($"Key_{ store}", Key);
+                regKey.SetValue($"Octave_{store}", Octave);
+            }
+        }
+
+        public void LoadStore(string store)
+        {
+            using (RegistryKey regKey = Registry.CurrentUser.OpenSubKey("Software", true).CreateSubKey("PushWhacker"))
+            {
+                Scale = (string)regKey.GetValue($"Scale_{store}", "Major");
+                SwitchedScale = (string)regKey.GetValue($"SwitchedScale_{store}", Scale);
+                Key = (string)regKey.GetValue($"Key_{store}", "C");
+                Octave = (string)regKey.GetValue($"Octave_{store}", "2");
+            }
+        }
+
     }
 }

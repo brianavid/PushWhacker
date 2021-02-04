@@ -42,6 +42,10 @@ namespace PushWhacker
         public static Dictionary<string, int[]> Scales { get; private set; }
         public static string[] ScaleNames;
 
+        private static string storeButtonPressed = null;
+        private static DateTime storeButtonTime;
+        public static string storeInstruction = null;
+
         public MidiProcessor(ConfigValues values)
         {
             configValues = values;
@@ -257,6 +261,11 @@ namespace PushWhacker
 
             SetButtonLED(Push.Buttons.ResetScale, Push.Colours.On);
             SetButtonLED(Push.Buttons.ResetLayout, Push.Colours.On);
+
+            SetButtonLED(Push.Buttons.Store_A, Push.Colours.On);
+            SetButtonLED(Push.Buttons.Store_B, Push.Colours.On);
+            SetButtonLED(Push.Buttons.Store_C, Push.Colours.On);
+            SetButtonLED(Push.Buttons.Store_D, Push.Colours.On);
 
             SetButtonLED(Push.Buttons.ToggleTouchStrip, Push.Colours.On);
             SetButtonLED(Push.Buttons.ShowInfo, Push.Colours.On);
@@ -625,6 +634,32 @@ namespace PushWhacker
                     DisplayMode();
                     revertToDefaultTime = DateTime.MaxValue;
                 }
+                if (storeButtonPressed != null)
+                {
+                    if (DateTime.Now > storeButtonTime.AddMilliseconds(2000))
+                    {
+                        if (storeButtonPressed == "")
+                        {
+                            foreach (var store in Push.StoreageButtonLabels.Keys)
+                            {
+                                configValues.SaveStore(store);
+                                PushDisplay.WriteText("All stores reset");
+                                storeButtonPressed = null;
+                            }
+                        }
+                        else
+                        {
+                            configValues.SaveStore(storeButtonPressed);
+                            PushDisplay.WriteText("Stored: " + Push.StoreageButtonLabels[storeButtonPressed]);
+                            storeButtonPressed = null;
+                        }
+                    }
+                    else if (storeInstruction != null && DateTime.Now > storeButtonTime.AddMilliseconds(500))
+                    {
+                        PushDisplay.WriteText(storeInstruction);
+                        storeInstruction = null;
+                    }
+                }
                 return;
             }
 
@@ -813,6 +848,14 @@ namespace PushWhacker
                             configValues.Octave = "2";
                             configValues.Save();
                             SetScaleNotesAndLights();
+                            storeButtonPressed = "";
+                            storeButtonTime = DateTime.Now;
+                            storeInstruction = "Hold to clear stores ...";
+                        }
+                        else
+                        {
+                            storeButtonPressed = null;
+                            DisplayMode();
                         }
                         return;
 
@@ -906,6 +949,21 @@ namespace PushWhacker
                         }
                         return;
 #endif
+                    case Push.Buttons.Store_A:
+                        HandleStoreButton(ccEvent, "A");
+                        return;
+
+                    case Push.Buttons.Store_B:
+                        HandleStoreButton(ccEvent, "B");
+                        return;
+
+                    case Push.Buttons.Store_C:
+                        HandleStoreButton(ccEvent, "C");
+                        return;
+
+                    case Push.Buttons.Store_D:
+                        HandleStoreButton(ccEvent, "D");
+                        return;
 
                     case Push.Buttons.BrightnessCC:
                         SetLedBrightness(ccEvent.ControllerValue);
@@ -1062,6 +1120,22 @@ namespace PushWhacker
 #endif
 
             midiOut.Send(midiEvent.GetAsShortMessage());
+
+            void HandleStoreButton(ControlChangeEvent ccEvent, string store)
+            {
+                if (ccEvent.ControllerValue > 64)
+                {
+                    storeButtonPressed = store;
+                    storeButtonTime = DateTime.Now;
+                    storeInstruction = "Hold to store ...";
+                }
+                else
+                {
+                    configValues.LoadStore(store);
+                    SetScaleNotesAndLights();
+                    storeButtonPressed = null;
+                }
+            }
         }
 
         private static void RequestDefaultDisplay()

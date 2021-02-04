@@ -33,9 +33,22 @@ namespace PushWhacker
             public const int PlayButton = 85;
             public const int RecordButton = 86;
 
-            public static SortedSet<int> ReservedCCs = new SortedSet<int> { 59, 110, 111, 112, 113, 56, 57, 58, 31, 50, 51 };
+            public const int Store_A = 110;
+            public const int Store_B = 111;
+            public const int Store_C = 112;
+            public const int Store_D = 113;
+
+            public static SortedSet<int> ReservedCCs = new SortedSet<int> { 59, 56, 57, 58, 31, 50, 51 };
             public static SortedSet<int> Coloured = new SortedSet<int>(Enumerable.Range(20, 8).Union(Enumerable.Range(102, 8)));
         }
+
+        public static readonly Dictionary<string, string> StoreageButtonLabels = new Dictionary<string, string>
+        {
+            { "A", "Device"  },
+            { "B", "Browse"  },
+            { "C", "Mix"  },
+            { "D", "Clip"  },
+        };
 
         public class Colours
         {

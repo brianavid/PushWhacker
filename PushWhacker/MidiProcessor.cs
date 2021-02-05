@@ -811,10 +811,15 @@ namespace PushWhacker
                             }
                             else
                             {
+                                bool sameScale = configValues.SwitchedScale == configValues.Scale;
                                 int scaleIndex = Array.IndexOf(ScaleNames, configValues.Scale);
                                 if (scaleIndex > 0)
                                 {
                                     configValues.Scale = ScaleNames[scaleIndex - 1];
+                                    if (sameScale)
+                                    {
+                                        configValues.SwitchedScale = configValues.Scale;
+                                    }
                                     configValues.Save();
                                     SetScaleNotesAndLights();
                                 }
@@ -837,10 +842,15 @@ namespace PushWhacker
                             }
                             else
                             {
+                                bool sameScale = configValues.SwitchedScale == configValues.Scale;
                                 int scaleIndex = Array.IndexOf(ScaleNames, configValues.Scale);
                                 if (scaleIndex < ScaleNames.Count() - 1)
                                 {
                                     configValues.Scale = ScaleNames[scaleIndex + 1];
+                                    if (sameScale)
+                                    {
+                                        configValues.SwitchedScale = configValues.Scale;
+                                    }
                                     configValues.Save();
                                     SetScaleNotesAndLights();
                                 }

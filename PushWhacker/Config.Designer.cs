@@ -33,13 +33,8 @@ namespace PushWhacker
             this.okButton = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.label4 = new System.Windows.Forms.Label();
-            this.comboBoxOctave = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.comboBoxLayout = new System.Windows.Forms.ComboBox();
-            this.comboBoxKey = new System.Windows.Forms.ComboBox();
-            this.comboBoxScale = new System.Windows.Forms.ComboBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.label12 = new System.Windows.Forms.Label();
             this.comboBoxKeyChangeAmount = new System.Windows.Forms.ComboBox();
@@ -68,8 +63,15 @@ namespace PushWhacker
             this.buttonColLo = new System.Windows.Forms.Button();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.comboBoxSwitchedScale = new System.Windows.Forms.ComboBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label13 = new System.Windows.Forms.Label();
+            this.comboBoxSwitchedScale = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.comboBoxOctave = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.comboBoxKey = new System.Windows.Forms.ComboBox();
+            this.comboBoxScale = new System.Windows.Forms.ComboBox();
+            this.comboBoxLayoutStore = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage5.SuspendLayout();
@@ -77,6 +79,7 @@ namespace PushWhacker
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage6.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // okButton
@@ -106,15 +109,9 @@ namespace PushWhacker
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.label13);
-            this.tabPage1.Controls.Add(this.comboBoxSwitchedScale);
-            this.tabPage1.Controls.Add(this.label4);
-            this.tabPage1.Controls.Add(this.comboBoxOctave);
+            this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Controls.Add(this.label2);
-            this.tabPage1.Controls.Add(this.label3);
             this.tabPage1.Controls.Add(this.comboBoxLayout);
-            this.tabPage1.Controls.Add(this.comboBoxKey);
-            this.tabPage1.Controls.Add(this.comboBoxScale);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -122,33 +119,6 @@ namespace PushWhacker
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Pads";
             this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(274, 46);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(24, 13);
-            this.label4.TabIndex = 26;
-            this.label4.Text = "Oct";
-            // 
-            // comboBoxOctave
-            // 
-            this.comboBoxOctave.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxOctave.FormattingEnabled = true;
-            this.comboBoxOctave.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8"});
-            this.comboBoxOctave.Location = new System.Drawing.Point(298, 42);
-            this.comboBoxOctave.Name = "comboBoxOctave";
-            this.comboBoxOctave.Size = new System.Drawing.Size(30, 21);
-            this.comboBoxOctave.TabIndex = 25;
             // 
             // label2
             // 
@@ -159,15 +129,6 @@ namespace PushWhacker
             this.label2.TabIndex = 21;
             this.label2.Text = "Layout";
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(31, 45);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(34, 13);
-            this.label3.TabIndex = 23;
-            this.label3.Text = "Scale";
-            // 
             // comboBoxLayout
             // 
             this.comboBoxLayout.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -176,25 +137,6 @@ namespace PushWhacker
             this.comboBoxLayout.Name = "comboBoxLayout";
             this.comboBoxLayout.Size = new System.Drawing.Size(257, 21);
             this.comboBoxLayout.TabIndex = 20;
-            // 
-            // comboBoxKey
-            // 
-            this.comboBoxKey.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxKey.FormattingEnabled = true;
-            this.comboBoxKey.Location = new System.Drawing.Point(71, 43);
-            this.comboBoxKey.MaxDropDownItems = 12;
-            this.comboBoxKey.Name = "comboBoxKey";
-            this.comboBoxKey.Size = new System.Drawing.Size(44, 21);
-            this.comboBoxKey.TabIndex = 22;
-            // 
-            // comboBoxScale
-            // 
-            this.comboBoxScale.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxScale.FormattingEnabled = true;
-            this.comboBoxScale.Location = new System.Drawing.Point(124, 43);
-            this.comboBoxScale.Name = "comboBoxScale";
-            this.comboBoxScale.Size = new System.Drawing.Size(151, 21);
-            this.comboBoxScale.TabIndex = 24;
             // 
             // tabPage5
             // 
@@ -421,6 +363,7 @@ namespace PushWhacker
             // 
             // comboBoxOutput
             // 
+            this.comboBoxOutput.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxOutput.FormattingEnabled = true;
             this.comboBoxOutput.Location = new System.Drawing.Point(72, 17);
             this.comboBoxOutput.Name = "comboBoxOutput";
@@ -490,23 +433,104 @@ namespace PushWhacker
             this.textBox1.Text = resources.GetString("textBox1.Text");
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
-            // comboBoxSwitchedScale
+            // groupBox1
             // 
-            this.comboBoxSwitchedScale.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxSwitchedScale.FormattingEnabled = true;
-            this.comboBoxSwitchedScale.Location = new System.Drawing.Point(124, 71);
-            this.comboBoxSwitchedScale.Name = "comboBoxSwitchedScale";
-            this.comboBoxSwitchedScale.Size = new System.Drawing.Size(151, 21);
-            this.comboBoxSwitchedScale.TabIndex = 27;
+            this.groupBox1.Controls.Add(this.comboBoxLayoutStore);
+            this.groupBox1.Controls.Add(this.label13);
+            this.groupBox1.Controls.Add(this.comboBoxSwitchedScale);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.comboBoxOctave);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.comboBoxKey);
+            this.groupBox1.Controls.Add(this.comboBoxScale);
+            this.groupBox1.Location = new System.Drawing.Point(7, 40);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(328, 95);
+            this.groupBox1.TabIndex = 22;
+            this.groupBox1.TabStop = false;
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(31, 74);
+            this.label13.Location = new System.Drawing.Point(16, 63);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(81, 13);
-            this.label13.TabIndex = 28;
+            this.label13.TabIndex = 35;
             this.label13.Text = "Switched Scale";
+            // 
+            // comboBoxSwitchedScale
+            // 
+            this.comboBoxSwitchedScale.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxSwitchedScale.FormattingEnabled = true;
+            this.comboBoxSwitchedScale.Location = new System.Drawing.Point(109, 60);
+            this.comboBoxSwitchedScale.Name = "comboBoxSwitchedScale";
+            this.comboBoxSwitchedScale.Size = new System.Drawing.Size(151, 21);
+            this.comboBoxSwitchedScale.TabIndex = 34;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(259, 35);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(24, 13);
+            this.label4.TabIndex = 33;
+            this.label4.Text = "Oct";
+            // 
+            // comboBoxOctave
+            // 
+            this.comboBoxOctave.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxOctave.FormattingEnabled = true;
+            this.comboBoxOctave.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8"});
+            this.comboBoxOctave.Location = new System.Drawing.Point(283, 31);
+            this.comboBoxOctave.Name = "comboBoxOctave";
+            this.comboBoxOctave.Size = new System.Drawing.Size(30, 21);
+            this.comboBoxOctave.TabIndex = 32;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(16, 34);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(34, 13);
+            this.label3.TabIndex = 30;
+            this.label3.Text = "Scale";
+            // 
+            // comboBoxKey
+            // 
+            this.comboBoxKey.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxKey.FormattingEnabled = true;
+            this.comboBoxKey.Location = new System.Drawing.Point(56, 32);
+            this.comboBoxKey.MaxDropDownItems = 12;
+            this.comboBoxKey.Name = "comboBoxKey";
+            this.comboBoxKey.Size = new System.Drawing.Size(44, 21);
+            this.comboBoxKey.TabIndex = 29;
+            // 
+            // comboBoxScale
+            // 
+            this.comboBoxScale.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxScale.FormattingEnabled = true;
+            this.comboBoxScale.Location = new System.Drawing.Point(109, 32);
+            this.comboBoxScale.Name = "comboBoxScale";
+            this.comboBoxScale.Size = new System.Drawing.Size(151, 21);
+            this.comboBoxScale.TabIndex = 31;
+            // 
+            // comboBoxLayoutStore
+            // 
+            this.comboBoxLayoutStore.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxLayoutStore.FormattingEnabled = true;
+            this.comboBoxLayoutStore.Location = new System.Drawing.Point(6, 0);
+            this.comboBoxLayoutStore.Name = "comboBoxLayoutStore";
+            this.comboBoxLayoutStore.Size = new System.Drawing.Size(185, 21);
+            this.comboBoxLayoutStore.TabIndex = 23;
+            this.comboBoxLayoutStore.SelectedIndexChanged += new System.EventHandler(this.comboBoxLayoutStore_SelectedIndexChanged);
             // 
             // Config
             // 
@@ -533,6 +557,8 @@ namespace PushWhacker
             this.tabPage3.ResumeLayout(false);
             this.tabPage6.ResumeLayout(false);
             this.tabPage6.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -542,13 +568,8 @@ namespace PushWhacker
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox comboBoxOctave;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox comboBoxLayout;
-        private System.Windows.Forms.ComboBox comboBoxKey;
-        private System.Windows.Forms.ComboBox comboBoxScale;
         private System.Windows.Forms.ComboBox comboBoxOutput;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TabPage tabPage3;
@@ -576,7 +597,14 @@ namespace PushWhacker
         private System.Windows.Forms.ComboBox comboBoxKeyChangeAmount;
         private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.ComboBox comboBoxLayoutStore;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.ComboBox comboBoxSwitchedScale;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox comboBoxOctave;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox comboBoxKey;
+        private System.Windows.Forms.ComboBox comboBoxScale;
     }
 }

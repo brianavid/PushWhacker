@@ -9,6 +9,7 @@ namespace PushWhacker
     {
         private static ConfigValues configValues;
         private static MidiProcessor midiProcessor;
+        int previousLayoutStoreSelectedIndex = 0;
 
         public Config(ConfigValues values, MidiProcessor processor)
         {
@@ -52,8 +53,15 @@ namespace PushWhacker
                 comboBoxKey.Items.Add(key);
             }
 
+            comboBoxLayoutStore.Items.Add("Current");
+            foreach (var store in Push.StoreageButtonLabels.Values)
+            {
+                comboBoxLayoutStore.Items.Add("Store " + store);
+            }
+
             comboBoxOutput.SelectedIndex = 0;
             comboBoxLayout.SelectedIndex = 0;
+            comboBoxLayoutStore.SelectedIndex = 0;
             comboBoxScale.SelectedIndex = 0;
             comboBoxSwitchedScale.SelectedIndex = 0;
             comboBoxKey.SelectedIndex = 0;
@@ -63,19 +71,14 @@ namespace PushWhacker
 
             if (!String.IsNullOrEmpty(values.Output)) comboBoxOutput.SelectedItem = values.Output;
             if (!String.IsNullOrEmpty(values.Layout)) comboBoxLayout.SelectedItem = values.Layout;
-            if (!String.IsNullOrEmpty(values.Scale)) comboBoxScale.SelectedItem = values.Scale;
-            if (!String.IsNullOrEmpty(values.SwitchedScale)) 
-                comboBoxSwitchedScale.SelectedItem = values.SwitchedScale;
-            else
-                comboBoxSwitchedScale.SelectedItem = comboBoxScale.SelectedItem;
-            if (!String.IsNullOrEmpty(values.Key)) comboBoxKey.SelectedItem = values.Key;
-            comboBoxOctave.SelectedItem = !String.IsNullOrEmpty(values.Octave) ? values.Octave : "3";
             comboBoxPressure.SelectedItem = values.Pressure;
             comboBoxTouchStrip.SelectedItem = values.TouchStripMode;
             comboBoxPedal.SelectedItem = values.PedalMode;
             checkBoxUserModeOnly.Checked = configValues.UserModeOnly;
             comboBoxPadStartNote.SelectedIndex = configValues.FixLayout ? 1 : 0;
             comboBoxKeyChangeAmount.SelectedIndex = configValues.KeyChangeFifths ? 1 : 0;
+            
+            LoadScaleValues();
         }
 
         private void StoreValues()
@@ -85,13 +88,11 @@ namespace PushWhacker
             configValues.Layout = comboBoxLayout.SelectedItem as string;
             configValues.FixLayout = comboBoxPadStartNote.SelectedIndex != 0;
             configValues.KeyChangeFifths = comboBoxKeyChangeAmount.SelectedIndex != 0;
-            configValues.Scale = comboBoxScale.SelectedItem as string;
-            configValues.SwitchedScale = comboBoxSwitchedScale.SelectedItem as string;
-            configValues.Key = comboBoxKey.SelectedItem as string;
-            configValues.Octave = comboBoxOctave.SelectedItem as string;
             configValues.Pressure = comboBoxPressure.SelectedItem as string;
             configValues.TouchStripMode = comboBoxTouchStrip.SelectedItem as string;
             configValues.PedalMode = comboBoxPedal.SelectedItem as string;
+            
+            SaveScaleValues();
 
             configValues.Save();
 
@@ -102,9 +103,32 @@ namespace PushWhacker
             }
         }
 
+        private void LoadScaleValues()
+        {
+            if (!String.IsNullOrEmpty(configValues.Scale)) comboBoxScale.SelectedItem = configValues.Scale;
+            if (!String.IsNullOrEmpty(configValues.SwitchedScale))
+                comboBoxSwitchedScale.SelectedItem = configValues.SwitchedScale;
+            else
+                comboBoxSwitchedScale.SelectedItem = comboBoxScale.SelectedItem;
+            if (!String.IsNullOrEmpty(configValues.Key)) comboBoxKey.SelectedItem = configValues.Key;
+            comboBoxOctave.SelectedItem = !String.IsNullOrEmpty(configValues.Octave) ? configValues.Octave : "3";
+        }
+
+        private void SaveScaleValues()
+        {
+            configValues.Scale = comboBoxScale.SelectedItem as string;
+            configValues.SwitchedScale = comboBoxSwitchedScale.SelectedItem as string;
+            configValues.Key = comboBoxKey.SelectedItem as string;
+            configValues.Octave = comboBoxOctave.SelectedItem as string;
+        }
+
         private void okButton_Click(object sender, EventArgs e)
         {
             StoreValues();
+            if (comboBoxLayoutStore.SelectedIndex != 0)
+            {
+                configValues.SaveStore(" ABCD".Substring(comboBoxLayoutStore.SelectedIndex, 1));
+            }
 
             this.DialogResult = DialogResult.OK;
         }
@@ -142,6 +166,21 @@ namespace PushWhacker
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void comboBoxLayoutStore_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (previousLayoutStoreSelectedIndex != 0)
+            {
+                SaveScaleValues();
+                configValues.SaveStore(" ABCD".Substring(previousLayoutStoreSelectedIndex, 1));
+            }
+            if (comboBoxLayoutStore.SelectedIndex != 0)
+            {
+                configValues.LoadStore(" ABCD".Substring(comboBoxLayoutStore.SelectedIndex, 1));
+                LoadScaleValues();
+            }
+            previousLayoutStoreSelectedIndex = comboBoxLayoutStore.SelectedIndex;
         }
     }
 }

@@ -521,6 +521,7 @@ namespace PushWhacker
             this.comboBoxScale.Name = "comboBoxScale";
             this.comboBoxScale.Size = new System.Drawing.Size(151, 21);
             this.comboBoxScale.TabIndex = 31;
+            this.comboBoxScale.SelectedIndexChanged += new System.EventHandler(this.comboBoxScale_SelectedIndexChanged);
             // 
             // comboBoxLayoutStore
             // 

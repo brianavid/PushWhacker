@@ -10,6 +10,7 @@ namespace PushWhacker
         private static ConfigValues configValues;
         private static MidiProcessor midiProcessor;
         int previousLayoutStoreSelectedIndex = 0;
+        int previousScaleSelectedIndex = -1;
 
         public Config(ConfigValues values, MidiProcessor processor)
         {
@@ -112,6 +113,7 @@ namespace PushWhacker
                 comboBoxSwitchedScale.SelectedItem = comboBoxScale.SelectedItem;
             if (!String.IsNullOrEmpty(configValues.Key)) comboBoxKey.SelectedItem = configValues.Key;
             comboBoxOctave.SelectedItem = !String.IsNullOrEmpty(configValues.Octave) ? configValues.Octave : "3";
+            previousScaleSelectedIndex = comboBoxScale.SelectedIndex;
         }
 
         private void SaveScaleValues()
@@ -181,6 +183,15 @@ namespace PushWhacker
                 LoadScaleValues();
             }
             previousLayoutStoreSelectedIndex = comboBoxLayoutStore.SelectedIndex;
+        }
+
+        private void comboBoxScale_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (previousScaleSelectedIndex == comboBoxSwitchedScale.SelectedIndex)
+            {
+                comboBoxSwitchedScale.SelectedIndex = comboBoxScale.SelectedIndex;
+            }
+            previousScaleSelectedIndex = comboBoxScale.SelectedIndex;
         }
     }
 }

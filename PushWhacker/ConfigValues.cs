@@ -40,11 +40,10 @@ namespace PushWhacker
         public class PedalModes
         {
             public const string FootSwitch = "Foot Switch (Hold 2 CC 69)";
-            public const string RaiseSemitone = "Raise Semitone";
             public const string SwitchScale = "Switch to Alternate Scale";
             public const string FootController = "Foot Controller (CC4)";
 
-            public static string[] Choices = new string[] { FootSwitch, RaiseSemitone, SwitchScale, FootController };
+            public static string[] Choices = new string[] { FootSwitch, SwitchScale, FootController };
         }
 
         public enum PedalCalibrationId { SwitchOff, SwitchOn, ControlHeel, ControlToe };

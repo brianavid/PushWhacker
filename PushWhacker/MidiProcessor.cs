@@ -20,7 +20,6 @@ namespace PushWhacker
         static MidiIn midiIn = null;
         static MidiOut midiOut = null;
         static MidiOut midiLights = null;
-        static bool raisedSemitoneSwitch = false;
         static bool switchedScale = false;
         static int KsFirstNote = 0;
         static int lastModulationValue = 0;
@@ -290,7 +289,6 @@ namespace PushWhacker
 
         private static void DisplayMode()
         {
-            var raiseSemitoneIndicator = raisedSemitoneSwitch ? " (+#)" : "";
             switch (configValues.Layout)
             {
                 case ConfigValues.Layouts.InKey:
@@ -305,12 +303,12 @@ namespace PushWhacker
                     }
                     else
                     {
-                        PushDisplay.WriteText($"{configValues.Key}{configValues.Octave} {configValues.Scale}{raiseSemitoneIndicator}");
+                        PushDisplay.WriteText($"{configValues.Key}{configValues.Octave} {configValues.Scale}");
                     }
                     break;
                 case ConfigValues.Layouts.Chromatic:
                 case ConfigValues.Layouts.ChromaticPlusKS:
-                    PushDisplay.WriteText($"{configValues.Key}{configValues.Octave} {configValues.Scale}{raiseSemitoneIndicator}");
+                    PushDisplay.WriteText($"{configValues.Key}{configValues.Octave} {configValues.Scale}");
                     break;
                 default:
                     PushDisplay.WriteText($"{configValues.Layout}");
@@ -700,12 +698,6 @@ namespace PushWhacker
                 switch ((byte)ccEvent.Controller)
                 {
                     case Push.Buttons.FootSwitch:
-                        if (configValues.PedalMode == ConfigValues.PedalModes.RaiseSemitone)
-                        {
-                            raisedSemitoneSwitch = (ccEvent.ControllerValue >= 64);    // Assuming correct calibration for polarity
-                            DisplayMode();
-                            return;
-                        }
                         if (configValues.PedalMode == ConfigValues.PedalModes.SwitchScale)
                         {
                             switch (configValues.Layout)
@@ -1074,11 +1066,6 @@ namespace PushWhacker
                     if (noteEncoded < 0)
                     {
                         return;
-                    }
-
-                    if (configValues.PedalMode == ConfigValues.PedalModes.RaiseSemitone && raisedSemitoneSwitch)
-                    {
-                        noteEncoded += 1;
                     }
 
                     noteEvent.NoteNumber = noteEncoded;

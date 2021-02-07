@@ -390,7 +390,7 @@ namespace PushWhacker
                     rowStartPos = (rowStartPos + cycleWidth) % intervals.Length;
                 }
 
-                SetPadLED(sourceNote, isC4 ? Push.Colours.Green : isOctaveNote ? Push.Colours.Blue : Push.Colours.White);
+                SetPadLED(sourceNote, isC4 ? Push.Colours.DullGreen : isOctaveNote ? Push.Colours.Blue : Push.Colours.White);
             }
         }
 
@@ -444,7 +444,7 @@ namespace PushWhacker
                     rowStartNote = targetNote;
                 }
 
-                SetPadLED(sourceNote, isC4 ? Push.Colours.Green : isOctaveNote ? Push.Colours.Blue : isScaleNote ? Push.Colours.White : Push.Colours.DarkGrey);
+                SetPadLED(sourceNote, isC4 ? Push.Colours.DullGreen : isOctaveNote ? Push.Colours.Blue : isScaleNote ? Push.Colours.White : Push.Colours.DarkGrey);
             }
         }
 
@@ -582,9 +582,9 @@ namespace PushWhacker
                     DefineSpecificButton(row, col, note++, Push.Colours.DullRed);
                 }
             }
-            DefineSpecificButton(7, 0, KsOct0Note, KsFirstNote == 0 ? Push.Colours.Green : Push.Colours.DullYellow);
-            DefineSpecificButton(7, 1, KsOct1Note, KsFirstNote == 12 ? Push.Colours.Green : Push.Colours.DullYellow);
-            DefineSpecificButton(7, 2, KsOct2Note, KsFirstNote == 24 ? Push.Colours.Green : Push.Colours.DullYellow);
+            DefineSpecificButton(7, 0, KsOct0Note, KsFirstNote == 0 ? Push.Colours.DullGreen : Push.Colours.DullYellow);
+            DefineSpecificButton(7, 1, KsOct1Note, KsFirstNote == 12 ? Push.Colours.DullGreen : Push.Colours.DullYellow);
+            DefineSpecificButton(7, 2, KsOct2Note, KsFirstNote == 24 ? Push.Colours.DullGreen : Push.Colours.DullYellow);
         }
 
         static void SetPadLED(int sourceNote, int colour)

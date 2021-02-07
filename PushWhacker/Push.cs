@@ -62,8 +62,8 @@ namespace PushWhacker
             public const int Yellow = 29;
             public const int DullRed = 67;
             public const int DullBlue = 20;
-            public const int DullGreen = 30;
-            public const int DullYellow = 85;
+            public const int DullGreen = 85;
+            public const int DullYellow = 30;
 
             public const int On = 127;
             public const int Dim = 16;

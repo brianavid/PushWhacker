@@ -320,7 +320,8 @@ namespace PushWhacker
         {
             var intervals = Scales[configValues.Scale];
             var intervals2 = Scales[configValues.SwitchedScale];
-            var intervalsFromRoot = Enumerable.Range(0, intervals.Length+1).Select(i => intervals.Take(i).Sum()).ToArray();
+            var intervalsFromRoot = Enumerable.Range(0, intervals.Length + 1).Select(i => intervals.Take(i).Sum()).ToArray();
+            var intervals2FromRoot = Enumerable.Range(0, intervals2.Length + 1).Select(i => intervals2.Take(i).Sum()).ToArray();
             var keyNote = configValues.Keys[configValues.Key];
 
             int FindRowStartPos()
@@ -333,10 +334,11 @@ namespace PushWhacker
             int nearestToC4 = -1;
             int rowStartPos = configValues.FixLayout ? FindRowStartPos() : intervals.Length;
             int startingNote = keyNote + (12 * configValues.OctaveNumber) + intervalsFromRoot[rowStartPos];
+            int startingNote2 = keyNote + (12 * configValues.OctaveNumber) + intervals2FromRoot[rowStartPos];
             int targetNote = startingNote;
             int rowStartNote = startingNote;
-            int targetNote2 = startingNote;
-            int rowStartNote2 = startingNote;
+            int targetNote2 = startingNote2;
+            int rowStartNote2 = startingNote2;
 
             scaleNoteMapping = new int[64];
             if (configValues.SwitchedScale != configValues.Scale && intervals.Length == intervals2.Length)

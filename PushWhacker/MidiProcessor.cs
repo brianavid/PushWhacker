@@ -671,11 +671,13 @@ namespace PushWhacker
                         storeInstruction = null;
                     }
                 }
+#if DISPLAY_CC_VALUES
                 else if (ccDisplayMessage != null && DateTime.Now > ccDisplayTime.AddMilliseconds(100))
                 {
                     PushDisplay.WriteText(ccDisplayMessage);
                     ccDisplayTime = DateTime.Now;
                 }
+#endif          
                 return;
             }
 

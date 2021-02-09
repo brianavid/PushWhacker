@@ -31,6 +31,8 @@ namespace PushWhacker
         static int[] ScalerKsNotes = new int[] { -1, 47, 45, 43, 41, 40, 38, 36 };
         static int[] ScalerPadNotes = new int[] { 48, 50, 52, 53, 55, 57, 59, 60 };
         static DateTime revertToDefaultTime = DateTime.MaxValue;
+        static DateTime ccDisplayTime = DateTime.MaxValue;
+        static string ccDisplayMessage = null;
 
         static bool inUserMode = false;
 
@@ -669,6 +671,11 @@ namespace PushWhacker
                         storeInstruction = null;
                     }
                 }
+                else if (ccDisplayMessage != null && DateTime.Now > ccDisplayTime.AddMilliseconds(100))
+                {
+                    PushDisplay.WriteText(ccDisplayMessage);
+                    ccDisplayTime = DateTime.Now;
+                }
                 return;
             }
 
@@ -687,7 +694,7 @@ namespace PushWhacker
                     ccValues[(byte)ccEvent.Controller] = ccValue;
                     if (touchCCs.Values.ToList().Contains((byte)ccEvent.Controller))
                     {
-                        PushDisplay.WriteText($"CC {ccEvent.Controller} : {(ccValue * 100 + 100) / 128}%");
+                        ccDisplayMessage = $"CC {ccEvent.Controller} : {(ccValue * 100 + 100) / 128}%";
                     }
                 }
 
@@ -1003,10 +1010,12 @@ namespace PushWhacker
                         var touchVal = (ccValues[touchCC] * 100 + 100) / 128;
                         if (midiEvent.CommandCode == MidiCommandCode.NoteOn && noteEvent.Velocity >= 64)
                         {
-                            PushDisplay.WriteText($"CC {touchCC} : {touchVal}%");
+                            ccDisplayMessage = $"CC {touchCC} : {touchVal}%";
+                            ccDisplayTime = DateTime.Now;
                         }
                         else
                         {
+                            ccDisplayMessage = null;
                             DisplayMode();
                         }
                     }

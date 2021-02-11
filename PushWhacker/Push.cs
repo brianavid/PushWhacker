@@ -22,8 +22,8 @@ namespace PushWhacker
             public const int BrightnessCC = 79;
             public const int FootSwitch = 69;
 
-            public const int ResetScale = 49;
-            public const int ResetLayout = 48;
+            public const int ResetScale = 58;
+            public const int ResetLayout = 31;
 
             public const int ToggleTouchStrip = 57;
 
@@ -33,21 +33,17 @@ namespace PushWhacker
             public const int PlayButton = 85;
             public const int RecordButton = 86;
 
-            public const int Store_A = 110;
-            public const int Store_B = 111;
-            public const int Store_C = 112;
-            public const int Store_D = 113;
+            public const int Store_A = 50;
+            public const int Store_B = 51;
 
-            public static SortedSet<int> ReservedCCs = new SortedSet<int> { 59, 56, 57, 58, 31, 50, 51 };
+            public static SortedSet<int> ReservedCCs = new SortedSet<int> { 56, 48, 49 };
             public static SortedSet<int> Coloured = new SortedSet<int>(Enumerable.Range(20, 8).Union(Enumerable.Range(102, 8)));
         }
 
         public static readonly Dictionary<string, string> StoreageButtonLabels = new Dictionary<string, string>
         {
-            { "A", "Device"  },
-            { "B", "Browse"  },
-            { "C", "Mix"  },
-            { "D", "Clip"  },
+            { "A", "Note"  },
+            { "B", "Session"  },
         };
 
         public class Colours

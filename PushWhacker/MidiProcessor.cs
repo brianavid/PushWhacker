@@ -274,8 +274,6 @@ namespace PushWhacker
 
             SetButtonLED(Push.Buttons.Store_A, Push.Colours.On);
             SetButtonLED(Push.Buttons.Store_B, Push.Colours.On);
-            SetButtonLED(Push.Buttons.Store_C, Push.Colours.On);
-            SetButtonLED(Push.Buttons.Store_D, Push.Colours.On);
 
             SetButtonLED(Push.Buttons.ToggleTouchStrip, Push.Colours.On);
             SetButtonLED(Push.Buttons.ShowInfo, Push.Colours.On);
@@ -930,7 +928,7 @@ namespace PushWhacker
                                 ClearLights();
                             }
                             inUserMode = !inUserMode;
-                            SendSysex(new byte[] { 0x0A, (byte)(inUserMode ? 1 : 0)});
+                            SendSysex(new byte[] { 0x0A, (byte)(inUserMode ? 1 : 0) });
                             if (inUserMode)
                             {
                                 SetScaleNotesAndLights();
@@ -977,14 +975,6 @@ namespace PushWhacker
 
                     case Push.Buttons.Store_B:
                         HandleStoreButton(ccEvent, "B");
-                        return;
-
-                    case Push.Buttons.Store_C:
-                        HandleStoreButton(ccEvent, "C");
-                        return;
-
-                    case Push.Buttons.Store_D:
-                        HandleStoreButton(ccEvent, "D");
                         return;
 
                     case Push.Buttons.BrightnessCC:

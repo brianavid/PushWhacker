@@ -6,7 +6,7 @@
     <ProductVersion>3.10</ProductVersion>
     <ProjectGuid>c9813a50-20b6-4c0c-b16b-7cbd04254eb6</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>PushWackerSetup</OutputName>
+    <OutputName>PushWhackerSetup</OutputName>
     <OutputType>Package</OutputType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">

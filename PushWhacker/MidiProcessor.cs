@@ -103,7 +103,7 @@ namespace PushWhacker
             ccValues[76] = 0;
             ccValues[77] = 0;
             ccValues[78] = 0;
-            ccValues[79] = 64;
+            ccValues[79] = configValues.Brightness;
         }
 
         public bool StartProcessing()
@@ -979,6 +979,7 @@ namespace PushWhacker
 
                     case Push.Buttons.BrightnessCC:
                         SetLedBrightness(ccEvent.ControllerValue);
+                        configValues.Save();
                         return;
                 }
 
@@ -1215,6 +1216,7 @@ namespace PushWhacker
             //  Use the rh controller to set the LED brightness
             SendSysex(new byte[] { 0x06, (byte)brightness });
             SendSysex(new byte[] { 0x08, (byte)((brightness % 64) * 2), (byte)(brightness >= 64 ? 1 : 0) });
+            configValues.Brightness = brightness;
         }
 
         private static void SetPressureMode(bool isPoly)

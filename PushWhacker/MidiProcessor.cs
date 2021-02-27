@@ -551,7 +551,7 @@ namespace PushWhacker
             {
                 for (var col = 0; col < 8; col++)
                 {
-                    DefineSpecificButton(row, col, ScalarNote, row%2 == 0 ? Push.Colours.LightGrey : Push.Colours.White);
+                    DefineSpecificButton(row, col, ScalarNote, row%2 == 0 ? Push.Colours.DullBlue : Push.Colours.White);
                 }
             }
         }

@@ -69,6 +69,8 @@ namespace PushWhacker
             Scales["Mixolydian ♭6"] = new int[] { 2, 2, 1, 2, 1, 2, 2 };
             Scales["Locrian ♮2"] = new int[] { 2, 1, 2, 1, 2, 2, 2 };
             Scales["Altered"] = new int[] { 1, 2, 1, 2, 2, 2, 2 };
+            Scales["Phrygian Dominant"] = new int[] { 1, 3, 1, 2, 1, 2, 2 };
+            Scales["Ukrainian Dorian"] = new int[] { 2, 1, 3, 1, 2, 1, 2 };
             Scales["Hungarian (Gypsy) Minor"] = new int[] { 2, 1, 3, 1, 1, 3, 1 };
             Scales["Dbl Harm (Gypsy) Major"] = new int[] { 1, 3, 1, 2, 1, 3, 1 };
             Scales["Major Pentatonic"] = new int[] { 2, 2, 3, 2, 3 };

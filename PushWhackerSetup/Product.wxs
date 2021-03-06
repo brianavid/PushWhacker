@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="A0D23212-2237-433B-8B9D-B309A06A24A9" Name="PushWhackerSetup" Language="1033" Version="1.0.0.0" Manufacturer="BrianAvid" UpgradeCode="844e6c01-1527-477e-a21e-d5d5beb06e65">
+	<Product Id="A0D23212-2237-433B-8B9D-B309A06A24A9" Name="PushWhacker" Language="1033" Version="1.0.0.0" Manufacturer="BrianAvid" UpgradeCode="844e6c01-1527-477e-a21e-d5d5beb06e65">
 		<Package Manufacturer="BrianAvid" InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
@@ -17,8 +17,11 @@
             </File>
             <RemoveFolder Id="INSTALLFOLDER" On="uninstall" />
           </Component>
-          <Component Id="NAudioDll" Guid="154043F5-CE12-4235-9599-127B3806F68A">
-            <File Id="NAudioDll" Name="NAudio.Dll" Source="..\PushWhacker\bin\release\NAudio.Dll" KeyPath="yes" Vital="yes" />
+          <Component Id="NAudioMidiDll" Guid="154043F5-CE12-4235-9599-127B3806F68A">
+            <File Id="NAudioMidiDll" Name="NAudio.Midi.Dll" Source="..\PushWhacker\bin\release\NAudio.Midi.Dll" KeyPath="yes" Vital="yes" />
+          </Component>
+          <Component Id="NAudioCoreDll" Guid="70951754-5FCB-47A4-A4B0-76DF4100D587">
+            <File Id="NAudioCoreDll" Name="NAudio.Core.Dll" Source="..\PushWhacker\bin\release\NAudio.Core.Dll" KeyPath="yes" Vital="yes" />
           </Component>
           <Component Id="DeviceNetDll" Guid="9CCB95ED-E9B6-4BEC-956C-B6BE3B828E8A">
             <File Id="DeviceNetDll" Name="Device.Net.Dll" Source="..\PushWhacker\bin\release\Device.Net.Dll" KeyPath="yes" Vital="yes" />
@@ -43,7 +46,8 @@
     </Directory>
     <Feature Id='Complete' Level="1">
       <ComponentRef Id='PushWhackerExe' />
-      <ComponentRef Id='NAudioDll' />
+      <ComponentRef Id='NAudioMidiDll' />
+      <ComponentRef Id='NAudioCoreDll' />
       <ComponentRef Id='DeviceNetDll' />
       <ComponentRef Id='UsbNetDll' />
       <ComponentRef Id='Shortcut' />

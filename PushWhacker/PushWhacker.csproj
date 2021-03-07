@@ -44,8 +44,8 @@
     <Reference Include="Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Registry.5.0.0\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
     </Reference>
-    <Reference Include="NAudio.Midi">
-      <HintPath>..\..\NAudio\NAudio\bin\Release\netstandard2.0\NAudio.Midi.dll</HintPath>
+    <Reference Include="NAudio">
+      <HintPath>..\..\NAudio\NAudio\bin\Release\netstandard2.0\NAudio.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -71,11 +71,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="Usb.Net, Version=4.0.9.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Usb.Net.4.0.9-alpha\lib\net45\Usb.Net.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup Condition="'$(Configuration)' == 'Release'">
-    <Reference Include="NAudio">
-      <HintPath>..\..\NAudio\NAudio\bin\Release\netstandard2.0\NAudio.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

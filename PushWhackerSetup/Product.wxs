@@ -17,11 +17,8 @@
             </File>
             <RemoveFolder Id="INSTALLFOLDER" On="uninstall" />
           </Component>
-          <Component Id="NAudioMidiDll" Guid="154043F5-CE12-4235-9599-127B3806F68A">
-            <File Id="NAudioMidiDll" Name="NAudio.Midi.Dll" Source="..\PushWhacker\bin\release\NAudio.Midi.Dll" KeyPath="yes" Vital="yes" />
-          </Component>
-          <Component Id="NAudioCoreDll" Guid="70951754-5FCB-47A4-A4B0-76DF4100D587">
-            <File Id="NAudioCoreDll" Name="NAudio.Core.Dll" Source="..\PushWhacker\bin\release\NAudio.Core.Dll" KeyPath="yes" Vital="yes" />
+          <Component Id="NAudioDll" Guid="6510C15B-6A07-411C-8F88-B6D3051B528D">
+            <File Id="NAudioDll" Name="NAudio.Dll" Source="..\PushWhacker\bin\release\NAudio.Dll" KeyPath="yes" Vital="yes" />
           </Component>
           <Component Id="DeviceNetDll" Guid="9CCB95ED-E9B6-4BEC-956C-B6BE3B828E8A">
             <File Id="DeviceNetDll" Name="Device.Net.Dll" Source="..\PushWhacker\bin\release\Device.Net.Dll" KeyPath="yes" Vital="yes" />
@@ -46,8 +43,7 @@
     </Directory>
     <Feature Id='Complete' Level="1">
       <ComponentRef Id='PushWhackerExe' />
-      <ComponentRef Id='NAudioMidiDll' />
-      <ComponentRef Id='NAudioCoreDll' />
+      <ComponentRef Id='NAudioDll' />
       <ComponentRef Id='DeviceNetDll' />
       <ComponentRef Id='UsbNetDll' />
       <ComponentRef Id='Shortcut' />

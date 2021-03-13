@@ -48,6 +48,7 @@ namespace PushWhacker
         public static string storeInstruction = null;
         private static bool setupButtonPressed;
         private static int midiChannelCCValue = 0;
+        private static int lastAfterTouchPressure;
 
         public MidiProcessor(ConfigValues values)
         {
@@ -1134,6 +1135,13 @@ namespace PushWhacker
                configValues.Pressure == ConfigValues.Pressures.PitchBendUp)
             {
                 var afterTouchEvent = midiEvent as ChannelAfterTouchEvent;
+                if (afterTouchEvent.AfterTouchPressure > 0 &&
+                    lastAfterTouchPressure > afterTouchEvent.AfterTouchPressure+5)
+                {
+                    lastAfterTouchPressure = afterTouchEvent.AfterTouchPressure;
+                    return;
+                }
+                lastAfterTouchPressure = afterTouchEvent.AfterTouchPressure;
                 midiEvent = new PitchWheelChangeEvent(0, midiEvent.Channel,
                                                          (afterTouchEvent.AfterTouchPressure << 6) + (afterTouchEvent.AfterTouchPressure >> 1));
             }

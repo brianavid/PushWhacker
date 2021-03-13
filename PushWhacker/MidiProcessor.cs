@@ -46,6 +46,8 @@ namespace PushWhacker
         private static string storeButtonPressed = null;
         private static DateTime storeButtonTime;
         public static string storeInstruction = null;
+        private static bool setupButtonPressed;
+        private static int midiChannelCCValue = 0;
 
         public MidiProcessor(ConfigValues values)
         {
@@ -105,7 +107,8 @@ namespace PushWhacker
             ccValues[76] = 0;
             ccValues[77] = 0;
             ccValues[78] = 0;
-            ccValues[79] = configValues.Brightness;
+            ccValues[Push.Buttons.BrightnessCC] = configValues.Brightness;
+            ccValues[Push.Buttons.ChannelCC] = 0; // CC 79 with Setup button pressed
         }
 
         public bool StartProcessing()
@@ -156,7 +159,7 @@ namespace PushWhacker
             if (inUserMode)
             {
                 SetScaleNotesAndLights();
-                SetLedBrightness(ccValues[79]);
+                SetLedBrightness(ccValues[Push.Buttons.BrightnessCC]);
             }
 
             if (midiOut != null)
@@ -685,6 +688,11 @@ namespace PushWhacker
             {
                 var ccEvent = midiEvent as ControlChangeEvent;
 
+                if (setupButtonPressed && (byte)ccEvent.Controller == Push.Buttons.BrightnessCC)
+                {
+                    ccEvent.Controller = (MidiController)Push.Buttons.ChannelCC;
+                }
+
                 if (ccValues.ContainsKey((byte)ccEvent.Controller))
                 {
                     int delta = ccEvent.ControllerValue >= 64 ? ccEvent.ControllerValue - 128 : ccEvent.ControllerValue;
@@ -913,10 +921,12 @@ namespace PushWhacker
                     case Push.Buttons.ShowInfo:
                         if (ccEvent.ControllerValue > 64)
                         {
+                            setupButtonPressed = true;
                             RequestDeviceIdInfo();
                         }
                         else
                         {
+                            setupButtonPressed = false;
                             DisplayMode();
                         }
                         return;
@@ -983,6 +993,12 @@ namespace PushWhacker
                         SetLedBrightness(ccEvent.ControllerValue);
                         configValues.Save();
                         return;
+
+                    case Push.Buttons.ChannelCC:
+                        midiChannelCCValue = ccEvent.ControllerValue;
+                        midiEvent.Channel = midiChannelCCValue / 8 + 1;
+                        PushDisplay.WriteText($"MIDI Channel = {midiEvent.Channel}");
+                        return;
                 }
 
                 if (Push.Buttons.ReservedCCs.Contains((byte)ccEvent.Controller))
@@ -991,6 +1007,8 @@ namespace PushWhacker
                     return;
                 }
             }
+
+            midiEvent.Channel = midiChannelCCValue / 8 + 1;
 
             if (midiEvent.CommandCode == MidiCommandCode.NoteOn || midiEvent.CommandCode == MidiCommandCode.NoteOff)
             {

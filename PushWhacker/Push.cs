@@ -20,6 +20,7 @@ namespace PushWhacker
             public const int LayoutRight = 63;
 
             public const int BrightnessCC = 79;
+            public const int ChannelCC = 80;
             public const int FootSwitch = 69;
 
             public const int ResetScale = 58;

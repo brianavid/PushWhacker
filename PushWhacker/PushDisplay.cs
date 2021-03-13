@@ -36,6 +36,8 @@ namespace PushWhacker
         static bool RefreshThreadWanted;
         static bool RefreshThreadRunning;
 
+        private static string pendingText = null;
+
         public static bool Open()
         {
             for (var i = 0; i < numberOfBuffers; i++)
@@ -100,6 +102,11 @@ namespace PushWhacker
 
         public static void WriteText(string text, int fontSize = 48)
         {
+            if (screenChanged)
+            {
+                pendingText = text;
+                return;
+            }
             var bmp = new Bitmap(960, 160);
 
             //Create a buffer with some data in it
@@ -163,6 +170,13 @@ namespace PushWhacker
                         lastRefresh = DateTime.Now;
                     }
                     Thread.Sleep(40);
+
+                    if (pendingText != null)
+                    {
+                        var text = pendingText;
+                        pendingText = null;
+                        WriteText(text);
+                    }
                 }
             }).Start();
 

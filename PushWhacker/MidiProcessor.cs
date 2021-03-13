@@ -1130,6 +1130,14 @@ namespace PushWhacker
                 midiLights.Send(midiEvent.GetAsShortMessage());
             }
 
+            if (midiEvent.CommandCode == MidiCommandCode.ChannelAfterTouch &&
+               configValues.Pressure == ConfigValues.Pressures.PitchBendUp)
+            {
+                var afterTouchEvent = midiEvent as ChannelAfterTouchEvent;
+                midiEvent = new PitchWheelChangeEvent(0, midiEvent.Channel,
+                                                         (afterTouchEvent.AfterTouchPressure << 6) + (afterTouchEvent.AfterTouchPressure >> 1));
+            }
+
             if (midiEvent.CommandCode == MidiCommandCode.KeyAfterTouch)
             {
                 var polyPressureEvent = midiEvent as NoteEvent;

@@ -26,6 +26,7 @@ namespace PushWhacker
             public const int ResetScale = 58;
             public const int ResetLayout = 31;
 
+            public const int CyclePressure = 56;
             public const int ToggleTouchStrip = 57;
 
             public const int ShowInfo = 30;
@@ -37,7 +38,7 @@ namespace PushWhacker
             public const int Store_A = 50;
             public const int Store_B = 51;
 
-            public static SortedSet<int> ReservedCCs = new SortedSet<int> { 56, 48, 49 };
+            public static SortedSet<int> ReservedCCs = new SortedSet<int> { 48, 49 };
             public static SortedSet<int> Coloured = new SortedSet<int>(Enumerable.Range(20, 8).Union(Enumerable.Range(102, 8)));
         }
 

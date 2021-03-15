@@ -904,18 +904,37 @@ namespace PushWhacker
                         }
                         return;
 
+                    case Push.Buttons.CyclePressure:
+                        if (ccEvent.ControllerValue > 64)
+                        {
+                            var currentPressureMode = configValues.Pressure;
+                            var currentPressureIndex = Array.FindIndex(ConfigValues.Pressures.Choices, v => v == currentPressureMode);
+                            currentPressureIndex = (currentPressureIndex + 1) % ConfigValues.Pressures.Choices.Length;
+                            configValues.Pressure = ConfigValues.Pressures.Choices[currentPressureIndex];
+                            configValues.Save();
+                            SetPressureMode(configValues.Pressure == ConfigValues.Pressures.PolyPressure);
+                            PushDisplay.WriteText($"Pressure: {configValues.Pressure}");
+                        }
+                        else
+                        {
+                            RequestDefaultDisplay();
+                        }
+                        return;
+
                     case Push.Buttons.ToggleTouchStrip:
                         if (ccEvent.ControllerValue > 64)
                         {
-                            if (configValues.TouchStripMode == ConfigValues.TouchStripModes.Modulation)
-                            {
-                                configValues.TouchStripMode = ConfigValues.TouchStripModes.PitchBend;
-                            }
-                            else
-                            {
-                                configValues.TouchStripMode = ConfigValues.TouchStripModes.Modulation;
-                            }
+                            var currentTouchStripMode = configValues.TouchStripMode;
+                            var currentTouchStripIndex = Array.FindIndex(ConfigValues.TouchStripModes.Choices, v => v == currentTouchStripMode);
+                            currentTouchStripIndex = (currentTouchStripIndex + 1) % ConfigValues.TouchStripModes.Choices.Length;
+                            configValues.TouchStripMode = ConfigValues.TouchStripModes.Choices[currentTouchStripIndex];
+                            configValues.Save();
                             SetTouchStripMode(configValues.TouchStripMode == ConfigValues.TouchStripModes.PitchBend);
+                            PushDisplay.WriteText($"Touch Strip: {configValues.TouchStripMode}");
+                        }
+                        else
+                        {
+                            RequestDefaultDisplay();
                         }
                         return;
 

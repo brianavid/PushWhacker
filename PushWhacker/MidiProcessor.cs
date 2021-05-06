@@ -713,6 +713,16 @@ namespace PushWhacker
                 {
                     lastModulationValue = ccEvent.ControllerValue;
                     midiLights.Send(midiEvent.GetAsShortMessage());
+                    if (configValues.TouchStripMode == ConfigValues.TouchStripModes.Expression)
+                    {
+                        ccEvent.Controller = MidiController.Expression;
+                    }
+                    if (configValues.TouchStripMode == ConfigValues.TouchStripModes.ModAndExp)
+                    {
+                        var exprcc = ccEvent.Clone() as ControlChangeEvent;
+                        exprcc.Controller = MidiController.Expression;
+                        midiOut.Send(exprcc.GetAsShortMessage());
+                    }
                 }
 
                 switch ((byte)ccEvent.Controller)
@@ -1148,6 +1158,16 @@ namespace PushWhacker
                 int newModValue = lastModulationValue + ((127 - lastModulationValue) * afterTouchEvent.AfterTouchPressure) / 128;
                 midiEvent = new ControlChangeEvent(0, midiEvent.Channel, MidiController.Modulation, newModValue);
                 midiLights.Send(midiEvent.GetAsShortMessage());
+                if (configValues.TouchStripMode == ConfigValues.TouchStripModes.Expression)
+                {
+                    (midiEvent as ControlChangeEvent).Controller = MidiController.Expression;
+                }
+                if (configValues.TouchStripMode == ConfigValues.TouchStripModes.ModAndExp)
+                {
+                    var exprcc = midiEvent.Clone() as ControlChangeEvent;
+                    exprcc.Controller = MidiController.Expression;
+                    midiOut.Send(exprcc.GetAsShortMessage());
+                }
             }
 
             if (midiEvent.CommandCode == MidiCommandCode.ChannelAfterTouch &&

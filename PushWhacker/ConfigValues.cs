@@ -24,7 +24,7 @@ namespace PushWhacker
         {
             public const string ChannelAftertouch = "Channel Aftertouch";
             public const string PolyPressure = "Poly Pressure";
-            public const string BoostModulation = "Boost Modulation";
+            public const string BoostModulation = "Boost Touch Strip";
             public const string PitchBendUp = "Pitch Bend Up";
 
             public static string[] Choices = new string[] { ChannelAftertouch, PolyPressure, BoostModulation, PitchBendUp };
@@ -33,9 +33,11 @@ namespace PushWhacker
         public class TouchStripModes
         {
             public const string Modulation = "Modulation";
+            public const string Expression = "Expression";
+            public const string ModAndExp = "Mod & Expr";
             public const string PitchBend = "PitchBend";
 
-            public static string[] Choices = new string[] { Modulation, PitchBend };
+            public static string[] Choices = new string[] { Modulation, Expression, ModAndExp, PitchBend };
         }
 
         public class PedalModes

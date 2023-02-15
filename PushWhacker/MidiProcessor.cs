@@ -114,6 +114,11 @@ namespace PushWhacker
 
         public bool StartProcessing()
         {
+            if (midiIn != null)
+            {
+                return true;
+            }
+
             try
             {
                 for (int device = 0; device < MidiIn.NumberOfDevices; device++)
@@ -1143,7 +1148,7 @@ namespace PushWhacker
                     }
                     noteEvent.NoteNumber = notesOn[padNoteNumber];
                     notesOn.Remove(padNoteNumber);
-                    if (notesOn.ContainsValue(noteEvent.NoteNumber)) return;
+                    //if (notesOn.ContainsValue(noteEvent.NoteNumber)) return;
                 }
                 else
                 {

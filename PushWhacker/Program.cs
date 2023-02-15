@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Windows.Forms;
+using Microsoft.WindowsAPICodePack.ApplicationServices;
 
 namespace PushWhacker
 {
@@ -31,6 +32,7 @@ namespace PushWhacker
                 }
                 else
                 {
+                    PowerManager.IsMonitorOnChanged += new EventHandler(MonitorOnChanged);
                     SystemEvents.SessionEnding += new SessionEndingEventHandler(PushWacker_SesssionEndingEventHandler);
                     var applicationContext = new CustomApplicationContext(configValues, midiProcessor);
                     Application.Run(applicationContext);
@@ -46,6 +48,19 @@ namespace PushWhacker
         {
             midiProcessor.StopProcessing();
             PushDisplay.Close();
+        }
+
+        static void MonitorOnChanged(object sender, EventArgs e)
+        {
+            if (PowerManager.IsMonitorOn)
+            {
+                midiProcessor.StartProcessing();
+            }
+            else
+            {
+                PushDisplay.WriteText("");
+                midiProcessor.StopProcessing();
+            }
         }
 
     }

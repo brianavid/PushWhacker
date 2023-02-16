@@ -26,6 +26,9 @@
           <Component Id="UsbNetDll" Guid="42325C80-40BB-47FD-A88E-96EA000116F4">
             <File Id="UsbNetDll" Name="Usb.Net.Dll" Source="..\PushWhacker\bin\release\Usb.Net.Dll" KeyPath="yes" Vital="yes" />
           </Component>
+          <Component Id="WindowsAPICodePack" Guid="EC223A13-748E-4428-AD38-C039DA702B2B">
+            <File Id="WindowsAPICodePack" Name="Microsoft.WindowsAPICodePack.Dll" Source="..\PushWhacker\bin\release\Microsoft.WindowsAPICodePack.Dll" KeyPath="yes" Vital="yes" />
+          </Component>
         </Directory>
       </Directory>
       <Directory Id="ProgramMenuFolder">
@@ -46,6 +49,7 @@
       <ComponentRef Id='NAudioDll' />
       <ComponentRef Id='DeviceNetDll' />
       <ComponentRef Id='UsbNetDll' />
+      <ComponentRef Id='WindowsAPICodePack' />
       <ComponentRef Id='Shortcut' />
     </Feature>
   </Product>

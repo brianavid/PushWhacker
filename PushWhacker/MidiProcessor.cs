@@ -30,6 +30,7 @@ namespace PushWhacker
         static Dictionary<int, int> notesOn = new Dictionary<int, int>();
         static int[] ScalerKsNotes = new int[] { -1, 47, 45, 43, 41, 40, 38, 36 };
         static int[] ScalerPadNotes = new int[] { 48, 50, 52, 53, 55, 57, 59, 60 };
+        static int[] WhiteNotes = new int[] { 12, 14, 16, 17, 19, 21, 23, 24 };
         static DateTime revertToDefaultTime = DateTime.MaxValue;
         static DateTime ccDisplayTime = DateTime.MaxValue;
         static string ccDisplayMessage = null;
@@ -260,6 +261,10 @@ namespace PushWhacker
 
                 case ConfigValues.Layouts.BigDrums:
                     SetScaleNotesAndLightsBigDrums();
+                    break;
+
+                case ConfigValues.Layouts.WhiteKeys:
+                    SetScaleNotesAndLightsWhiteKeys();
                     break;
             }
 
@@ -562,12 +567,28 @@ namespace PushWhacker
             {
                 for (var col = 0; col < 8; col++)
                 {
-                    DefineSpecificButton(row, col, ScalarNote, row%2 == 0 ? Push.Colours.DullBlue : Push.Colours.White);
+                    DefineSpecificButton(row, col, ScalarNote, row % 2 == 0 ? Push.Colours.DullBlue : Push.Colours.White);
                 }
             }
         }
 
-            static void SetScaleNotesAndLightsBigDrums()
+        static void SetScaleNotesAndLightsWhiteKeys()
+        {
+            scaleNoteMapping = new int[64];
+            for (var i = 0; i < 64; i++)
+            {
+                scaleNoteMapping[i] = -1;
+            }
+            for (var row = 0; row < 8; row++)
+            {
+                for (var col = 0; col < 8; col++)
+                {
+                    DefineSpecificButton(row, col, WhiteNotes[col] + row*12, row % 2 == 0 ? Push.Colours.DullBlue : Push.Colours.White);
+                }
+            }
+        }
+
+        static void SetScaleNotesAndLightsBigDrums()
         {
             var note = 36;
             scaleNoteMapping = new int[64];

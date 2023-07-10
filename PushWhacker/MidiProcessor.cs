@@ -1062,6 +1062,13 @@ namespace PushWhacker
                     //  Other than those defined as passed thru, all others are reserved and ignored
                     return;
                 }
+
+                if (ccEvent.ControllerValue == 0 && configValues.CcNoRelease && 
+                    (int)ccEvent.Controller >= 102 && (int)ccEvent.Controller <= 109)
+                {
+                    //  Do not pass through button releases
+                    return;
+                }
             }
 
             midiEvent.Channel = midiChannelCCValue / 8 + 1;

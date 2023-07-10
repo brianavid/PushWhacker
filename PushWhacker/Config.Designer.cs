@@ -33,6 +33,15 @@ namespace PushWhacker
             this.okButton = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.comboBoxLayoutStore = new System.Windows.Forms.ComboBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.comboBoxSwitchedScale = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.comboBoxOctave = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.comboBoxKey = new System.Windows.Forms.ComboBox();
+            this.comboBoxScale = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.comboBoxLayout = new System.Windows.Forms.ComboBox();
             this.tabPage5 = new System.Windows.Forms.TabPage();
@@ -63,23 +72,15 @@ namespace PushWhacker
             this.buttonColLo = new System.Windows.Forms.Button();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.comboBoxSwitchedScale = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.comboBoxOctave = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.comboBoxKey = new System.Windows.Forms.ComboBox();
-            this.comboBoxScale = new System.Windows.Forms.ComboBox();
-            this.comboBoxLayoutStore = new System.Windows.Forms.ComboBox();
+            this.checkBoxCcNoRelease = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage6.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // okButton
@@ -119,6 +120,106 @@ namespace PushWhacker
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Pads";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.comboBoxLayoutStore);
+            this.groupBox1.Controls.Add(this.label13);
+            this.groupBox1.Controls.Add(this.comboBoxSwitchedScale);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.comboBoxOctave);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.comboBoxKey);
+            this.groupBox1.Controls.Add(this.comboBoxScale);
+            this.groupBox1.Location = new System.Drawing.Point(7, 40);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(328, 95);
+            this.groupBox1.TabIndex = 22;
+            this.groupBox1.TabStop = false;
+            // 
+            // comboBoxLayoutStore
+            // 
+            this.comboBoxLayoutStore.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxLayoutStore.FormattingEnabled = true;
+            this.comboBoxLayoutStore.Location = new System.Drawing.Point(6, 0);
+            this.comboBoxLayoutStore.Name = "comboBoxLayoutStore";
+            this.comboBoxLayoutStore.Size = new System.Drawing.Size(185, 21);
+            this.comboBoxLayoutStore.TabIndex = 23;
+            this.comboBoxLayoutStore.SelectedIndexChanged += new System.EventHandler(this.comboBoxLayoutStore_SelectedIndexChanged);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(16, 63);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(81, 13);
+            this.label13.TabIndex = 35;
+            this.label13.Text = "Switched Scale";
+            // 
+            // comboBoxSwitchedScale
+            // 
+            this.comboBoxSwitchedScale.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxSwitchedScale.FormattingEnabled = true;
+            this.comboBoxSwitchedScale.Location = new System.Drawing.Point(109, 60);
+            this.comboBoxSwitchedScale.Name = "comboBoxSwitchedScale";
+            this.comboBoxSwitchedScale.Size = new System.Drawing.Size(151, 21);
+            this.comboBoxSwitchedScale.TabIndex = 34;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(259, 35);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(24, 13);
+            this.label4.TabIndex = 33;
+            this.label4.Text = "Oct";
+            // 
+            // comboBoxOctave
+            // 
+            this.comboBoxOctave.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxOctave.FormattingEnabled = true;
+            this.comboBoxOctave.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8"});
+            this.comboBoxOctave.Location = new System.Drawing.Point(283, 31);
+            this.comboBoxOctave.Name = "comboBoxOctave";
+            this.comboBoxOctave.Size = new System.Drawing.Size(30, 21);
+            this.comboBoxOctave.TabIndex = 32;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(16, 34);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(34, 13);
+            this.label3.TabIndex = 30;
+            this.label3.Text = "Scale";
+            // 
+            // comboBoxKey
+            // 
+            this.comboBoxKey.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxKey.FormattingEnabled = true;
+            this.comboBoxKey.Location = new System.Drawing.Point(56, 32);
+            this.comboBoxKey.MaxDropDownItems = 12;
+            this.comboBoxKey.Name = "comboBoxKey";
+            this.comboBoxKey.Size = new System.Drawing.Size(44, 21);
+            this.comboBoxKey.TabIndex = 29;
+            // 
+            // comboBoxScale
+            // 
+            this.comboBoxScale.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxScale.FormattingEnabled = true;
+            this.comboBoxScale.Location = new System.Drawing.Point(109, 32);
+            this.comboBoxScale.Name = "comboBoxScale";
+            this.comboBoxScale.Size = new System.Drawing.Size(151, 21);
+            this.comboBoxScale.TabIndex = 31;
+            this.comboBoxScale.SelectedIndexChanged += new System.EventHandler(this.comboBoxScale_SelectedIndexChanged);
             // 
             // label2
             // 
@@ -340,6 +441,7 @@ namespace PushWhacker
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.checkBoxCcNoRelease);
             this.tabPage2.Controls.Add(this.checkBoxUserModeOnly);
             this.tabPage2.Controls.Add(this.comboBoxOutput);
             this.tabPage2.Controls.Add(this.label1);
@@ -433,105 +535,15 @@ namespace PushWhacker
             this.textBox1.Text = resources.GetString("textBox1.Text");
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
-            // groupBox1
+            // checkBoxCcNoRelease
             // 
-            this.groupBox1.Controls.Add(this.comboBoxLayoutStore);
-            this.groupBox1.Controls.Add(this.label13);
-            this.groupBox1.Controls.Add(this.comboBoxSwitchedScale);
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.comboBoxOctave);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.comboBoxKey);
-            this.groupBox1.Controls.Add(this.comboBoxScale);
-            this.groupBox1.Location = new System.Drawing.Point(7, 40);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(328, 95);
-            this.groupBox1.TabIndex = 22;
-            this.groupBox1.TabStop = false;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(16, 63);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(81, 13);
-            this.label13.TabIndex = 35;
-            this.label13.Text = "Switched Scale";
-            // 
-            // comboBoxSwitchedScale
-            // 
-            this.comboBoxSwitchedScale.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxSwitchedScale.FormattingEnabled = true;
-            this.comboBoxSwitchedScale.Location = new System.Drawing.Point(109, 60);
-            this.comboBoxSwitchedScale.Name = "comboBoxSwitchedScale";
-            this.comboBoxSwitchedScale.Size = new System.Drawing.Size(151, 21);
-            this.comboBoxSwitchedScale.TabIndex = 34;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(259, 35);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(24, 13);
-            this.label4.TabIndex = 33;
-            this.label4.Text = "Oct";
-            // 
-            // comboBoxOctave
-            // 
-            this.comboBoxOctave.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxOctave.FormattingEnabled = true;
-            this.comboBoxOctave.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8"});
-            this.comboBoxOctave.Location = new System.Drawing.Point(283, 31);
-            this.comboBoxOctave.Name = "comboBoxOctave";
-            this.comboBoxOctave.Size = new System.Drawing.Size(30, 21);
-            this.comboBoxOctave.TabIndex = 32;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(16, 34);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(34, 13);
-            this.label3.TabIndex = 30;
-            this.label3.Text = "Scale";
-            // 
-            // comboBoxKey
-            // 
-            this.comboBoxKey.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxKey.FormattingEnabled = true;
-            this.comboBoxKey.Location = new System.Drawing.Point(56, 32);
-            this.comboBoxKey.MaxDropDownItems = 12;
-            this.comboBoxKey.Name = "comboBoxKey";
-            this.comboBoxKey.Size = new System.Drawing.Size(44, 21);
-            this.comboBoxKey.TabIndex = 29;
-            // 
-            // comboBoxScale
-            // 
-            this.comboBoxScale.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxScale.FormattingEnabled = true;
-            this.comboBoxScale.Location = new System.Drawing.Point(109, 32);
-            this.comboBoxScale.Name = "comboBoxScale";
-            this.comboBoxScale.Size = new System.Drawing.Size(151, 21);
-            this.comboBoxScale.TabIndex = 31;
-            this.comboBoxScale.SelectedIndexChanged += new System.EventHandler(this.comboBoxScale_SelectedIndexChanged);
-            // 
-            // comboBoxLayoutStore
-            // 
-            this.comboBoxLayoutStore.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxLayoutStore.FormattingEnabled = true;
-            this.comboBoxLayoutStore.Location = new System.Drawing.Point(6, 0);
-            this.comboBoxLayoutStore.Name = "comboBoxLayoutStore";
-            this.comboBoxLayoutStore.Size = new System.Drawing.Size(185, 21);
-            this.comboBoxLayoutStore.TabIndex = 23;
-            this.comboBoxLayoutStore.SelectedIndexChanged += new System.EventHandler(this.comboBoxLayoutStore_SelectedIndexChanged);
+            this.checkBoxCcNoRelease.AutoSize = true;
+            this.checkBoxCcNoRelease.Location = new System.Drawing.Point(10, 95);
+            this.checkBoxCcNoRelease.Name = "checkBoxCcNoRelease";
+            this.checkBoxCcNoRelease.Size = new System.Drawing.Size(138, 17);
+            this.checkBoxCcNoRelease.TabIndex = 23;
+            this.checkBoxCcNoRelease.Text = "CC Buttons No Release";
+            this.checkBoxCcNoRelease.UseVisualStyleBackColor = true;
             // 
             // Config
             // 
@@ -549,6 +561,8 @@ namespace PushWhacker
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
             this.tabPage4.ResumeLayout(false);
@@ -558,8 +572,6 @@ namespace PushWhacker
             this.tabPage3.ResumeLayout(false);
             this.tabPage6.ResumeLayout(false);
             this.tabPage6.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -607,5 +619,6 @@ namespace PushWhacker
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox comboBoxKey;
         private System.Windows.Forms.ComboBox comboBoxScale;
+        private System.Windows.Forms.CheckBox checkBoxCcNoRelease;
     }
 }

@@ -76,6 +76,7 @@ namespace PushWhacker
             comboBoxTouchStrip.SelectedItem = values.TouchStripMode;
             comboBoxPedal.SelectedItem = values.PedalMode;
             checkBoxUserModeOnly.Checked = configValues.UserModeOnly;
+            checkBoxCcNoRelease.Checked = configValues.CcNoRelease;
             comboBoxPadStartNote.SelectedIndex = configValues.FixLayout ? 1 : 0;
             comboBoxKeyChangeAmount.SelectedIndex = configValues.KeyChangeFifths ? 1 : 0;
             
@@ -85,6 +86,7 @@ namespace PushWhacker
         private void StoreValues()
         {
             configValues.UserModeOnly = checkBoxUserModeOnly.Checked;
+            configValues.CcNoRelease = checkBoxCcNoRelease.Checked;
             configValues.Output = comboBoxOutput.SelectedItem as string;
             configValues.Layout = comboBoxLayout.SelectedItem as string;
             configValues.FixLayout = comboBoxPadStartNote.SelectedIndex != 0;
